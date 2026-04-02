@@ -57,6 +57,12 @@
  * 总计：96 个工具动作
  */
 export type ToolActionKey =
+  | 'feishu_approval_instance.get'
+  | 'feishu_approval_instance.list'
+  | 'feishu_approval_task.approve'
+  | 'feishu_approval_task.reject'
+  | 'feishu_approval_task.rollback'
+  | 'feishu_approval_task.transfer'
   | 'feishu_attendance_group.get'
   | 'feishu_attendance_group.list_users'
   | 'feishu_attendance_shift.query'
@@ -186,6 +192,12 @@ export type ToolScopeMapping = Record<ToolActionKey, string[]>;
  * @see {@link ToolActionKey} 所有可用的工具动作键
  */
 export const TOOL_SCOPES: ToolScopeMapping = {
+  'feishu_approval_instance.get': ['approval:approval:readonly'],
+  'feishu_approval_instance.list': ['approval:approval:readonly'],
+  'feishu_approval_task.approve': ['approval:approval:readonly'],
+  'feishu_approval_task.reject': ['approval:approval:readonly'],
+  'feishu_approval_task.rollback': ['approval:approval:readonly'],
+  'feishu_approval_task.transfer': ['approval:approval:readonly'],
   'feishu_attendance_shift.query': ['attendance:task:readonly'],
   'feishu_attendance_group.get': ['attendance:rule:readonly'],
   'feishu_attendance_group.list_users': ['attendance:rule:readonly'],
