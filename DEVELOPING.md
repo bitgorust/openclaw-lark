@@ -82,6 +82,8 @@ The first new feature should be implemented in this order:
 
 The detailed scope is documented in [FEISHU_APPROVAL_PLAN.md](/data/Workspace/openclaw-lark/FEISHU_APPROVAL_PLAN.md).
 
+The follow-on skill priority order after approval is documented in [FEISHU_SKILL_PRIORITY_PLAN.md](/data/Workspace/openclaw-lark/FEISHU_SKILL_PRIORITY_PLAN.md).
+
 ## Key References
 
 - [MAINTAINING.md](/data/Workspace/openclaw-lark/MAINTAINING.md)
