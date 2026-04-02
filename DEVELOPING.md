@@ -66,6 +66,11 @@ Required checks:
 - test
 - build
 
+Special rule for `.gitlab-ci.yml`:
+
+- if `.gitlab-ci.yml` is changed, do not commit it until the user confirms they have run GitLab Web CI Lint against the final content
+- local compatibility checks may help, but they do not replace GitLab Web CI Lint for our GitLab CE 11.6.x environment
+
 ## First Feature Track: `feishu-approval`
 
 The first new feature should be implemented in this order:

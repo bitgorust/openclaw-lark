@@ -7,9 +7,7 @@ stages:
     - corepack enable
     - pnpm install --frozen-lockfile
   cache:
-    key:
-      files:
-        - pnpm-lock.yaml
+    key: pnpm
     paths:
       - .pnpm-store
   variables:

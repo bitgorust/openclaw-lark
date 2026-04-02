@@ -64,6 +64,7 @@ Fork-only changes must be easy to disable or remove.
   - rationale
   - tests
   - notes on backward compatibility
+- If `.gitlab-ci.yml` changes, do not commit it until GitLab Web CI Lint has been run against the final content and explicitly confirmed.
 
 ## Stacked Changes and Upstream PRs
 
