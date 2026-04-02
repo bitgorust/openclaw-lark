@@ -24,7 +24,10 @@ import {
   registerFeishuTaskTasklistTool,
 } from './task/index';
 import {
+  registerFeishuApprovalCcTool,
+  registerFeishuApprovalCommentTool,
   registerFeishuApprovalInstanceTool,
+  registerFeishuApprovalTaskSearchTool,
   registerFeishuApprovalTaskTool,
 } from './approval/index';
 import {
@@ -73,6 +76,9 @@ export function registerOapiTools(api: OpenClawPluginApi): void {
   registerFeishuTaskSubtaskTool(api);
   registerFeishuApprovalInstanceTool(api);
   registerFeishuApprovalTaskTool(api);
+  registerFeishuApprovalTaskSearchTool(api);
+  registerFeishuApprovalCcTool(api);
+  registerFeishuApprovalCommentTool(api);
 
   // Bitable tools
   registerFeishuBitableAppTool(api);

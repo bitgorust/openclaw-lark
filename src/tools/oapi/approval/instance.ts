@@ -10,6 +10,8 @@ import type { OpenClawPluginApi } from 'openclaw/plugin-sdk';
 import { Type } from '@sinclair/typebox';
 import {
   StringEnum,
+  UserAuthRequiredError,
+  UserScopeInsufficientError,
   createToolContext,
   formatLarkError,
   handleInvokeErrorWithAutoAuth,
@@ -19,6 +21,7 @@ import {
   registerTool,
   unixTimestampToISO8601,
 } from '../helpers';
+import { getApprovalAuthPolicy } from './auth-policy';
 
 const APPROVAL_LOCALES = ['zh-CN', 'en-US', 'ja-JP'] as const;
 const APPROVAL_USER_ID_TYPES = ['open_id', 'union_id', 'user_id'] as const;
@@ -137,9 +140,16 @@ export interface ApprovalInstanceSummary {
 }
 
 export interface ApprovalOperationError {
-  type: 'not_found' | 'already_processed' | 'permission_denied' | 'invalid_request' | 'api_error';
+  type:
+    | 'not_found'
+    | 'already_processed'
+    | 'permission_denied'
+    | 'personal_access_token_required'
+    | 'invalid_request'
+    | 'api_error';
   code?: number;
   message: string;
+  hint?: string;
 }
 
 function parseApprovalTime(input: string): string | null {
@@ -260,7 +270,18 @@ export function buildApprovalInstanceGetQuery(params: {
 
 export function shapeApprovalError(err: unknown): ApprovalOperationError {
   const code = extractApprovalErrorCode(err);
-  const message = formatLarkError(err);
+  const message = extractApprovalErrorMessage(err);
+
+  if (/Missing access token for authorization/i.test(message)) {
+    return {
+      type: 'personal_access_token_required',
+      code,
+      message:
+        '当前审批接口以应用身份调用，缺少你的个人 access token，因此无法访问“待我审批”等个人审批数据。这不是你的个人权限问题，而是当前工具链的鉴权限制。',
+      hint:
+        '可以继续处理你明确指定的审批实例，例如审批实例 ID、审批链接，或一条具体审批通知消息；暂时不能主动列出你全部“待我审批”的审批单。',
+    };
+  }
 
   if (code === 1390003) {
     return { type: 'not_found', code, message };
@@ -293,8 +314,60 @@ function extractApprovalErrorCode(err: unknown): number | undefined {
   return undefined;
 }
 
+function extractApprovalErrorMessage(err: unknown): string {
+  if (err && typeof err === 'object') {
+    const message =
+      (err as { msg?: unknown }).msg ??
+      (err as { message?: unknown }).message ??
+      (err as { response?: { data?: { msg?: unknown } } }).response?.data?.msg;
+    if (typeof message === 'string' && message.trim().length > 0) {
+      return message;
+    }
+  }
+  return formatLarkError(err);
+}
+
 function resolveApprovalUserId(userId: string | undefined, senderOpenId: string | undefined): string | undefined {
   return userId ?? senderOpenId;
+}
+
+function shouldFallbackApprovalInstanceToTenant(err: unknown): boolean {
+  return err instanceof UserAuthRequiredError || err instanceof UserScopeInsufficientError;
+}
+
+async function invokeApprovalInstanceWithFallback<T>(params: {
+  invoke: (as: 'user' | 'tenant') => Promise<T>;
+  preferredMode: 'user' | 'tenant';
+}): Promise<{
+  result: T;
+  auth_mode: 'user' | 'tenant';
+  auth_fallback: boolean;
+}> {
+  if (params.preferredMode === 'tenant') {
+    return {
+      result: await params.invoke('tenant'),
+      auth_mode: 'tenant',
+      auth_fallback: false,
+    };
+  }
+
+  try {
+    return {
+      result: await params.invoke('user'),
+      auth_mode: 'user',
+      auth_fallback: false,
+    };
+  } catch (err) {
+    if (!shouldFallbackApprovalInstanceToTenant(err)) {
+      throw err;
+    }
+
+    return {
+      result: await params.invoke('tenant'),
+      auth_mode: 'tenant',
+      auth_fallback: true,
+    };
+  }
 }
 
 export function registerFeishuApprovalInstanceTool(api: OpenClawPluginApi): void {
@@ -309,7 +382,7 @@ export function registerFeishuApprovalInstanceTool(api: OpenClawPluginApi): void
       name: 'feishu_approval_instance',
       label: 'Feishu Approval Instance',
       description:
-        "【以应用身份】飞书审批实例工具。用于按审批定义和时间窗口列出审批实例、获取单个审批实例详情。Actions: list（列出实例 ID，可选自动展开详情）, get（查看实例详情）。时间参数支持 ISO 8601 / RFC 3339 或 Unix 毫秒时间戳字符串。",
+        '飞书审批实例工具。用于按审批定义和时间窗口列出审批实例、获取单个审批实例详情。Actions: list（列出实例 ID，可选自动展开详情）, get（查看实例详情）。时间参数支持 ISO 8601 / RFC 3339 或 Unix 毫秒时间戳字符串。实例查询会优先以用户身份执行；若当前会话缺少用户授权，则对明确范围的实例查询回退到应用身份。',
       parameters: FeishuApprovalInstanceSchema,
       async execute(_toolCallId: string, params: unknown) {
         const p = params as FeishuApprovalInstanceParams;
@@ -319,6 +392,7 @@ export function registerFeishuApprovalInstanceTool(api: OpenClawPluginApi): void
 
           switch (p.action) {
             case 'list': {
+              const authPolicy = getApprovalAuthPolicy('instance', 'list');
               const query = buildApprovalInstanceListQuery({
                 approval_code: p.approval_code,
                 start_time: p.start_time,
@@ -332,19 +406,24 @@ export function registerFeishuApprovalInstanceTool(api: OpenClawPluginApi): void
 
               log.info(`list: approval_code=${p.approval_code}, page_size=${query.page_size ?? '50'}`);
 
-              const res = await client.invokeByPath<{
-                code?: number;
-                msg?: string;
-                data?: {
-                  instance_code_list?: string[];
-                  page_token?: string;
-                  has_more?: boolean;
-                };
-              }>('feishu_approval_instance.list', '/open-apis/approval/v4/instances', {
-                method: 'GET',
-                query,
-                as: 'tenant',
+              const listCall = await invokeApprovalInstanceWithFallback({
+                preferredMode: authPolicy.currentExecutionMode,
+                invoke: (as) =>
+                  client.invokeByPath<{
+                    code?: number;
+                    msg?: string;
+                    data?: {
+                      instance_code_list?: string[];
+                      page_token?: string;
+                      has_more?: boolean;
+                    };
+                  }>('feishu_approval_instance.list', '/open-apis/approval/v4/instances', {
+                    method: 'GET',
+                    query,
+                    as,
+                  }),
               });
+              const res = listCall.result;
 
               if (res.code && res.code !== 0) {
                 throw res;
@@ -355,6 +434,8 @@ export function registerFeishuApprovalInstanceTool(api: OpenClawPluginApi): void
 
               if (!includeDetails || instanceIds.length === 0) {
                 return json({
+                  auth_mode: listCall.auth_mode,
+                  auth_fallback: listCall.auth_fallback,
                   instance_ids: instanceIds,
                   instances: instanceIds.map((instanceId) => ({ instance_id: instanceId })),
                   has_more: res.data?.has_more ?? false,
@@ -378,7 +459,7 @@ export function registerFeishuApprovalInstanceTool(api: OpenClawPluginApi): void
                   }>('feishu_approval_instance.get', `/open-apis/approval/v4/instances/${encodeURIComponent(instanceId)}`, {
                     method: 'GET',
                     query: detailQuery,
-                    as: 'tenant',
+                    as: authPolicy.currentExecutionMode,
                   });
 
                   if (detailRes.code !== undefined && detailRes.code !== 0) {
@@ -390,6 +471,8 @@ export function registerFeishuApprovalInstanceTool(api: OpenClawPluginApi): void
               );
 
               return json({
+                auth_mode: listCall.auth_mode,
+                auth_fallback: listCall.auth_fallback,
                 instance_ids: instanceIds,
                 instances: detailResults.filter((item): item is ApprovalInstanceSummary => item != null),
                 has_more: res.data?.has_more ?? false,
@@ -401,6 +484,7 @@ export function registerFeishuApprovalInstanceTool(api: OpenClawPluginApi): void
             }
 
             case 'get': {
+              const authPolicy = getApprovalAuthPolicy('instance', 'get');
               const query = buildApprovalInstanceGetQuery({
                 locale: p.locale,
                 user_id: resolveApprovalUserId(p.user_id, defaultUserId),
@@ -409,21 +493,28 @@ export function registerFeishuApprovalInstanceTool(api: OpenClawPluginApi): void
 
               log.info(`get: instance_id=${p.instance_id}`);
 
-              const res = await client.invokeByPath<{
-                code?: number;
-                msg?: string;
-                data?: Record<string, any>;
-              }>('feishu_approval_instance.get', `/open-apis/approval/v4/instances/${encodeURIComponent(p.instance_id)}`, {
-                method: 'GET',
-                query,
-                as: 'tenant',
+              const getCall = await invokeApprovalInstanceWithFallback({
+                preferredMode: authPolicy.currentExecutionMode,
+                invoke: (as) =>
+                  client.invokeByPath<{
+                    code?: number;
+                    msg?: string;
+                    data?: Record<string, any>;
+                  }>('feishu_approval_instance.get', `/open-apis/approval/v4/instances/${encodeURIComponent(p.instance_id)}`, {
+                    method: 'GET',
+                    query,
+                    as,
+                  }),
               });
+              const res = getCall.result;
 
               if (res.code && res.code !== 0) {
                 throw res;
               }
 
               return json({
+                auth_mode: getCall.auth_mode,
+                auth_fallback: getCall.auth_fallback,
                 instance: normalizeApprovalInstance(res.data),
               });
             }
