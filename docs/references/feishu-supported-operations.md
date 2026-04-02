@@ -9,8 +9,8 @@ This file enumerates the Feishu-facing tool and command surface currently expose
 
 ## Totals
 
-- Tools: 36
-- Operations: 100
+- Tools: 38
+- Operations: 103
 - Chat commands: 8
 
 ## Tools
@@ -31,6 +31,8 @@ This file enumerates the Feishu-facing tool and command surface currently expose
 | `feishu_calendar_event` | calendar | oapi | user | 9 | `src/tools/oapi/calendar/event.ts` |
 | `feishu_calendar_event_attendee` | calendar | oapi | user | 2 | `src/tools/oapi/calendar/event-attendee.ts` |
 | `feishu_calendar_freebusy` | calendar | oapi | user | 1 | `src/tools/oapi/calendar/freebusy.ts` |
+| `feishu_attendance_shift` | attendance | oapi | tenant | 1 | `src/tools/oapi/attendance/shift.ts` |
+| `feishu_attendance_group` | attendance | oapi | tenant | 2 | `src/tools/oapi/attendance/group.ts` |
 | `feishu_task_task` | task | oapi | user | 4 | `src/tools/oapi/task/task.ts` |
 | `feishu_task_tasklist` | task | oapi | user | 6 | `src/tools/oapi/task/tasklist.ts` |
 | `feishu_task_comment` | task | oapi | user | 3 | `src/tools/oapi/task/comment.ts` |
@@ -220,6 +222,29 @@ This file enumerates the Feishu-facing tool and command surface currently expose
 | Operation | Summary | Backend | Official Docs |
 |---|---|---|---|
 | `list` | Batch query free/busy. | `POST:/open-apis/calendar/v4/freebusy/batch` | [批量查询主日历日程忙闲信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/calendar-v4/freebusy/batch) |
+
+### `feishu_attendance_shift`
+
+- Category: `attendance`
+- Transport: `oapi`
+- Auth: `tenant`
+- Source: `src/tools/oapi/attendance/shift.ts`
+
+| Operation | Summary | Backend | Official Docs |
+|---|---|---|---|
+| `query` | Query daily shifts for one or more users within a bounded date range. | `POST:/open-apis/attendance/v1/user_daily_shifts/query` | [查询排班表](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/attendance-v1/user_daily_shift/query) |
+
+### `feishu_attendance_group`
+
+- Category: `attendance`
+- Transport: `oapi`
+- Auth: `tenant`
+- Source: `src/tools/oapi/attendance/group.ts`
+
+| Operation | Summary | Backend | Official Docs |
+|---|---|---|---|
+| `get` | Get one attendance group by ID. | `GET:/open-apis/attendance/v1/groups/:group_id` | [按 ID 查询考勤组](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/attendance-v1/group/get) |
+| `list_users` | List users in an attendance group with paging. | `GET:/open-apis/attendance/v1/groups/:group_id/list_user` | [查询考勤组下所有成员](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/attendance-v1/group/list_user) |
 
 ### `feishu_task_task`
 
@@ -531,4 +556,3 @@ This file enumerates the Feishu-facing tool and command surface currently expose
 
 - `docs/references/feishu-server-api-list.json`
 - `docs/references/feishu-mcp-remote-server.md`
-

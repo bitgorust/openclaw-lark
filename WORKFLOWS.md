@@ -126,6 +126,13 @@ These are the day-to-day usage scenarios already supported by the deployed plugi
 - update due dates and completion state
 - manage task lists, subtasks, and comments
 
+### Attendance and Scheduling Context
+
+- query user daily shifts in a bounded date range
+- inspect attendance group details
+- list attendance-group members with pagination
+- use attendance context before approval, notification, or follow-up task flows
+
 ### Calendar and Meetings
 
 - list calendars

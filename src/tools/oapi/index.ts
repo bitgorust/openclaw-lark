@@ -16,6 +16,7 @@ import {
   registerFeishuCalendarEventTool,
   registerFeishuCalendarFreebusyTool,
 } from './calendar/index';
+import { registerFeishuAttendanceGroupTool, registerFeishuAttendanceShiftTool } from './attendance/index';
 import {
   registerFeishuTaskCommentTool,
   registerFeishuTaskSubtaskTool,
@@ -57,6 +58,10 @@ export function registerOapiTools(api: OpenClawPluginApi): void {
   registerFeishuCalendarEventAttendeeTool(api);
   registerFeishuCalendarFreebusyTool(api);
 
+  // Attendance tools
+  registerFeishuAttendanceShiftTool(api);
+  registerFeishuAttendanceGroupTool(api);
+
   // Task tools
   registerFeishuTaskTaskTool(api);
   registerFeishuTaskTasklistTool(api);
@@ -85,5 +90,5 @@ export function registerOapiTools(api: OpenClawPluginApi): void {
   // IM tools (bot identity)
   registerFeishuImBotTools(api);
 
-  api.logger.debug?.('Registered all OAPI tools (calendar, task, bitable, search, drive, wiki, sheets, im)');
+  api.logger.debug?.('Registered all OAPI tools (calendar, attendance, task, bitable, search, drive, wiki, sheets, im)');
 }
