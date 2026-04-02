@@ -58,6 +58,8 @@ Both repository-hosted CI definitions should stay aligned:
 - GitHub Actions: `.github/workflows/ci.yml`
 - GitLab CI: `.gitlab-ci.yml`
 
+The intended branch, `main`, and release trigger model is documented in [GIT_WORKFLOW.md](/data/Workspace/openclaw-lark/GIT_WORKFLOW.md), and the concrete CI/CD implementation draft is in [CI_CD_BLUEPRINT.md](/data/Workspace/openclaw-lark/CI_CD_BLUEPRINT.md).
+
 Required checks:
 
 - lint

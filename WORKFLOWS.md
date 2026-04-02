@@ -16,6 +16,7 @@ The maintenance path is:
 6. upstream broadly useful fixes and features as PRs
 
 See [MAINTAINING.md](/data/Workspace/openclaw-lark/MAINTAINING.md).
+For the concrete branch, PR, `main`, and CI/CD execution rules, see [GIT_WORKFLOW.md](/data/Workspace/openclaw-lark/GIT_WORKFLOW.md).
 
 ## 2. Company Deployment Workflow
 

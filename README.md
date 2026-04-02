@@ -74,6 +74,7 @@ Community contributions are welcome! If you find a bug or have feature suggestio
 For major changes, we recommend discussing with us first via an Issue.
 
 If you maintain an internal fork, follow the upstream-first workflow in [MAINTAINING.md](./MAINTAINING.md): keep fork-only behavior isolated, keep `main` close to `upstream/main`, and structure commits so broadly useful fixes and features can be proposed upstream cleanly.
+For the practical branch policy, `main` push rules, and CI/CD split between PRs, `main`, and releases, see [GIT_WORKFLOW.md](./GIT_WORKFLOW.md).
 
 ## License
 
