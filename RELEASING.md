@@ -60,6 +60,22 @@ npm pack
 
 If a verification step cannot run in the release environment, record that explicitly in the release note.
 
+To automate the standard local release flow for this fork, use:
+
+```bash
+pnpm release -- --version 2026.4.1-lh.1 --upstream-base 2026.4.1
+```
+
+This script:
+
+1. verifies the git working tree is clean by default
+2. updates [`package.json`](/data/Workspace/openclaw-lark/package.json) to the target release version when needed
+3. runs the standard verification steps
+4. builds and packs the artifact
+5. writes the tarball, SHA256 file, release note scaffold, and machine-readable summary into `release/`
+
+If you need a human execution checklist or an approval-ready operations template, use [RELEASE_CHECKLIST.md](/data/Workspace/openclaw-lark/RELEASE_CHECKLIST.md) and [CHANGE_REQUEST_TEMPLATE.md](/data/Workspace/openclaw-lark/CHANGE_REQUEST_TEMPLATE.md).
+
 ## Artifact Naming
 
 Keep artifact names predictable and version-first. Example:
