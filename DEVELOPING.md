@@ -44,6 +44,13 @@ Then implement, verify, and keep commits separated by concern:
 - test commits if useful
 - fork-only adaptation commits only when necessary
 
+If a feature depends on a prerequisite fix, keep the change stack layered instead of waiting for upstream merge:
+
+- commit the fix first
+- build the feature on top of the fix
+- keep the fix independently upstreamable
+- submit upstream as stacked PRs when appropriate
+
 ## CI Gates
 
 Both repository-hosted CI definitions should stay aligned:

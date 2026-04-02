@@ -65,6 +65,30 @@ Fork-only changes must be easy to disable or remove.
   - tests
   - notes on backward compatibility
 
+## Stacked Changes and Upstream PRs
+
+When a feature depends on one or more prerequisite fixes, do not block fork development waiting for upstream to merge the fix first. Instead:
+
+1. split the work into ordered commits
+2. keep prerequisite fixes independently understandable
+3. build the feature on top of those fix commits
+4. submit upstream in layers
+
+Recommended structure:
+
+- `fix: ...` prerequisite correction with standalone value
+- `feat: ...` feature implementation
+- `test:` or `docs:` follow-up commits when helpful
+
+Recommended upstream workflow:
+
+1. push the full stack to `origin` so the fork can use it immediately
+2. open the fix PR upstream first
+3. open the feature PR as a stacked PR when needed, and explicitly state the dependency
+4. after the fix is merged upstream, rebase the feature PR onto `upstream/main`
+
+Do not merge a standalone fix into a feature commit just because the feature depends on it. Only keep them together when the "fix" has no independent value outside the feature itself.
+
 ## Sync Strategy
 
 - Sync from `upstream/main` regularly using rebase, not merge bubbles.

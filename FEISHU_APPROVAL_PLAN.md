@@ -102,3 +102,13 @@ After Phase 1 lands:
 2. extend list filtering for "my pending approvals"
 3. evaluate whether attendance-linked scenarios need companion tooling
 4. decide whether approval comments need explicit support
+
+## Commit Layering Recommendation
+
+Implement this feature as a layered stack where possible:
+
+1. prerequisite `fix:` commits first
+2. `feat:` commit(s) for approval support
+3. `test:` and `docs:` commits as follow-up layers when useful
+
+If an approval feature depends on a generic fix, the fix should remain independently upstreamable rather than being merged into the feature commit.
