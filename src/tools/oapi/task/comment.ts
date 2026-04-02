@@ -7,8 +7,8 @@
  * P1 Actions: create, list, get
  *
  * Uses the Feishu Task v2 API:
- *   - create: POST /open-apis/task/v2/tasks/:task_guid/comments
- *   - list:   GET  /open-apis/task/v2/tasks/:task_guid/comments
+ *   - create: POST /open-apis/task/v2/comments
+ *   - list:   GET  /open-apis/task/v2/comments?resource_type=task&resource_id=:task_guid
  *   - get:    GET  /open-apis/task/v2/comments/:comment_id
  */
 

@@ -275,6 +275,11 @@ export function registerMcpTool<T extends Record<string, unknown>>(
               type: string;
               text: string;
             }>;
+            // 官方 MCP 约定：工具执行失败时仍可能返回 HTTP 200，
+            // 并通过 result.isError=true 标识失败语义。
+            // 这里必须透传该标记，避免上层把失败当成功处理。
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const isError = (result as any).isError === true;
             let details: unknown = result;
             if (mcpContent.length === 1 && mcpContent[0]?.type === 'text') {
               try {
@@ -289,6 +294,7 @@ export function registerMcpTool<T extends Record<string, unknown>>(
                 text: c.text,
               })),
               details,
+              isError,
             };
           }
           return formatToolResult(result);

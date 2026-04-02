@@ -280,6 +280,23 @@ type FeishuTaskTaskParams =
       user_id_type?: 'open_id' | 'union_id' | 'user_id';
     };
 
+export function mergeTaskMembersWithCurrentUser(
+  members: Array<{ id: string; role?: 'assignee' | 'follower' }> | undefined,
+  currentUserId: string | undefined,
+): Array<{ id: string; role?: 'assignee' | 'follower' }> | undefined {
+  const normalized = members ? [...members] : [];
+  if (!currentUserId) {
+    return normalized.length > 0 ? normalized : undefined;
+  }
+
+  const alreadyIncluded = normalized.some((member) => member.id === currentUserId);
+  if (!alreadyIncluded) {
+    normalized.push({ id: currentUserId, role: 'follower' });
+  }
+
+  return normalized;
+}
+
 // ---------------------------------------------------------------------------
 // Registration
 // ---------------------------------------------------------------------------
@@ -296,7 +313,7 @@ export function registerFeishuTaskTaskTool(api: OpenClawPluginApi): void {
       name: 'feishu_task_task',
       label: 'Feishu Task Management',
       description:
-        "【以用户身份】飞书任务管理工具。用于创建、查询、更新任务。Actions: create（创建任务）, get（获取任务详情）, list（查询任务列表，仅返回我负责的任务）, patch（更新任务）。时间参数使用ISO 8601 / RFC 3339 格式（包含时区），例如 '2024-01-01T00:00:00+08:00'。",
+        "【以用户身份】飞书任务管理工具。用于创建、查询、更新任务。Actions: create（创建任务）, get（获取任务详情）, list（查询当前用户可见的任务列表）, patch（更新任务）。时间参数使用ISO 8601 / RFC 3339 格式（包含时区），例如 '2024-01-01T00:00:00+08:00'。",
       parameters: FeishuTaskTaskSchema,
       async execute(_toolCallId: string, params: unknown) {
         const p = params as FeishuTaskTaskParams;
@@ -349,7 +366,8 @@ export function registerFeishuTaskTaskTool(api: OpenClawPluginApi): void {
                 };
               }
 
-              if (p.members) taskData.members = p.members;
+              const mergedMembers = mergeTaskMembersWithCurrentUser(p.members, p.current_user_id);
+              if (mergedMembers) taskData.members = mergedMembers;
               if (p.repeat_rule) taskData.repeat_rule = p.repeat_rule;
               if (p.tasklists) taskData.tasklists = p.tasklists;
 

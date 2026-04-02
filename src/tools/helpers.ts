@@ -27,6 +27,7 @@ import { shouldRegisterTool } from '../core/tools-config';
 export interface ToolResult {
   content: Array<{ type: 'text'; text: string }>;
   details: unknown; // 必填，符合 AgentToolResult 类型要求
+  isError?: boolean;
 }
 
 /**
@@ -359,10 +360,13 @@ export function formatToolResult(
 export function formatToolError(error: unknown, context?: Record<string, unknown>): ToolResult {
   const errorMsg = error instanceof Error ? error.message : String(error);
 
-  return formatToolResult({
-    error: errorMsg,
-    ...context,
-  });
+  return {
+    ...formatToolResult({
+      error: errorMsg,
+      ...context,
+    }),
+    isError: true,
+  };
 }
 
 // ---------------------------------------------------------------------------

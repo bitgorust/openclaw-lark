@@ -8,7 +8,7 @@
  *
  * Uses the Feishu Calendar API:
  *   - create: POST /open-apis/calendar/v4/calendars/:calendar_id/events
- *             POST /open-apis/calendar/v4/calendars/:calendar_id/events/:event_id/attendees/batch_create
+ *             POST /open-apis/calendar/v4/calendars/:calendar_id/events/:event_id/attendees
  *   - list:   GET  /open-apis/calendar/v4/calendars/:calendar_id/events/instance_view
  *   - get:    GET  /open-apis/calendar/v4/calendars/:calendar_id/events/:event_id
  */
@@ -536,7 +536,7 @@ export function registerFeishuCalendarEventTool(api: OpenClawPluginApi): void {
       name: 'feishu_calendar_event',
       label: 'Feishu Calendar Events',
       description:
-        "【以用户身份】飞书日程管理工具。当用户要求查看日程、创建会议、约会议、修改日程、删除日程、搜索日程、回复日程邀请时使用。Actions: create（创建日历事件）, list（查询时间范围内的日程，自动展开重复日程）, get（获取日程详情）, patch（更新日程）, delete（删除日程）, search（搜索日程）, reply（回复日程邀请）, instances（获取重复日程的实例列表，仅对重复日程有效）, instance_view（查看展开后的日程列表）。【重要】create 时必须传 user_open_id 参数，值为消息上下文中的 SenderId（格式 ou_xxx），否则日程只在应用日历上，用户完全看不到。list 操作使用 instance_view 接口，会自动展开重复日程为多个实例，时间区间不能超过40天，返回实例数量上限1000。时间参数使用ISO 8601 / RFC 3339 格式（包含时区），例如 '2024-01-01T00:00:00+08:00'。",
+        "【以用户身份】飞书日程管理工具。当用户要求查看日程、创建会议、约会议、修改日程、删除日程、搜索日程、回复日程邀请时使用。Actions: create（创建日历事件）, list（查询时间范围内的日程，自动展开重复日程）, get（获取日程详情）, patch（更新日程）, delete（删除日程）, search（搜索日程）, reply（回复日程邀请）, instances（获取重复日程的实例列表，仅对重复日程有效）, instance_view（查看展开后的日程列表）。【重要】create 时强烈建议传 user_open_id 参数，值为消息上下文中的 SenderId（格式 ou_xxx），以确保发起人作为参会人出现在日程中并收到邀请。list 操作使用 instance_view 接口，会自动展开重复日程为多个实例，时间区间不能超过40天，返回实例数量上限1000。时间参数使用ISO 8601 / RFC 3339 格式（包含时区），例如 '2024-01-01T00:00:00+08:00'。",
       parameters: FeishuCalendarEventSchema,
       async execute(_toolCallId: string, params: unknown) {
         const p = params as FeishuCalendarEventParams;
@@ -710,7 +710,7 @@ export function registerFeishuCalendarEventTool(api: OpenClawPluginApi): void {
                 result.warning = `日程已创建，但添加参会人失败：${attendeeError}`;
               } else if (allAttendees.length === 0) {
                 result.error =
-                  '日程已创建在应用日历上，但未添加任何参会人，用户看不到此日程。请重新调用时传入 user_open_id 参数。';
+                  '日程已创建，但未添加任何参会人。除创建该日程的授权用户外，其他人不会在自己的飞书日历中看到它。建议重新调用时传入 user_open_id 或 attendees。';
               } else {
                 result.note = `已成功添加 ${allAttendees.length} 位参会人，日程应出现在参会人的飞书日历中。`;
               }

@@ -4,9 +4,9 @@ description: |
   创建飞书云文档。从 Lark-flavored Markdown 内容创建新的飞书云文档，支持指定创建位置（文件夹/知识库/知识空间）。
 ---
 
-# feishu_mcp_create_doc
+# feishu_create_doc
 
-通过 MCP 调用 `create-doc`，从 Lark-flavored Markdown 内容创建一个新的飞书云文档。
+通过 `feishu_create_doc` 调用 MCP 的 `create-doc`，从 Lark-flavored Markdown 内容创建一个新的飞书云文档。
 
 # 返回值
 
