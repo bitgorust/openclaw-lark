@@ -31,3 +31,5 @@ src/tools/docs/
 /**/.DS_Store
 
 .eslintcache
+.codex/
+__pycache__/
