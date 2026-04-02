@@ -2,7 +2,13 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
+      - 'feat/**'
+      - 'fix/**'
+      - 'docs/**'
+      - 'chore/**'
+      - 'fork/**'
   pull_request:
     branches: [main]
 
@@ -12,7 +18,7 @@ concurrency:
 
 jobs:
   ci:
-    name: Lint & Type Check & Test
+    name: Lint, Typecheck, Test, Build
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
@@ -39,3 +45,6 @@ jobs:
 
       - name: Test
         run: pnpm test
+
+      - name: Build
+        run: pnpm build

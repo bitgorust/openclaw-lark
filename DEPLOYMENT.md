@@ -19,32 +19,30 @@ So `npx -y @larksuite/openclaw-lark install/update` can only install official re
 
 ## Supported Deployment Modes
 
-### 1. Recommended: Artifact Deployment to the OpenClaw Extension Directory
+### 1. Recommended: Runtime Package Deployment to the OpenClaw Extension Directory
 
-Use a built release artifact and deploy it into the plugin directory used by OpenClaw. This package declares the target local path as `extensions/feishu`.
+Use a built runtime package and deploy it into the plugin directory used by OpenClaw. This package declares the target local path as `extensions/feishu`.
 
 Release on CI or a build host:
 
 ```bash
-pnpm install
-pnpm build
-npm pack
+pnpm release -- --version 2026.3.30-lh.1 --upstream-base 2026.3.30 --openclaw-version 2026.3.31
 ```
 
-This produces a tarball such as:
+This produces a runtime package such as:
 
 ```bash
-larksuite-openclaw-lark-2026.3.30.tgz
+openclaw-lark-runtime-2026.3.30-lh.1.tar.gz
 ```
 
 Deploy a fork version to the OpenClaw instance:
 
 ```bash
-VERSION_TGZ=./larksuite-openclaw-lark-2026.3.30-lh.1.tgz
+RUNTIME_TGZ=./openclaw-lark-runtime-2026.3.30-lh.1.tar.gz
 TARGET_DIR=/path/to/openclaw/extensions/feishu
 TMP_DIR=$(mktemp -d)
 
-tar -xzf "$VERSION_TGZ" -C "$TMP_DIR"
+tar -xzf "$RUNTIME_TGZ" -C "$TMP_DIR"
 rsync -a --delete "$TMP_DIR/package/" "$TARGET_DIR/"
 ```
 
@@ -73,21 +71,21 @@ This makes rollback and upstream comparison straightforward.
 
 ## Install a Specific Fork Version
 
-1. Build or retrieve the exact tarball for the desired fork release.
+1. Build or retrieve the exact runtime package for the desired fork release.
 2. Deploy it into `extensions/feishu`.
 3. Restart or reload OpenClaw.
 4. Run `/feishu start` and `/feishu doctor`.
 
 ## Update to a Newer Fork Version
 
-Use the same deployment procedure with a newer tarball.
+Use the same deployment procedure with a newer runtime package.
 
 ```bash
-NEW_TGZ=./larksuite-openclaw-lark-2026.4.02-lh.1.tgz
+RUNTIME_TGZ=./openclaw-lark-runtime-2026.4.02-lh.1.tar.gz
 TARGET_DIR=/path/to/openclaw/extensions/feishu
 TMP_DIR=$(mktemp -d)
 
-tar -xzf "$NEW_TGZ" -C "$TMP_DIR"
+tar -xzf "$RUNTIME_TGZ" -C "$TMP_DIR"
 rsync -a --delete "$TMP_DIR/package/" "$TARGET_DIR/"
 ```
 
@@ -95,14 +93,14 @@ Then restart or reload OpenClaw and rerun health checks.
 
 ## Roll Back to an Older Fork Version
 
-Keep previous tarballs or extracted release directories. Rollback is just redeploying the previous known-good artifact to the same target directory.
+Keep previous runtime packages or extracted release directories. Rollback is just redeploying the previous known-good artifact to the same target directory.
 
 ```bash
-OLD_TGZ=./larksuite-openclaw-lark-2026.3.30-lh.1.tgz
+RUNTIME_TGZ=./openclaw-lark-runtime-2026.3.30-lh.1.tar.gz
 TARGET_DIR=/path/to/openclaw/extensions/feishu
 TMP_DIR=$(mktemp -d)
 
-tar -xzf "$OLD_TGZ" -C "$TMP_DIR"
+tar -xzf "$RUNTIME_TGZ" -C "$TMP_DIR"
 rsync -a --delete "$TMP_DIR/package/" "$TARGET_DIR/"
 ```
 
@@ -112,19 +110,19 @@ Because the deployment is artifact-based, rollback does not depend on npm regist
 
 Two clean ways exist.
 
-### Option A: Deploy the Official Tarball the Same Way
+### Option A: Deploy the Official Runtime Package the Same Way
 
-Fetch or build the official package tarball for the target version, then deploy it to the same `extensions/feishu` directory.
+Fetch or build the official package tarball for the target version, prepare an official runtime package, then deploy it to the same `extensions/feishu` directory.
 
 Example:
 
 ```bash
 npm pack @larksuite/openclaw-lark@2026.3.30
-OFFICIAL_TGZ=./larksuite-openclaw-lark-2026.3.30.tgz
+OFFICIAL_RUNTIME_TGZ=./openclaw-lark-runtime-2026.3.30-official.tar.gz
 TARGET_DIR=/path/to/openclaw/extensions/feishu
 TMP_DIR=$(mktemp -d)
 
-tar -xzf "$OFFICIAL_TGZ" -C "$TMP_DIR"
+tar -xzf "$OFFICIAL_RUNTIME_TGZ" -C "$TMP_DIR"
 rsync -a --delete "$TMP_DIR/package/" "$TARGET_DIR/"
 ```
 
@@ -160,8 +158,10 @@ For every install, update, rollback, or switch:
 For this fork, the safest current workflow is:
 
 1. release tarball artifacts for every fork version
-2. deploy by replacing `extensions/feishu`
-3. keep official and fork releases both as artifacts
-4. switch versions only through explicit artifact deployment
+2. release deployable runtime packages for every fork version
+3. deploy by replacing `extensions/feishu`
+4. keep official and fork releases both as runtime artifacts
+5. if needed, also keep the raw npm tarball for traceability
+6. switch versions only through explicit artifact deployment
 
 That keeps the fork fully controllable, rollback-friendly, and separate from the official installer path.

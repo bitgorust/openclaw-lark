@@ -1,5 +1,6 @@
 stages:
   - verify
+  - package
 
 .node_job: &node_job
   image: node:22
@@ -14,32 +15,63 @@ stages:
     PNPM_HOME: /root/.local/share/pnpm
     PNPM_STORE_DIR: .pnpm-store
 
-lint:
-  stage: verify
+.verify_job: &verify_job
   <<: *node_job
+  stage: verify
+  only:
+    - branches
+    - merge_requests
+  except:
+    - tags
+
+lint:
+  <<: *verify_job
   script:
     - pnpm lint
 
 format_check:
-  stage: verify
-  <<: *node_job
+  <<: *verify_job
   script:
     - pnpm format:check
 
 typecheck:
-  stage: verify
-  <<: *node_job
+  <<: *verify_job
   script:
     - pnpm typecheck
 
 test:
-  stage: verify
-  <<: *node_job
+  <<: *verify_job
   script:
     - pnpm test
 
 build:
-  stage: verify
-  <<: *node_job
+  <<: *verify_job
   script:
     - pnpm build
+
+package_release_branch:
+  <<: *node_job
+  stage: package
+  only:
+    - /^release\/.*$/
+  script:
+    - pnpm build
+    - pnpm release -- --skip-install --allow-dirty --skip-runtime
+  artifacts:
+    paths:
+      - release/
+    expire_in: 14 days
+
+package_release_tag:
+  <<: *node_job
+  stage: package
+  only:
+    - tags
+  script:
+    - export RELEASE_VERSION="${CI_COMMIT_TAG#v}"
+    - pnpm build
+    - pnpm release -- --skip-install --version "$RELEASE_VERSION" --allow-dirty --skip-runtime
+  artifacts:
+    paths:
+      - release/
+    expire_in: 30 days

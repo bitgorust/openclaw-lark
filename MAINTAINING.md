@@ -24,6 +24,8 @@ The maintenance goal is strict: keep this fork easy to sync with upstream, keep 
 - `feat/*`, `fix/*`, `docs/*`, `chore/*`: short-lived working branches
 - `fork/*`: fork-only work that is intentionally not proposed upstream
 
+`main` may be pushed, but only as a maintainer-controlled integration branch. Direct pushes to `main` should be limited to upstream sync work, reviewed linear integration, or release-preparation changes that belong on the maintained baseline. Do not use `main` as the normal branch for day-to-day feature or bug-fix development.
+
 Before starting work:
 
 ```bash
@@ -33,6 +35,8 @@ git rebase upstream/main
 git push --force-with-lease origin main
 git checkout -b fix/some-change
 ```
+
+For the operational policy around branch roles, `main` push boundaries, and CI/CD separation, see [GIT_WORKFLOW.md](/data/Workspace/openclaw-lark/GIT_WORKFLOW.md).
 
 ## Change Classification
 

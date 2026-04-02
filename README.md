@@ -65,7 +65,7 @@ Before you start, make sure you have the following:
 
 [How to Use the Official Lark/Feishu Plugin for OpenClaw](https://bytedance.larkoffice.com/docx/MFK7dDFLFoVlOGxWCv5cTXKmnMh)
 
-This fork does not change the end-user usage flow of the plugin. For fork deployment, version switching, rollback, release policy, and switching back to official releases on a company OpenClaw instance, see [DEPLOYMENT.md](./DEPLOYMENT.md), [RELEASING.md](./RELEASING.md), and [WORKFLOWS.md](./WORKFLOWS.md).
+This fork does not change the end-user usage flow of the plugin. For fork deployment, runtime package deployment, version switching, rollback, release policy, release execution checklist, production change approval, and switching back to official releases on a company OpenClaw instance, see [DEPLOYMENT.md](./DEPLOYMENT.md), [DEPLOY_RUNTIME.md](./DEPLOY_RUNTIME.md), [RELEASING.md](./RELEASING.md), [RELEASE_CHECKLIST.md](./RELEASE_CHECKLIST.md), [CHANGE_REQUEST_TEMPLATE.md](./CHANGE_REQUEST_TEMPLATE.md), and [WORKFLOWS.md](./WORKFLOWS.md).
 
 ## Contributing
 
@@ -74,6 +74,7 @@ Community contributions are welcome! If you find a bug or have feature suggestio
 For major changes, we recommend discussing with us first via an Issue.
 
 If you maintain an internal fork, follow the upstream-first workflow in [MAINTAINING.md](./MAINTAINING.md): keep fork-only behavior isolated, keep `main` close to `upstream/main`, and structure commits so broadly useful fixes and features can be proposed upstream cleanly.
+For the practical branch policy, `main` push rules, and CI/CD split between PRs, `main`, and releases, see [GIT_WORKFLOW.md](./GIT_WORKFLOW.md).
 
 ## License
 
