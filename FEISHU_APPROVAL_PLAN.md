@@ -1,114 +1,144 @@
 # Feishu Approval Feature Plan
 
-This document defines the first implementation scope for the `feishu-approval` feature.
+This document tracks the delivery plan for the `feishu-approval` skill and its backing tool families.
+
+For the complete approval-domain API target, see [FEISHU_APPROVAL_API_COVERAGE.md](/data/Workspace/openclaw-lark/FEISHU_APPROVAL_API_COVERAGE.md).  
+For per-endpoint auth-mode decisions, see [FEISHU_APPROVAL_AUTH_MATRIX.md](/data/Workspace/openclaw-lark/FEISHU_APPROVAL_AUTH_MATRIX.md).
 
 ## Goal
 
-Support the most common approval workflows on the deployed OpenClaw instance without overbuilding the first release.
+Make `feishu-approval` the single approval-domain skill for this plugin:
 
-The initial goal is not full approval platform coverage. It is to make the bot useful for pending approvals such as overtime, leave, and reimbursement review.
+1. route common approval intents reliably
+2. support real user-scoped approval queues and acting-user operations
+3. grow endpoint coverage in phases without losing safety or auth clarity
 
-## Phase 1 Scope
+## Current Status
 
-### Tool Family
-
-Add a new OAPI tool family under `src/tools/oapi/approval/`.
-
-Recommended first tool split:
+The following pieces are already implemented on the current feature branch:
 
 - `feishu_approval_instance`
+  - `list`
+  - `get`
+  - user-first with tenant fallback for bounded scoped queries
 - `feishu_approval_task`
+  - `approve`
+  - `reject`
+  - `transfer`
+  - `rollback`
+  - `add_sign`
+  - `resubmit`
+  - user-mode default with auto-auth
+- `feishu_approval_task_search`
+  - `query`
+  - `search`
+  - user-mode default with auto-auth
+- `feishu_approval_cc`
+  - `search`
+  - user-mode default with auto-auth
+- `feishu_approval_comment`
+  - `create`
+  - `list`
+  - `delete`
+  - `remove`
+  - comment list is user-first with tenant fallback; comment writes are user-mode default
+- `skills/feishu-approval/SKILL.md`
+  - high-frequency intent presets
+  - parameter-completion rules
+  - safety rules for high-risk actions
 
-### Phase 1 Actions
+## Phase Breakdown
 
-#### `feishu_approval_instance`
+### Phase 1
 
-- `list`
-  - list approval instance IDs or instances in a filterable window
-- `get`
-  - get instance detail by `instance_id`
+Objective: establish the approval-domain foundation.
 
-#### `feishu_approval_task`
+Delivered:
 
-- `approve`
-  - approve a pending task
-- `reject`
-  - reject a pending task
-- `transfer`
-  - transfer a pending task to another approver
-- `rollback`
-  - roll back an approval instance when supported by the scenario
+- instance list/get
+- task approve/reject/transfer/rollback
+- initial approval skill definition
+- tests and docs foundation
 
-## Target APIs
+### Phase 2
 
-- `GET:/open-apis/approval/v4/instances`
-- `GET:/open-apis/approval/v4/instances/:instance_id`
-- `POST:/open-apis/approval/v4/tasks/approve`
-- `POST:/open-apis/approval/v4/tasks/reject`
-- `POST:/open-apis/approval/v4/tasks/transfer`
-- `POST:/open-apis/approval/v4/instances/specified_rollback`
+Objective: make the skill genuinely useful for personal approval workflows.
 
-## Out of Scope for Phase 1
+Delivered:
 
-- approval definition management
-- creating approval definitions
-- creating approval instances from scratch
-- approval preview and CC flows
-- exhaustive support for every approval form field structure
+- task search and user task query
+- CC search
+- comments
+- add sign / resubmit
+- user-auth expansion for approval queues and task actions
+- skill-level intent presets such as:
+  - “待我审批”
+  - “抄送我的审批”
+  - “重提被退回审批”
 
-## Output Shape Expectations
+Still to improve inside Phase 2:
 
-The tool results should be optimized for agent consumption:
+- stronger queue presets and richer search presets
+- better safety wording for high-risk write actions
+- more production validation against real approval payloads
 
-- include normalized high-signal fields first
-- preserve the raw payload for debugging
-- convert timestamps to readable ISO strings where appropriate
-- make pending status and approver-related fields easy to find
+### Phase 3
 
-Recommended normalized fields for list/get:
+Objective: cover instance-write and definition-read paths.
 
-- `instance_id`
-- `approval_code` or template identity if present
-- `title`
-- `status`
-- `applicant`
-- `approvers`
-- `create_time`
-- `finish_time`
-- `raw`
+Planned:
 
-## Error-Handling Expectations
+- instance create
+- instance preview
+- instance cc
+- instance cancel
+- approval definition read
+- file upload support for form fields
 
-- use the existing tool client and auto-auth error path
-- surface user authorization errors cleanly
-- preserve approval API error context
-- treat "not found", "already processed", and "permission denied" as distinguishable outcomes
+### Phase 4
 
-## Test Plan
+Objective: cover tenant-level integration and admin workflows.
 
-Phase 1 should add focused tests for:
+Planned:
+
+- approval definition create
+- subscription management
+- approval bot messaging
+- external approval integration
+
+## Skill-Level Delivery Rules
+
+The approval skill is no longer only a thin tool index. Future work should preserve these rules:
+
+1. high-frequency Chinese intents should map to stable presets rather than ad hoc tool selection
+2. missing critical structured fields must trigger补信息, not guessed payloads
+3. high-risk write actions should require stronger confirmation language
+4. dual-mode endpoints must keep explicit fallback policy instead of implicit behavior
+
+## Near-Term Next Steps
+
+1. strengthen queue presets beyond the current `topic` mapping
+2. add safety-focused guidance for `add_sign`, `resubmit`, and comment bulk removal
+3. expand approval instance write support: `create / preview / cc / cancel`
+4. add approval definition read support
+5. validate more real-world approval payload shapes and error cases
+
+## Testing Expectations
+
+Every approval expansion should add focused tests for:
 
 1. request parameter shaping
-2. timestamp normalization
-3. list/get result normalization
-4. approve/reject/transfer/rollback request bodies
-5. error result shaping
-
-## Follow-up Work
-
-After Phase 1 lands:
-
-1. add `skills/feishu-approval/SKILL.md`
-2. extend list filtering for "my pending approvals"
-3. evaluate whether attendance-linked scenarios need companion tooling
-4. decide whether approval comments need explicit support
+2. auth-mode selection and fallback behavior
+3. normalized result shape
+4. error shaping
+5. skill-facing assumptions where behavior could drift
 
 ## Commit Layering Recommendation
 
-Implement this feature as a layered stack where possible:
+Implement approval changes in layers where possible:
 
 1. prerequisite `fix:` commits first
-2. `feat:` commit(s) for approval support
-3. `test:` and `docs:` commits as follow-up layers when useful
+2. `feat:` commit(s) for approval capability
+3. `test:` and `docs:` follow-up commits when useful
 
 If an approval feature depends on a generic fix, the fix should remain independently upstreamable rather than being merged into the feature commit.
