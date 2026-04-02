@@ -24,6 +24,10 @@ import {
   registerFeishuTaskTasklistTool,
 } from './task/index';
 import {
+  registerFeishuApprovalInstanceTool,
+  registerFeishuApprovalTaskTool,
+} from './approval/index';
+import {
   registerFeishuBitableAppTableFieldTool,
   registerFeishuBitableAppTableRecordTool,
   registerFeishuBitableAppTableTool,
@@ -67,6 +71,8 @@ export function registerOapiTools(api: OpenClawPluginApi): void {
   registerFeishuTaskTasklistTool(api);
   registerFeishuTaskCommentTool(api);
   registerFeishuTaskSubtaskTool(api);
+  registerFeishuApprovalInstanceTool(api);
+  registerFeishuApprovalTaskTool(api);
 
   // Bitable tools
   registerFeishuBitableAppTool(api);
@@ -90,5 +96,7 @@ export function registerOapiTools(api: OpenClawPluginApi): void {
   // IM tools (bot identity)
   registerFeishuImBotTools(api);
 
-  api.logger.debug?.('Registered all OAPI tools (calendar, attendance, task, bitable, search, drive, wiki, sheets, im)');
+  api.logger.debug?.(
+    'Registered all OAPI tools (calendar, attendance, task, approval, bitable, search, drive, wiki, sheets, im)',
+  );
 }
