@@ -111,7 +111,7 @@ These are core approval actions that the skill should own directly.
 | List approval instances in a bounded scope | `GET:/open-apis/approval/v4/instances`, `POST:/open-apis/approval/v4/instances/query` | `feishu_approval_instance` | Implemented (user-first with tenant fallback for bounded queries) | Add richer query mode beyond `approval_code + time window`; support server-side filters and pagination more completely |
 | Get instance detail | `GET:/open-apis/approval/v4/instances/:instance_id` | `feishu_approval_instance` | Implemented (user-first with tenant fallback) | Keep normalized result stable; verify behavior against more real-world instance shapes |
 | Approve / reject / transfer / rollback | `POST:/open-apis/approval/v4/tasks/approve`, `reject`, `transfer`, `POST:/open-apis/approval/v4/instances/specified_rollback` | `feishu_approval_task` | Implemented (user-mode default with auto-auth) | Add stronger task-status validation and clearer user guidance around rollback node selection |
-| Search task list | `POST:/open-apis/approval/v4/tasks/search`, `GET:/open-apis/approval/v4/tasks/query` | `feishu_approval_task_search` or extension of `feishu_approval_task` | Implemented (base query/search) | Expand result coverage, add more user-auth validation, and add queue presets in the skill |
+| Search task list | `POST:/open-apis/approval/v4/tasks/search`, `GET:/open-apis/approval/v4/tasks/query` | `feishu_approval_task_search` or extension of `feishu_approval_task` | Implemented (`query` = user, `search` = tenant) | Expand result coverage, validate more real-world filters, and keep queue presets aligned with the split auth model |
 | Search CC list | `POST:/open-apis/approval/v4/instances/search_cc` | `feishu_approval_cc` | Implemented (base search) | Expand CC-specific workflows, read-state handling, and richer result interpretation |
 | Add sign / resubmit | `POST:/open-apis/approval/v4/instances/add_sign`, `POST:/open-apis/approval/v4/tasks/resubmit` | `feishu_approval_task` or `feishu_approval_task_advanced` | Implemented (base actions) | Add stronger safety prompts and more explicit guidance around payload construction, especially for `form` |
 | Instance comments | comment create/get/delete/remove APIs | `feishu_approval_comment` | Implemented (create/list/delete/remove) | Add comment update semantics, deeper reply workflows, and stronger safety language for remove-all |
@@ -166,7 +166,8 @@ At minimum:
 
 Status update:
 
-- `feishu_approval_task_search.query/search` already run in user mode with auto-auth
+- `feishu_approval_task_search.query` already runs in user mode with auto-auth for personal task queues
+- `feishu_approval_task_search.search` already runs in tenant mode for complex filtered retrieval
 - `feishu_approval_cc.search` already runs in user mode with auto-auth
 - `feishu_approval_task.*` already defaults to user mode with auto-auth
 - `feishu_approval_instance.list/get` now prefer user mode and fall back to tenant mode for bounded scoped queries when user auth is unavailable

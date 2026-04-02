@@ -39,7 +39,7 @@ This is the current recommended auth classification for approval APIs in the loc
 | `GET:/open-apis/approval/v4/instances` | list approval instance IDs by definition and window | `dual-mode` | current implementation prefers user mode and falls back to tenant mode for bounded explicit queries; personal queue experiences should still stay user-first |
 | `POST:/open-apis/approval/v4/instances/query` | search instance list by richer conditions | `dual-mode` | query surface is broader and likely used for both tenant-scoped and personal views |
 | `GET:/open-apis/approval/v4/instances/:instance_id` | get instance detail | `dual-mode` | current implementation prefers user mode and falls back to tenant mode for compatibility; user mode should remain first when the request originates from a personal workflow |
-| `POST:/open-apis/approval/v4/tasks/search` | search approval tasks | `user-required` | task lists are the natural foundation for "待我审批" and should be modeled as user-centric |
+| `POST:/open-apis/approval/v4/tasks/search` | search approval tasks | `app-only` | complex filtered task retrieval should currently run with tenant/app identity; it is not the default personal queue entrypoint |
 | `GET:/open-apis/approval/v4/tasks/query` | query user task list | `user-required` | this is explicitly user-oriented |
 | `POST:/open-apis/approval/v4/instances/search_cc` | search CC list | `user-required` | CC views are usually personal inbox-style data |
 | `POST:/open-apis/approval/v4/tasks/approve` | approve task | `dual-mode`, current implementation defaults to `user` | product semantics are "the user approves"; current code already defaults to user mode and auto-auth, while app fallback remains intentionally constrained |
@@ -80,7 +80,8 @@ To implement this matrix, the codebase needs changes in four layers.
 
 The approval layer no longer needs to hard-code tenant mode. Current code already mixes:
 
-- user-required flows for task-query, task-search, CC-search, and task actions
+- user-required flows for task-query, CC-search, and task actions
+- app-only tenant execution for complex task-search
 - dual-mode user-first flows with tenant fallback for bounded instance list/get
 
 What remains is to extend the same policy discipline to the remaining approval endpoint families.

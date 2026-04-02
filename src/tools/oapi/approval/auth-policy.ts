@@ -71,9 +71,9 @@ export function getApprovalAuthPolicy(
     switch (action) {
       case 'search':
         return {
-          targetAuthMode: 'user-required',
-          currentExecutionMode: 'user',
-          rationale: 'Task search is part of user-centric approval queue support and should run with user identity.',
+          targetAuthMode: 'app-only',
+          currentExecutionMode: 'tenant',
+          rationale: 'Task search is the complex filtered retrieval surface and should currently run with tenant identity.',
         };
       case 'query':
         return {

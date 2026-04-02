@@ -213,6 +213,72 @@ describe('approval tool execute path', () => {
     });
   });
 
+  it('uses tenant mode for detail expansion after list fallback', async () => {
+    const { api, registeredTools } = createMockApi();
+    registerFeishuApprovalInstanceTool(api as any);
+
+    mockInvokeByPath
+      .mockRejectedValueOnce(
+        new UserAuthRequiredError('ou_sender', {
+          apiName: 'feishu_approval_instance.list',
+          scopes: ['approval:approval:readonly'],
+          appScopeVerified: true,
+          appId: 'cli_xxx',
+        }),
+      )
+      .mockResolvedValueOnce({
+        code: 0,
+        data: {
+          instance_code_list: ['inst_3'],
+          has_more: false,
+        },
+      })
+      .mockResolvedValueOnce({
+        code: 0,
+        data: {
+          instance_code: 'inst_3',
+          approval_code: 'approval_3',
+          approval_name: 'Travel',
+          status: 'PENDING',
+        },
+      });
+
+    const result = await registeredTools.feishu_approval_instance.execute('call-1c', {
+      action: 'list',
+      approval_code: 'approval_3',
+      start_time: '2026-04-01T09:00:00+08:00',
+      end_time: '2026-04-02T18:30:00+08:00',
+      include_details: true,
+    });
+
+    expect(mockInvokeByPath).toHaveBeenNthCalledWith(
+      3,
+      'feishu_approval_instance.get',
+      '/open-apis/approval/v4/instances/inst_3',
+      {
+        method: 'GET',
+        query: {
+          user_id: 'ou_sender',
+          user_id_type: 'open_id',
+        },
+        as: 'tenant',
+      },
+    );
+
+    expect(parseToolResult(result)).toMatchObject({
+      auth_mode: 'tenant',
+      auth_fallback: true,
+      instance_ids: ['inst_3'],
+      instances: [
+        {
+          instance_id: 'inst_3',
+          approval_code: 'approval_3',
+          title: 'Travel',
+        },
+      ],
+    });
+  });
+
   it('returns shaped approval API errors for get', async () => {
     const { api, registeredTools } = createMockApi();
     registerFeishuApprovalInstanceTool(api as any);
@@ -604,6 +670,94 @@ describe('approval tool execute path', () => {
             process_id: 'process_1',
           },
         ],
+      },
+    });
+  });
+
+  it('searches approval tasks with tenant-mode auth', async () => {
+    const { api, registeredTools } = createMockApi();
+    registerFeishuApprovalTaskSearchTool(api as any);
+
+    mockInvokeByPath.mockResolvedValueOnce({
+      code: 0,
+      data: {
+        tasks: [
+          {
+            title: '审批任务搜索结果',
+            task_id: 'task_search_1',
+            process_id: 'process_search_1',
+            definition_code: 'approval_1',
+            status: 'PENDING',
+          },
+        ],
+        count: 1,
+      },
+    });
+
+    const result = await registeredTools.feishu_approval_task_search.execute('call-task-search', {
+      action: 'search',
+      approval_code: 'approval_1',
+      task_status: 'PENDING',
+      page_size: 20,
+    });
+
+    expect(mockInvokeByPath).toHaveBeenCalledWith(
+      'feishu_approval_task_search.search',
+      '/open-apis/approval/v4/tasks/search',
+      {
+        method: 'POST',
+        query: {
+          user_id_type: 'open_id',
+          page_size: '20',
+        },
+        body: {
+          approval_code: 'approval_1',
+          task_status: 'PENDING',
+        },
+        as: 'tenant',
+      },
+    );
+
+    expect(parseToolResult(result)).toEqual({
+      action: 'search',
+      tasks: [
+        {
+          task_id: 'task_search_1',
+          title: '审批任务搜索结果',
+          topic: null,
+          user_id: null,
+          status: 'PENDING',
+          process_status: null,
+          definition_code: 'approval_1',
+          process_id: 'process_search_1',
+          process_external_id: null,
+          task_external_id: null,
+          initiators: [],
+          initiator_names: [],
+          urls: {},
+          raw: {
+            title: '审批任务搜索结果',
+            task_id: 'task_search_1',
+            process_id: 'process_search_1',
+            definition_code: 'approval_1',
+            status: 'PENDING',
+          },
+        },
+      ],
+      count: 1,
+      has_more: false,
+      page_token: null,
+      raw: {
+        tasks: [
+          {
+            title: '审批任务搜索结果',
+            task_id: 'task_search_1',
+            process_id: 'process_search_1',
+            definition_code: 'approval_1',
+            status: 'PENDING',
+          },
+        ],
+        count: 1,
       },
     });
   });
