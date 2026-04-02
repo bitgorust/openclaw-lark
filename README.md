@@ -6,7 +6,7 @@
 
 [中文版](./README.zh.md) | English
 
-This is the official Lark/Feishu plugin for OpenClaw, developed and maintained by the Lark/Feishu Open Platform team. It seamlessly connects your OpenClaw Agent to your Lark/Feishu workspace, enabling it to directly read from and write to messages, docs, bases, calendars, tasks, attendance data, and more.
+This is the official Lark/Feishu plugin for OpenClaw, developed and maintained by the Lark/Feishu Open Platform team. It seamlessly connects your OpenClaw Agent to your Lark/Feishu workspace, enabling it to directly read from and write to messages, docs, bases, calendars, tasks, approvals, attendance data, and more.
 
 ## Features
 
@@ -20,6 +20,7 @@ This plugin provides comprehensive Lark/Feishu integration for OpenClaw, includi
 | 📈 Sheets | Create, edit, and view spreadsheets |
 | 📅 Calendar | Manage calendars and events (create/query/update/delete/search), manage attendees, check free/busy status |
 | ✅ Tasks | Manage tasks (create/query/update/complete), manage task lists, subtasks, and comments |
+| 🧾 Approval | List approval instances, inspect approval details, approve/reject/transfer/rollback approval tasks |
 | 🕒 Attendance | Query user daily shifts, inspect attendance groups, and list attendance-group members |
 
 Additionally, the plugin supports:
