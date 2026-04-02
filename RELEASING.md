@@ -27,7 +27,8 @@ Every release must produce all of the following:
 
 1. git tag: `v2026.3.30-lh.1`
 2. npm-style tarball from `npm pack`
-3. short release note with:
+3. deployable runtime package archive
+4. short release note with:
    - version
    - upstream base
    - commit SHA
@@ -42,8 +43,8 @@ Every release must produce all of the following:
 4. update `package.json` version to the fork release version
 5. build, test, and pack
 6. tag the release commit
-7. publish the tarball to artifact storage
-8. deploy from that exact artifact
+7. publish the tarball and runtime package to artifact storage
+8. deploy from that exact runtime artifact
 
 ## Build and Verification
 
@@ -63,7 +64,7 @@ If a verification step cannot run in the release environment, record that explic
 To automate the standard local release flow for this fork, use:
 
 ```bash
-pnpm release -- --version 2026.4.1-lh.1 --upstream-base 2026.4.1
+pnpm release -- --version 2026.4.1-lh.1 --upstream-base 2026.4.1 --openclaw-version 2026.3.31
 ```
 
 This script:
@@ -71,10 +72,11 @@ This script:
 1. verifies the git working tree is clean by default
 2. updates [`package.json`](/data/Workspace/openclaw-lark/package.json) to the target release version when needed
 3. runs the standard verification steps
-4. builds and packs the artifact
-5. writes the tarball, SHA256 file, release note scaffold, and machine-readable summary into `release/`
+4. builds and packs the npm artifact
+5. builds a deployable runtime package with production dependencies and the target OpenClaw runtime version
+6. writes checksums, release note scaffold, and machine-readable summary into `release/`
 
-If you need a human execution checklist or an approval-ready operations template, use [RELEASE_CHECKLIST.md](/data/Workspace/openclaw-lark/RELEASE_CHECKLIST.md) and [CHANGE_REQUEST_TEMPLATE.md](/data/Workspace/openclaw-lark/CHANGE_REQUEST_TEMPLATE.md).
+If you need a human execution checklist or an approval-ready operations template, use [RELEASE_CHECKLIST.md](/data/Workspace/openclaw-lark/RELEASE_CHECKLIST.md) and [CHANGE_REQUEST_TEMPLATE.md](/data/Workspace/openclaw-lark/CHANGE_REQUEST_TEMPLATE.md). For deployment artifact format, see [DEPLOY_RUNTIME.md](/data/Workspace/openclaw-lark/DEPLOY_RUNTIME.md).
 
 ## Artifact Naming
 
@@ -82,6 +84,7 @@ Keep artifact names predictable and version-first. Example:
 
 ```text
 larksuite-openclaw-lark-2026.3.30-lh.1.tgz
+openclaw-lark-runtime-2026.3.30-lh.1.tar.gz
 ```
 
 Store artifacts in a durable internal location such as:
@@ -123,9 +126,9 @@ Verification:
 Operations should only need these inputs:
 
 1. target OpenClaw instance
-2. release tarball
+2. runtime package
 3. release note
-4. previous known-good tarball
+4. previous known-good runtime package
 
 That is enough to install, update, or roll back using [DEPLOYMENT.md](/data/Workspace/openclaw-lark/DEPLOYMENT.md).
 
@@ -134,8 +137,9 @@ That is enough to install, update, or roll back using [DEPLOYMENT.md](/data/Work
 For each deployed release, retain at least:
 
 - current release tarball
-- previous release tarball
-- last known-good official release tarball
+- current runtime package
+- previous runtime package
+- last known-good official runtime package
 
 Rollback should be tested procedurally, not assumed.
 
@@ -156,6 +160,6 @@ Do not build a fork installer until the artifact release process is stable. The 
 The correct order is:
 
 1. stable version scheme
-2. stable artifact build
+2. stable runtime artifact build
 3. stable deployment and rollback
 4. only then, optional fork installer

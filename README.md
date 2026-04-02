@@ -65,7 +65,7 @@ Before you start, make sure you have the following:
 
 [How to Use the Official Lark/Feishu Plugin for OpenClaw](https://bytedance.larkoffice.com/docx/MFK7dDFLFoVlOGxWCv5cTXKmnMh)
 
-This fork does not change the end-user usage flow of the plugin. For fork deployment, version switching, rollback, release policy, release execution checklist, production change approval, and switching back to official releases on a company OpenClaw instance, see [DEPLOYMENT.md](./DEPLOYMENT.md), [RELEASING.md](./RELEASING.md), [RELEASE_CHECKLIST.md](./RELEASE_CHECKLIST.md), [CHANGE_REQUEST_TEMPLATE.md](./CHANGE_REQUEST_TEMPLATE.md), and [WORKFLOWS.md](./WORKFLOWS.md).
+This fork does not change the end-user usage flow of the plugin. For fork deployment, runtime package deployment, version switching, rollback, release policy, release execution checklist, production change approval, and switching back to official releases on a company OpenClaw instance, see [DEPLOYMENT.md](./DEPLOYMENT.md), [DEPLOY_RUNTIME.md](./DEPLOY_RUNTIME.md), [RELEASING.md](./RELEASING.md), [RELEASE_CHECKLIST.md](./RELEASE_CHECKLIST.md), [CHANGE_REQUEST_TEMPLATE.md](./CHANGE_REQUEST_TEMPLATE.md), and [WORKFLOWS.md](./WORKFLOWS.md).
 
 ## Contributing
 

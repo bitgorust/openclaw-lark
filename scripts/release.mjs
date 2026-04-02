@@ -3,12 +3,13 @@
 import { execa } from 'execa';
 import fs from 'fs-extra';
 import minimist from 'minimist';
+import os from 'node:os';
 import path from 'node:path';
 import process from 'node:process';
 
 const argv = minimist(process.argv.slice(2), {
-  boolean: ['skip-install', 'skip-verify', 'allow-dirty', 'help'],
-  string: ['version', 'upstream-base', 'release-dir'],
+  boolean: ['skip-install', 'skip-verify', 'allow-dirty', 'help', 'skip-runtime'],
+  string: ['version', 'upstream-base', 'release-dir', 'openclaw-version'],
   alias: {
     v: 'version',
     h: 'help',
@@ -106,10 +107,23 @@ async function main() {
   const targetTarballPath = path.join(releaseDir, packedFile);
   await fs.move(packedPath, targetTarballPath, { overwrite: true });
 
-  const checksumResult = await exec('sha256sum', [targetTarballPath]);
-  const checksum = checksumResult.stdout.trim();
-  const checksumPath = `${targetTarballPath}.sha256`;
-  await fs.writeFile(checksumPath, `${checksum}\n`);
+  const tarballChecksum = await writeChecksumFile(targetTarballPath);
+
+  const openclawVersion = argv['openclaw-version'] || packageJson.devDependencies?.openclaw;
+  let runtimePackage = null;
+
+  if (!argv['skip-runtime']) {
+    if (!openclawVersion) {
+      throw new Error('Cannot infer OpenClaw runtime version. Pass --openclaw-version explicitly.');
+    }
+
+    runtimePackage = await buildRuntimePackage({
+      sourceTarballPath: targetTarballPath,
+      version,
+      releaseDir,
+      openclawVersion,
+    });
+  }
 
   const releaseNotePath = path.join(releaseDir, `release-note-${version}.md`);
   await fs.writeFile(
@@ -119,7 +133,9 @@ async function main() {
       upstreamBase,
       headSha: shortSha,
       tarballName: path.basename(targetTarballPath),
-      checksum,
+      tarballChecksum,
+      runtimePackage,
+      openclawVersion: runtimePackage?.openclawVersion ?? null,
       verificationSteps,
     }),
   );
@@ -132,7 +148,15 @@ async function main() {
       upstreamBase,
       commit: headSha,
       tarball: path.relative(repoRoot, targetTarballPath),
-      checksumFile: path.relative(repoRoot, checksumPath),
+      tarballChecksumFile: path.relative(repoRoot, `${targetTarballPath}.sha256`),
+      runtimePackage:
+        runtimePackage == null
+          ? null
+          : {
+              archive: path.relative(repoRoot, runtimePackage.archivePath),
+              checksumFile: path.relative(repoRoot, runtimePackage.checksumPath),
+              openclawVersion: runtimePackage.openclawVersion,
+            },
       releaseNote: path.relative(repoRoot, releaseNotePath),
       verification: verificationSteps.map((step) => ({
         label: step.label,
@@ -145,7 +169,11 @@ async function main() {
 
   console.log(`Release artifacts written to ${path.relative(repoRoot, releaseDir)}`);
   console.log(`Tarball: ${path.relative(repoRoot, targetTarballPath)}`);
-  console.log(`Checksum: ${path.relative(repoRoot, checksumPath)}`);
+  console.log(`Tarball checksum: ${path.relative(repoRoot, `${targetTarballPath}.sha256`)}`);
+  if (runtimePackage != null) {
+    console.log(`Runtime package: ${path.relative(repoRoot, runtimePackage.archivePath)}`);
+    console.log(`Runtime checksum: ${path.relative(repoRoot, runtimePackage.checksumPath)}`);
+  }
   console.log(`Release note: ${path.relative(repoRoot, releaseNotePath)}`);
 }
 
@@ -157,8 +185,10 @@ Options:
   --version         Target release version. Defaults to package.json version.
   --upstream-base   Upstream base version. Defaults to the part before the first fork suffix.
   --release-dir     Output directory for tarball and release files. Defaults to release.
+  --openclaw-version  OpenClaw runtime version to install into the runtime package.
   --skip-install    Skip pnpm install --frozen-lockfile.
   --skip-verify     Skip lint, format, typecheck, and test.
+  --skip-runtime    Skip building the deployable runtime package.
   --allow-dirty     Allow a dirty git working tree.
   --help            Show this message.
 `);
@@ -194,12 +224,52 @@ async function exec(file, args, options = {}) {
   });
 }
 
+async function writeChecksumFile(filePath) {
+  const checksumResult = await exec('sha256sum', [filePath]);
+  const checksum = checksumResult.stdout.trim();
+  await fs.writeFile(`${filePath}.sha256`, `${checksum}\n`);
+  return checksum;
+}
+
+async function buildRuntimePackage({ sourceTarballPath, version, releaseDir, openclawVersion }) {
+  const stagingRoot = await fs.mkdtemp(path.join(os.tmpdir(), 'openclaw-lark-runtime-'));
+
+  try {
+    await exec('tar', ['-xzf', sourceTarballPath, '-C', stagingRoot], { stdio: 'inherit' });
+
+    const packageDir = path.join(stagingRoot, 'package');
+    await exec('npm', ['install', '--omit=dev', '--legacy-peer-deps'], {
+      cwd: packageDir,
+      stdio: 'inherit',
+    });
+    await exec('npm', ['install', '--no-save', '--legacy-peer-deps', `openclaw@${openclawVersion}`], {
+      cwd: packageDir,
+      stdio: 'inherit',
+    });
+
+    const runtimeArchiveName = `openclaw-lark-runtime-${version}.tar.gz`;
+    const runtimeArchivePath = path.join(releaseDir, runtimeArchiveName);
+    await exec('tar', ['-czf', runtimeArchivePath, '-C', stagingRoot, 'package'], { stdio: 'inherit' });
+    await writeChecksumFile(runtimeArchivePath);
+
+    return {
+      archivePath: runtimeArchivePath,
+      checksumPath: `${runtimeArchivePath}.sha256`,
+      openclawVersion,
+    };
+  } finally {
+    await fs.remove(stagingRoot);
+  }
+}
+
 function buildReleaseNote({
   version,
   upstreamBase,
   headSha,
   tarballName,
-  checksum,
+  tarballChecksum,
+  runtimePackage,
+  openclawVersion,
   verificationSteps,
 }) {
   const verificationLines = verificationSteps
@@ -210,7 +280,9 @@ function buildReleaseNote({
 Upstream base: ${upstreamBase}
 Commit: ${headSha}
 Tarball: ${tarballName}
-SHA256: ${checksum}
+Tarball SHA256: ${tarballChecksum}
+Runtime package: ${runtimePackage?.archivePath ? path.basename(runtimePackage.archivePath) : 'not built'}
+Runtime OpenClaw version: ${openclawVersion ?? 'not set'}
 
 Included:
 - fix:
@@ -232,6 +304,7 @@ Deployment:
 - maintenance window:
 - previous known-good version:
 - rollback artifact:
+- runtime package:
 
 Post-deploy checks:
 - /feishu start
