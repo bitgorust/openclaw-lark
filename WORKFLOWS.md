@@ -126,6 +126,14 @@ These are the day-to-day usage scenarios already supported by the deployed plugi
 - update due dates and completion state
 - manage task lists, subtasks, and comments
 
+### Approval and Review
+
+- list approval instances in a bounded time window
+- inspect approval instance details and current approvers
+- approve or reject pending approval tasks
+- transfer approval tasks to another approver
+- roll back approval tasks to previously approved nodes when the scenario supports it
+
 ### Calendar and Meetings
 
 - list calendars
