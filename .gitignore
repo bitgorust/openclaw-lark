@@ -18,7 +18,14 @@ src/tools/docs/
 
 # Internal documentation directories
 /doc/
-/docs/
+/docs/*
+!/docs/references/
+/docs/references/*
+!/docs/references/feishu-server-api-list.json
+!/docs/references/feishu-mcp-remote-server.md
+!/docs/references/feishu-supported-operations.json
+!/docs/references/feishu-supported-operations.md
+!/docs/references/feishu-skill-gap-analysis.md
 
 /**/package-lock.json
 /**/.DS_Store

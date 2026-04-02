@@ -1,0 +1,1880 @@
+{
+  "generatedAt": "2026-04-02T00:51:06.520041+00:00",
+  "scope": {
+    "included": "Registered Feishu-facing tools and chat commands exposed by the plugin entrypoint.",
+    "excluded": "Internal helper functions and lower-level channel/outbound APIs not directly registered as tools or commands."
+  },
+  "references": {
+    "serverApiList": "docs/references/feishu-server-api-list.json",
+    "mcpRemoteDoc": "docs/references/feishu-mcp-remote-server.md",
+    "mcpRemoteDocUrl": "https://open.feishu.cn/document/mcp_open_tools/developers-call-remote-mcp-server"
+  },
+  "totals": {
+    "toolCount": 36,
+    "operationCount": 100,
+    "commandCount": 8
+  },
+  "tools": [
+    {
+      "tool": "feishu_get_user",
+      "category": "common",
+      "transport": "oapi",
+      "auth": "user",
+      "source": "src/tools/oapi/common/get-user.ts",
+      "operations": [
+        {
+          "name": "get",
+          "summary": "Get the current user profile or fetch a user profile by ID.",
+          "backend": [
+            "GET:/open-apis/authen/v1/user_info",
+            "GET:/open-apis/contact/v3/users/:user_id"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/authen/v1/user_info",
+              "name": "获取用户信息",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/authen-v1/user_info/get"
+            },
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/contact/v3/users/:user_id",
+              "name": "获取单个用户信息",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/contact-v3/user/get"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tool": "feishu_search_user",
+      "category": "common",
+      "transport": "oapi",
+      "auth": "user",
+      "source": "src/tools/oapi/common/search-user.ts",
+      "operations": [
+        {
+          "name": "search",
+          "summary": "Search users by keyword.",
+          "backend": [
+            "GET:/open-apis/search/v1/user"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/search/v1/user",
+              "name": "搜索用户",
+              "url": "https://open.feishu.cn/document/ukTMukTMukTM/uMTM4UjLzEDO14yMxgTN"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tool": "feishu_chat",
+      "category": "chat",
+      "transport": "oapi",
+      "auth": "user",
+      "source": "src/tools/oapi/chat/chat.ts",
+      "operations": [
+        {
+          "name": "search",
+          "summary": "Search chats.",
+          "backend": [
+            "GET:/open-apis/im/v1/chats/search"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/im/v1/chats/search",
+              "name": "搜索对用户或机器人可见的群列表",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/im-v1/chat/search"
+            }
+          ]
+        },
+        {
+          "name": "get",
+          "summary": "Get chat details.",
+          "backend": [
+            "GET:/open-apis/im/v1/chats/:chat_id"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/im/v1/chats/:chat_id",
+              "name": "获取群信息",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/im-v1/chat/get"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tool": "feishu_chat_members",
+      "category": "chat",
+      "transport": "oapi",
+      "auth": "user",
+      "source": "src/tools/oapi/chat/members.ts",
+      "operations": [
+        {
+          "name": "list_members",
+          "summary": "List members in a chat.",
+          "backend": [
+            "GET:/open-apis/im/v1/chats/:chat_id/members"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/im/v1/chats/:chat_id/members",
+              "name": "获取群成员列表",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/im-v1/chat-members/get"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tool": "feishu_im_user_message",
+      "category": "im",
+      "transport": "oapi",
+      "auth": "user",
+      "source": "src/tools/oapi/im/message.ts",
+      "operations": [
+        {
+          "name": "send",
+          "summary": "Send a message to a user or chat.",
+          "backend": [
+            "POST:/open-apis/im/v1/messages"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "POST:/open-apis/im/v1/messages",
+              "name": "发送消息",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/im-v1/message/create"
+            }
+          ]
+        },
+        {
+          "name": "reply",
+          "summary": "Reply to a message, optionally in-thread.",
+          "backend": [
+            "POST:/open-apis/im/v1/messages/:message_id/reply"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "POST:/open-apis/im/v1/messages/:message_id/reply",
+              "name": "回复消息",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/im-v1/message/reply"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tool": "feishu_im_user_fetch_resource",
+      "category": "im",
+      "transport": "oapi",
+      "auth": "user",
+      "source": "src/tools/oapi/im/resource.ts",
+      "operations": [
+        {
+          "name": "download_resource",
+          "summary": "Download an image or file from an IM message as the user.",
+          "backend": [
+            "GET:/open-apis/im/v1/messages/:message_id/resources/:file_key"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/im/v1/messages/:message_id/resources/:file_key",
+              "name": "获取消息中的资源文件",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/im-v1/message-resource/get"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tool": "feishu_im_user_get_messages",
+      "category": "im",
+      "transport": "oapi",
+      "auth": "user",
+      "source": "src/tools/oapi/im/message-read.ts",
+      "operations": [
+        {
+          "name": "list_messages",
+          "summary": "List chat history for a chat or P2P conversation.",
+          "backend": [
+            "POST:/open-apis/im/v1/chat_p2p/batch_query",
+            "GET:/open-apis/im/v1/messages (container_id_type=chat)"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/im/v1/messages",
+              "name": "获取会话历史消息",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/im-v1/message/list"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tool": "feishu_im_user_get_thread_messages",
+      "category": "im",
+      "transport": "oapi",
+      "auth": "user",
+      "source": "src/tools/oapi/im/message-read.ts",
+      "operations": [
+        {
+          "name": "list_thread_messages",
+          "summary": "List messages inside a thread.",
+          "backend": [
+            "GET:/open-apis/im/v1/messages (container_id_type=thread)"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/im/v1/messages",
+              "name": "获取会话历史消息",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/im-v1/message/list"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tool": "feishu_im_user_search_messages",
+      "category": "im",
+      "transport": "oapi",
+      "auth": "user",
+      "source": "src/tools/oapi/im/message-read.ts",
+      "operations": [
+        {
+          "name": "search_messages",
+          "summary": "Search messages across chats and hydrate chat/message context.",
+          "backend": [
+            "POST:/open-apis/search/v2/message/create",
+            "POST:/open-apis/im/v1/chats/batch_query",
+            "GET:/open-apis/im/v1/messages/mget"
+          ]
+        }
+      ]
+    },
+    {
+      "tool": "feishu_im_bot_image",
+      "category": "im",
+      "transport": "oapi",
+      "auth": "tenant",
+      "source": "src/tools/tat/im/resource.ts",
+      "operations": [
+        {
+          "name": "download_resource",
+          "summary": "Download an image or file from an IM message as the bot.",
+          "backend": [
+            "GET:/open-apis/im/v1/messages/:message_id/resources/:file_key"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/im/v1/messages/:message_id/resources/:file_key",
+              "name": "获取消息中的资源文件",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/im-v1/message-resource/get"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tool": "feishu_calendar_calendar",
+      "category": "calendar",
+      "transport": "oapi",
+      "auth": "user",
+      "source": "src/tools/oapi/calendar/calendar.ts",
+      "operations": [
+        {
+          "name": "list",
+          "summary": "List calendars.",
+          "backend": [
+            "GET:/open-apis/calendar/v4/calendars"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/calendar/v4/calendars",
+              "name": "查询日历列表",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/calendar-v4/calendar/list"
+            }
+          ]
+        },
+        {
+          "name": "get",
+          "summary": "Get one calendar.",
+          "backend": [
+            "GET:/open-apis/calendar/v4/calendars/:calendar_id"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/calendar/v4/calendars/:calendar_id",
+              "name": "查询日历信息",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/calendar-v4/calendar/get"
+            }
+          ]
+        },
+        {
+          "name": "primary",
+          "summary": "Resolve the primary calendar.",
+          "backend": [
+            "POST:/open-apis/calendar/v4/calendars/primary"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "POST:/open-apis/calendar/v4/calendars/primary",
+              "name": "查询主日历信息",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/calendar-v4/calendar/primary"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tool": "feishu_calendar_event",
+      "category": "calendar",
+      "transport": "oapi",
+      "auth": "user",
+      "source": "src/tools/oapi/calendar/event.ts",
+      "operations": [
+        {
+          "name": "create",
+          "summary": "Create an event and optionally add attendees.",
+          "backend": [
+            "POST:/open-apis/calendar/v4/calendars/:calendar_id/events",
+            "POST:/open-apis/calendar/v4/calendars/:calendar_id/events/:event_id/attendees"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "POST:/open-apis/calendar/v4/calendars/:calendar_id/events",
+              "name": "创建日程",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/calendar-v4/calendar-event/create"
+            },
+            {
+              "kind": "oapi",
+              "label": "POST:/open-apis/calendar/v4/calendars/:calendar_id/events/:event_id/attendees",
+              "name": "添加日程参与人",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/calendar-v4/calendar-event-attendee/create"
+            }
+          ]
+        },
+        {
+          "name": "list",
+          "summary": "List event instances in a time range.",
+          "backend": [
+            "GET:/open-apis/calendar/v4/calendars/:calendar_id/events/instance_view"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/calendar/v4/calendars/:calendar_id/events/instance_view",
+              "name": "查询日程视图",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/calendar-v4/calendar-event/instance_view"
+            }
+          ]
+        },
+        {
+          "name": "get",
+          "summary": "Get an event.",
+          "backend": [
+            "GET:/open-apis/calendar/v4/calendars/:calendar_id/events/:event_id"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/calendar/v4/calendars/:calendar_id/events/:event_id",
+              "name": "获取日程",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/calendar-v4/calendar-event/get"
+            }
+          ]
+        },
+        {
+          "name": "patch",
+          "summary": "Update an event.",
+          "backend": [
+            "PATCH:/open-apis/calendar/v4/calendars/:calendar_id/events/:event_id"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "PATCH:/open-apis/calendar/v4/calendars/:calendar_id/events/:event_id",
+              "name": "更新日程",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/calendar-v4/calendar-event/patch"
+            }
+          ]
+        },
+        {
+          "name": "delete",
+          "summary": "Delete an event.",
+          "backend": [
+            "DELETE:/open-apis/calendar/v4/calendars/:calendar_id/events/:event_id"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "DELETE:/open-apis/calendar/v4/calendars/:calendar_id/events/:event_id",
+              "name": "删除日程",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/calendar-v4/calendar-event/delete"
+            }
+          ]
+        },
+        {
+          "name": "search",
+          "summary": "Search events.",
+          "backend": [
+            "GET:/open-apis/calendar/v4/calendars/:calendar_id/events/search"
+          ]
+        },
+        {
+          "name": "reply",
+          "summary": "Reply to an invitation.",
+          "backend": [
+            "POST:/open-apis/calendar/v4/calendars/:calendar_id/events/:event_id/reply"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "POST:/open-apis/calendar/v4/calendars/:calendar_id/events/:event_id/reply",
+              "name": "回复日程",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/calendar-v4/calendar-event/reply"
+            }
+          ]
+        },
+        {
+          "name": "instances",
+          "summary": "List recurrence instances.",
+          "backend": [
+            "GET:/open-apis/calendar/v4/calendars/:calendar_id/events/:event_id/instances"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/calendar/v4/calendars/:calendar_id/events/:event_id/instances",
+              "name": "获取重复日程实例",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/calendar-v4/calendar-event/instances"
+            }
+          ]
+        },
+        {
+          "name": "instance_view",
+          "summary": "List expanded event instances.",
+          "backend": [
+            "GET:/open-apis/calendar/v4/calendars/:calendar_id/events/instance_view"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/calendar/v4/calendars/:calendar_id/events/instance_view",
+              "name": "查询日程视图",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/calendar-v4/calendar-event/instance_view"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tool": "feishu_calendar_event_attendee",
+      "category": "calendar",
+      "transport": "oapi",
+      "auth": "user",
+      "source": "src/tools/oapi/calendar/event-attendee.ts",
+      "operations": [
+        {
+          "name": "create",
+          "summary": "Add attendees to an event.",
+          "backend": [
+            "POST:/open-apis/calendar/v4/calendars/:calendar_id/events/:event_id/attendees"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "POST:/open-apis/calendar/v4/calendars/:calendar_id/events/:event_id/attendees",
+              "name": "添加日程参与人",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/calendar-v4/calendar-event-attendee/create"
+            }
+          ]
+        },
+        {
+          "name": "list",
+          "summary": "List attendees of an event.",
+          "backend": [
+            "GET:/open-apis/calendar/v4/calendars/:calendar_id/events/:event_id/attendees"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/calendar/v4/calendars/:calendar_id/events/:event_id/attendees",
+              "name": "获取日程参与人列表",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/calendar-v4/calendar-event-attendee/list"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tool": "feishu_calendar_freebusy",
+      "category": "calendar",
+      "transport": "oapi",
+      "auth": "user",
+      "source": "src/tools/oapi/calendar/freebusy.ts",
+      "operations": [
+        {
+          "name": "list",
+          "summary": "Batch query free/busy.",
+          "backend": [
+            "POST:/open-apis/calendar/v4/freebusy/batch"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "POST:/open-apis/calendar/v4/freebusy/batch",
+              "name": "批量查询主日历日程忙闲信息",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/calendar-v4/freebusy/batch"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tool": "feishu_task_task",
+      "category": "task",
+      "transport": "oapi",
+      "auth": "user",
+      "source": "src/tools/oapi/task/task.ts",
+      "operations": [
+        {
+          "name": "create",
+          "summary": "Create a task.",
+          "backend": [
+            "POST:/open-apis/task/v2/tasks"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "POST:/open-apis/task/v2/tasks",
+              "name": "创建任务",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/task-v2/task/create"
+            }
+          ]
+        },
+        {
+          "name": "get",
+          "summary": "Get a task.",
+          "backend": [
+            "GET:/open-apis/task/v2/tasks/:task_guid"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/task/v2/tasks/:task_guid",
+              "name": "获取任务详情",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/task-v2/task/get"
+            }
+          ]
+        },
+        {
+          "name": "list",
+          "summary": "List visible tasks for the current user.",
+          "backend": [
+            "GET:/open-apis/task/v2/tasks"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/task/v2/tasks",
+              "name": "列取任务列表",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/task-v2/task/list"
+            }
+          ]
+        },
+        {
+          "name": "patch",
+          "summary": "Update a task.",
+          "backend": [
+            "PATCH:/open-apis/task/v2/tasks/:task_guid"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "PATCH:/open-apis/task/v2/tasks/:task_guid",
+              "name": "更新任务",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/task-v2/task/patch"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tool": "feishu_task_tasklist",
+      "category": "task",
+      "transport": "oapi",
+      "auth": "user",
+      "source": "src/tools/oapi/task/tasklist.ts",
+      "operations": [
+        {
+          "name": "create",
+          "summary": "Create a task list.",
+          "backend": [
+            "POST:/open-apis/task/v2/tasklists"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "POST:/open-apis/task/v2/tasklists",
+              "name": "创建清单",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/task-v2/tasklist/create"
+            }
+          ]
+        },
+        {
+          "name": "get",
+          "summary": "Get a task list.",
+          "backend": [
+            "GET:/open-apis/task/v2/tasklists/:tasklist_guid"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/task/v2/tasklists/:tasklist_guid",
+              "name": "获取清单详情",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/task-v2/tasklist/get"
+            }
+          ]
+        },
+        {
+          "name": "list",
+          "summary": "List task lists.",
+          "backend": [
+            "GET:/open-apis/task/v2/tasklists"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/task/v2/tasklists",
+              "name": "获取清单列表",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/task-v2/tasklist/list"
+            }
+          ]
+        },
+        {
+          "name": "tasks",
+          "summary": "List tasks in a task list.",
+          "backend": [
+            "GET:/open-apis/task/v2/tasklists/:tasklist_guid/tasks"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/task/v2/tasklists/:tasklist_guid/tasks",
+              "name": "获取清单任务列表",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/task-v2/tasklist/tasks"
+            }
+          ]
+        },
+        {
+          "name": "patch",
+          "summary": "Update a task list.",
+          "backend": [
+            "PATCH:/open-apis/task/v2/tasklists/:tasklist_guid"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "PATCH:/open-apis/task/v2/tasklists/:tasklist_guid",
+              "name": "更新清单",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/task-v2/tasklist/patch"
+            }
+          ]
+        },
+        {
+          "name": "add_members",
+          "summary": "Add task list members.",
+          "backend": [
+            "POST:/open-apis/task/v2/tasklists/:tasklist_guid/add_members"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "POST:/open-apis/task/v2/tasklists/:tasklist_guid/add_members",
+              "name": "添加清单成员",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/task-v2/tasklist/add_members"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tool": "feishu_task_comment",
+      "category": "task",
+      "transport": "oapi",
+      "auth": "user",
+      "source": "src/tools/oapi/task/comment.ts",
+      "operations": [
+        {
+          "name": "create",
+          "summary": "Create a task comment.",
+          "backend": [
+            "POST:/open-apis/task/v2/comments"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "POST:/open-apis/task/v2/comments",
+              "name": "创建评论",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/task-v2/comment/create"
+            }
+          ]
+        },
+        {
+          "name": "list",
+          "summary": "List task comments by resource.",
+          "backend": [
+            "GET:/open-apis/task/v2/comments"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/task/v2/comments",
+              "name": "获取评论列表",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/task-v2/comment/list"
+            }
+          ]
+        },
+        {
+          "name": "get",
+          "summary": "Get a task comment.",
+          "backend": [
+            "GET:/open-apis/task/v2/comments/:comment_id"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/task/v2/comments/:comment_id",
+              "name": "获取评论详情",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/task-v2/comment/get"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tool": "feishu_task_subtask",
+      "category": "task",
+      "transport": "oapi",
+      "auth": "user",
+      "source": "src/tools/oapi/task/subtask.ts",
+      "operations": [
+        {
+          "name": "create",
+          "summary": "Create a subtask.",
+          "backend": [
+            "POST:/open-apis/task/v2/tasks/:task_guid/subtasks"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "POST:/open-apis/task/v2/tasks/:task_guid/subtasks",
+              "name": "创建子任务",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/task-v2/task-subtask/create"
+            }
+          ]
+        },
+        {
+          "name": "list",
+          "summary": "List subtasks.",
+          "backend": [
+            "GET:/open-apis/task/v2/tasks/:task_guid/subtasks"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/task/v2/tasks/:task_guid/subtasks",
+              "name": "获取任务的子任务列表",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/task-v2/task-subtask/list"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tool": "feishu_bitable_app",
+      "category": "bitable",
+      "transport": "oapi",
+      "auth": "user",
+      "source": "src/tools/oapi/bitable/app.ts",
+      "operations": [
+        {
+          "name": "create",
+          "summary": "Create a Bitable app.",
+          "backend": [
+            "POST:/open-apis/bitable/v1/apps"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "POST:/open-apis/bitable/v1/apps",
+              "name": "创建多维表格",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/app/create"
+            }
+          ]
+        },
+        {
+          "name": "get",
+          "summary": "Get a Bitable app.",
+          "backend": [
+            "GET:/open-apis/bitable/v1/apps/:app_token"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/bitable/v1/apps/:app_token",
+              "name": "获取多维表格元数据",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/app/get"
+            }
+          ]
+        },
+        {
+          "name": "list",
+          "summary": "List Bitable apps via Drive.",
+          "backend": [
+            "GET:/open-apis/drive/v1/files"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/drive/v1/files",
+              "name": "获取文件夹中的文件清单",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/file/list"
+            }
+          ]
+        },
+        {
+          "name": "patch",
+          "summary": "Update a Bitable app.",
+          "backend": [
+            "PATCH:/open-apis/bitable/v1/apps/:app_token"
+          ]
+        },
+        {
+          "name": "copy",
+          "summary": "Copy a Bitable app.",
+          "backend": [
+            "POST:/open-apis/bitable/v1/apps/:app_token/copy"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "POST:/open-apis/bitable/v1/apps/:app_token/copy",
+              "name": "复制多维表格",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/app/copy"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tool": "feishu_bitable_app_table",
+      "category": "bitable",
+      "transport": "oapi",
+      "auth": "user",
+      "source": "src/tools/oapi/bitable/app-table.ts",
+      "operations": [
+        {
+          "name": "create",
+          "summary": "Create a Bitable table.",
+          "backend": [
+            "POST:/open-apis/bitable/v1/apps/:app_token/tables"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "POST:/open-apis/bitable/v1/apps/:app_token/tables",
+              "name": "新增一个数据表",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/app-table/create"
+            }
+          ]
+        },
+        {
+          "name": "list",
+          "summary": "List tables.",
+          "backend": [
+            "GET:/open-apis/bitable/v1/apps/:app_token/tables"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/bitable/v1/apps/:app_token/tables",
+              "name": "列出数据表",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/app-table/list"
+            }
+          ]
+        },
+        {
+          "name": "patch",
+          "summary": "Update a table.",
+          "backend": [
+            "PATCH:/open-apis/bitable/v1/apps/:app_token/tables/:table_id"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "PATCH:/open-apis/bitable/v1/apps/:app_token/tables/:table_id",
+              "name": "更新数据表",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/app-table/patch"
+            }
+          ]
+        },
+        {
+          "name": "batch_create",
+          "summary": "Batch create tables.",
+          "backend": [
+            "POST:/open-apis/bitable/v1/apps/:app_token/tables/batch_create"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "POST:/open-apis/bitable/v1/apps/:app_token/tables/batch_create",
+              "name": "新增多个数据表",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/app-table/batch_create"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tool": "feishu_bitable_app_table_record",
+      "category": "bitable",
+      "transport": "oapi",
+      "auth": "user",
+      "source": "src/tools/oapi/bitable/app-table-record.ts",
+      "operations": [
+        {
+          "name": "create",
+          "summary": "Create one record.",
+          "backend": [
+            "POST:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/records"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "POST:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/records",
+              "name": "新增记录",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/app-table-record/create"
+            }
+          ]
+        },
+        {
+          "name": "list",
+          "summary": "Search/list records.",
+          "backend": [
+            "POST:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/records/search"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "POST:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/records/search",
+              "name": "查询记录",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/app-table-record/search"
+            }
+          ]
+        },
+        {
+          "name": "update",
+          "summary": "Update one record.",
+          "backend": [
+            "PUT:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/records/:record_id"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "PUT:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/records/:record_id",
+              "name": "更新记录",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/app-table-record/update"
+            }
+          ]
+        },
+        {
+          "name": "delete",
+          "summary": "Delete one record.",
+          "backend": [
+            "DELETE:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/records/:record_id"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "DELETE:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/records/:record_id",
+              "name": "删除记录",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/app-table-record/delete"
+            }
+          ]
+        },
+        {
+          "name": "batch_create",
+          "summary": "Batch create records.",
+          "backend": [
+            "POST:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/records/batch_create"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "POST:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/records/batch_create",
+              "name": "新增多条记录",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/app-table-record/batch_create"
+            }
+          ]
+        },
+        {
+          "name": "batch_update",
+          "summary": "Batch update records.",
+          "backend": [
+            "POST:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/records/batch_update"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "POST:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/records/batch_update",
+              "name": "更新多条记录",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/app-table-record/batch_update"
+            }
+          ]
+        },
+        {
+          "name": "batch_delete",
+          "summary": "Batch delete records.",
+          "backend": [
+            "POST:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/records/batch_delete"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "POST:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/records/batch_delete",
+              "name": "删除多条记录",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/app-table-record/batch_delete"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tool": "feishu_bitable_app_table_field",
+      "category": "bitable",
+      "transport": "oapi",
+      "auth": "user",
+      "source": "src/tools/oapi/bitable/app-table-field.ts",
+      "operations": [
+        {
+          "name": "create",
+          "summary": "Create a field.",
+          "backend": [
+            "POST:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/fields"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "POST:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/fields",
+              "name": "新增字段",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/app-table-field/create"
+            }
+          ]
+        },
+        {
+          "name": "list",
+          "summary": "List fields.",
+          "backend": [
+            "GET:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/fields"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/fields",
+              "name": "列出字段",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/app-table-field/list"
+            }
+          ]
+        },
+        {
+          "name": "update",
+          "summary": "Update a field.",
+          "backend": [
+            "PUT:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/fields/:field_id"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "PUT:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/fields/:field_id",
+              "name": "更新字段",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/app-table-field/update"
+            }
+          ]
+        },
+        {
+          "name": "delete",
+          "summary": "Delete a field.",
+          "backend": [
+            "DELETE:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/fields/:field_id"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "DELETE:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/fields/:field_id",
+              "name": "删除字段",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/app-table-field/delete"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tool": "feishu_bitable_app_table_view",
+      "category": "bitable",
+      "transport": "oapi",
+      "auth": "user",
+      "source": "src/tools/oapi/bitable/app-table-view.ts",
+      "operations": [
+        {
+          "name": "create",
+          "summary": "Create a view.",
+          "backend": [
+            "POST:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/views"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "POST:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/views",
+              "name": "新增视图",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/app-table-view/create"
+            }
+          ]
+        },
+        {
+          "name": "get",
+          "summary": "Get a view.",
+          "backend": [
+            "GET:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/views/:view_id"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/views/:view_id",
+              "name": "获取视图",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/app-table-view/get"
+            }
+          ]
+        },
+        {
+          "name": "list",
+          "summary": "List views.",
+          "backend": [
+            "GET:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/views"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/views",
+              "name": "列出视图",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/app-table-view/list"
+            }
+          ]
+        },
+        {
+          "name": "patch",
+          "summary": "Update a view.",
+          "backend": [
+            "PATCH:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/views/:view_id"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "PATCH:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/views/:view_id",
+              "name": "更新视图",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/app-table-view/patch"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tool": "feishu_drive_file",
+      "category": "drive",
+      "transport": "oapi",
+      "auth": "user",
+      "source": "src/tools/oapi/drive/file.ts",
+      "operations": [
+        {
+          "name": "list",
+          "summary": "List drive files.",
+          "backend": [
+            "GET:/open-apis/drive/v1/files"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/drive/v1/files",
+              "name": "获取文件夹中的文件清单",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/file/list"
+            }
+          ]
+        },
+        {
+          "name": "get_meta",
+          "summary": "Batch query file metadata.",
+          "backend": [
+            "POST:/open-apis/drive/v1/metas/batch_query"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "POST:/open-apis/drive/v1/metas/batch_query",
+              "name": "获取文件元数据",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/meta/batch_query"
+            }
+          ]
+        },
+        {
+          "name": "copy",
+          "summary": "Copy a drive file.",
+          "backend": [
+            "POST:/open-apis/drive/v1/files/:file_token/copy"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "POST:/open-apis/drive/v1/files/:file_token/copy",
+              "name": "复制文件",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/file/copy"
+            }
+          ]
+        },
+        {
+          "name": "move",
+          "summary": "Move a drive file.",
+          "backend": [
+            "POST:/open-apis/drive/v1/files/:file_token/move"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "POST:/open-apis/drive/v1/files/:file_token/move",
+              "name": "移动文件或文件夹",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/file/move"
+            }
+          ]
+        },
+        {
+          "name": "delete",
+          "summary": "Delete a drive file.",
+          "backend": [
+            "DELETE:/open-apis/drive/v1/files/:file_token"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "DELETE:/open-apis/drive/v1/files/:file_token",
+              "name": "删除文件或文件夹",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/file/delete"
+            }
+          ]
+        },
+        {
+          "name": "upload",
+          "summary": "Upload a file to drive.",
+          "backend": [
+            "POST:/open-apis/drive/v1/files/upload_all"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "POST:/open-apis/drive/v1/files/upload_all",
+              "name": "上传文件",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/file/upload_all"
+            }
+          ]
+        },
+        {
+          "name": "download",
+          "summary": "Download a drive file.",
+          "backend": [
+            "GET:/open-apis/drive/v1/files/:file_token/download"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/drive/v1/files/:file_token/download",
+              "name": "下载文件",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/file/download"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tool": "feishu_doc_media",
+      "category": "doc",
+      "transport": "oapi",
+      "auth": "user",
+      "source": "src/tools/oapi/drive/doc-media.ts",
+      "operations": [
+        {
+          "name": "insert",
+          "summary": "Upload media and insert it into a doc block.",
+          "backend": [
+            "POST:/open-apis/docx/v1/documents/:document_id/blocks/:block_id/children",
+            "POST:/open-apis/drive/v1/medias/upload_all",
+            "PATCH:/open-apis/docx/v1/documents/:document_id/blocks/batch_update"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "POST:/open-apis/docx/v1/documents/:document_id/blocks/:block_id/children",
+              "name": "创建块",
+              "url": "https://open.feishu.cn/document/ukTMukTMukTM/uUDN04SN0QjL1QDN/document-docx/docx-v1/document-block-children/create"
+            },
+            {
+              "kind": "oapi",
+              "label": "POST:/open-apis/drive/v1/medias/upload_all",
+              "name": "上传素材",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/media/upload_all"
+            },
+            {
+              "kind": "oapi",
+              "label": "PATCH:/open-apis/docx/v1/documents/:document_id/blocks/batch_update",
+              "name": "批量更新块的内容",
+              "url": "https://open.feishu.cn/document/ukTMukTMukTM/uUDN04SN0QjL1QDN/document-docx/docx-v1/document-block/batch_update"
+            }
+          ]
+        },
+        {
+          "name": "download",
+          "summary": "Download doc media or whiteboard content.",
+          "backend": [
+            "GET:/open-apis/drive/v1/medias/:file_token/download",
+            "GET:/open-apis/board/v1/whiteboards/:whiteboard_id/download_as_image"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/drive/v1/medias/:file_token/download",
+              "name": "下载素材",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/media/download"
+            },
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/board/v1/whiteboards/:whiteboard_id/download_as_image",
+              "name": "获取画板缩略图片",
+              "url": "https://open.feishu.cn/document/ukTMukTMukTM/uUDN04SN0QjL1QDN/board-v1/whiteboard/download_as_image"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tool": "feishu_doc_comments",
+      "category": "doc",
+      "transport": "oapi",
+      "auth": "user",
+      "source": "src/tools/oapi/drive/doc-comments.ts",
+      "operations": [
+        {
+          "name": "list",
+          "summary": "List whole-document comments and replies.",
+          "backend": [
+            "GET:/open-apis/drive/v1/files/:file_token/comments",
+            "GET:/open-apis/drive/v1/files/:file_token/comments/:comment_id/replies"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/drive/v1/files/:file_token/comments",
+              "name": "获取云文档所有评论",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/file-comment/list"
+            },
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/drive/v1/files/:file_token/comments/:comment_id/replies",
+              "name": "获取回复信息",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/file-comment-reply/list"
+            }
+          ]
+        },
+        {
+          "name": "create",
+          "summary": "Create a whole-document comment.",
+          "backend": [
+            "POST:/open-apis/drive/v1/files/:file_token/comments"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "POST:/open-apis/drive/v1/files/:file_token/comments",
+              "name": "添加全文评论",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/file-comment/create"
+            }
+          ]
+        },
+        {
+          "name": "patch",
+          "summary": "Resolve or reopen a comment.",
+          "backend": [
+            "PATCH:/open-apis/drive/v1/files/:file_token/comments/:comment_id"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "PATCH:/open-apis/drive/v1/files/:file_token/comments/:comment_id",
+              "name": "解决/恢复评论",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/file-comment/patch"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tool": "feishu_wiki_space",
+      "category": "wiki",
+      "transport": "oapi",
+      "auth": "user",
+      "source": "src/tools/oapi/wiki/space.ts",
+      "operations": [
+        {
+          "name": "list",
+          "summary": "List wiki spaces.",
+          "backend": [
+            "GET:/open-apis/wiki/v2/spaces"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/wiki/v2/spaces",
+              "name": "获取知识空间列表",
+              "url": "https://open.feishu.cn/document/ukTMukTMukTM/uUDN04SN0QjL1QDN/wiki-v2/space/list"
+            }
+          ]
+        },
+        {
+          "name": "get",
+          "summary": "Get a wiki space.",
+          "backend": [
+            "GET:/open-apis/wiki/v2/spaces/:space_id"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/wiki/v2/spaces/:space_id",
+              "name": "获取知识空间信息",
+              "url": "https://open.feishu.cn/document/ukTMukTMukTM/uUDN04SN0QjL1QDN/wiki-v2/space/get"
+            }
+          ]
+        },
+        {
+          "name": "create",
+          "summary": "Create a wiki space.",
+          "backend": [
+            "POST:/open-apis/wiki/v2/spaces"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "POST:/open-apis/wiki/v2/spaces",
+              "name": "创建知识空间",
+              "url": "https://open.feishu.cn/document/ukTMukTMukTM/uUDN04SN0QjL1QDN/wiki-v2/space/create"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tool": "feishu_wiki_space_node",
+      "category": "wiki",
+      "transport": "oapi",
+      "auth": "user",
+      "source": "src/tools/oapi/wiki/space-node.ts",
+      "operations": [
+        {
+          "name": "list",
+          "summary": "List wiki nodes.",
+          "backend": [
+            "GET:/open-apis/wiki/v2/spaces/:space_id/nodes"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/wiki/v2/spaces/:space_id/nodes",
+              "name": "获取知识空间子节点列表",
+              "url": "https://open.feishu.cn/document/ukTMukTMukTM/uUDN04SN0QjL1QDN/wiki-v2/space-node/list"
+            }
+          ]
+        },
+        {
+          "name": "get",
+          "summary": "Resolve a wiki node token to the underlying object.",
+          "backend": [
+            "GET:/open-apis/wiki/v2/spaces/get_node"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/wiki/v2/spaces/get_node",
+              "name": "获取知识空间节点信息",
+              "url": "https://open.feishu.cn/document/ukTMukTMukTM/uUDN04SN0QjL1QDN/wiki-v2/space/get_node"
+            }
+          ]
+        },
+        {
+          "name": "create",
+          "summary": "Create a wiki node.",
+          "backend": [
+            "POST:/open-apis/wiki/v2/spaces/:space_id/nodes"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "POST:/open-apis/wiki/v2/spaces/:space_id/nodes",
+              "name": "创建知识空间节点",
+              "url": "https://open.feishu.cn/document/ukTMukTMukTM/uUDN04SN0QjL1QDN/wiki-v2/space-node/create"
+            }
+          ]
+        },
+        {
+          "name": "move",
+          "summary": "Move a wiki node.",
+          "backend": [
+            "POST:/open-apis/wiki/v2/spaces/:space_id/nodes/:node_token/move"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "POST:/open-apis/wiki/v2/spaces/:space_id/nodes/:node_token/move",
+              "name": "移动知识空间节点",
+              "url": "https://open.feishu.cn/document/ukTMukTMukTM/uUDN04SN0QjL1QDN/wiki-v2/space-node/move"
+            }
+          ]
+        },
+        {
+          "name": "copy",
+          "summary": "Copy a wiki node.",
+          "backend": [
+            "POST:/open-apis/wiki/v2/spaces/:space_id/nodes/:node_token/copy"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "POST:/open-apis/wiki/v2/spaces/:space_id/nodes/:node_token/copy",
+              "name": "创建知识空间节点副本",
+              "url": "https://open.feishu.cn/document/ukTMukTMukTM/uUDN04SN0QjL1QDN/wiki-v2/space-node/copy"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tool": "feishu_search_doc_wiki",
+      "category": "search",
+      "transport": "oapi",
+      "auth": "user",
+      "source": "src/tools/oapi/search/doc-search.ts",
+      "operations": [
+        {
+          "name": "search",
+          "summary": "Search docs and wiki nodes.",
+          "backend": [
+            "POST:/open-apis/search/v2/doc_wiki/search"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "POST:/open-apis/search/v2/doc_wiki/search",
+              "name": "搜索文档",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/search-v2/doc_wiki/search"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tool": "feishu_sheet",
+      "category": "sheet",
+      "transport": "oapi",
+      "auth": "user",
+      "source": "src/tools/oapi/sheets/sheet.ts",
+      "operations": [
+        {
+          "name": "info",
+          "summary": "Get spreadsheet and sheet metadata.",
+          "backend": [
+            "GET:/open-apis/sheets/v3/spreadsheets/:spreadsheet_token",
+            "GET:/open-apis/sheets/v3/spreadsheets/:spreadsheet_token/sheets/query"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/sheets/v3/spreadsheets/:spreadsheet_token",
+              "name": "获取电子表格信息",
+              "url": "https://open.feishu.cn/document/ukTMukTMukTM/uUDN04SN0QjL1QDN/sheets-v3/spreadsheet/get"
+            },
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/sheets/v3/spreadsheets/:spreadsheet_token/sheets/query",
+              "name": "获取工作表",
+              "url": "https://open.feishu.cn/document/ukTMukTMukTM/uUDN04SN0QjL1QDN/sheets-v3/spreadsheet-sheet/query"
+            }
+          ]
+        },
+        {
+          "name": "read",
+          "summary": "Read cell values.",
+          "backend": [
+            "GET:/open-apis/sheets/v2/spreadsheets/:spreadsheet_token/values/:range"
+          ]
+        },
+        {
+          "name": "write",
+          "summary": "Overwrite cell values.",
+          "backend": [
+            "PUT:/open-apis/sheets/v2/spreadsheets/:spreadsheet_token/values"
+          ]
+        },
+        {
+          "name": "append",
+          "summary": "Append rows.",
+          "backend": [
+            "POST:/open-apis/sheets/v2/spreadsheets/:spreadsheet_token/values_append"
+          ]
+        },
+        {
+          "name": "find",
+          "summary": "Find cells.",
+          "backend": [
+            "POST:/open-apis/sheets/v3/spreadsheets/:spreadsheet_token/sheets/:sheet_id/find"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "POST:/open-apis/sheets/v3/spreadsheets/:spreadsheet_token/sheets/:sheet_id/find",
+              "name": "查找单元格",
+              "url": "https://open.feishu.cn/document/ukTMukTMukTM/uUDN04SN0QjL1QDN/sheets-v3/spreadsheet-sheet/find"
+            }
+          ]
+        },
+        {
+          "name": "create",
+          "summary": "Create a spreadsheet and optionally seed data.",
+          "backend": [
+            "POST:/open-apis/sheets/v3/spreadsheets",
+            "PUT:/open-apis/sheets/v2/spreadsheets/:spreadsheet_token/values"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "POST:/open-apis/sheets/v3/spreadsheets",
+              "name": "创建电子表格",
+              "url": "https://open.feishu.cn/document/ukTMukTMukTM/uUDN04SN0QjL1QDN/sheets-v3/spreadsheet/create"
+            }
+          ]
+        },
+        {
+          "name": "export",
+          "summary": "Export a spreadsheet via drive export task.",
+          "backend": [
+            "POST:/open-apis/drive/v1/export_tasks",
+            "GET:/open-apis/drive/v1/export_tasks/:ticket",
+            "GET:/open-apis/drive/v1/export_tasks/file/:file_token/download"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "POST:/open-apis/drive/v1/export_tasks",
+              "name": "创建导出任务",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/export_task/create"
+            },
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/drive/v1/export_tasks/:ticket",
+              "name": "查询导出任务结果",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/export_task/get"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tool": "feishu_create_doc",
+      "category": "mcp-doc",
+      "transport": "mcp",
+      "auth": "user",
+      "source": "src/tools/mcp/doc/create.ts",
+      "operations": [
+        {
+          "name": "create-doc",
+          "summary": "Create a Feishu doc through remote MCP.",
+          "backend": [
+            "MCP:create-doc"
+          ],
+          "officialLinks": [
+            {
+              "kind": "mcp",
+              "label": "MCP:create-doc",
+              "url": "https://open.feishu.cn/document/mcp_open_tools/developers-call-remote-mcp-server"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tool": "feishu_fetch_doc",
+      "category": "mcp-doc",
+      "transport": "mcp",
+      "auth": "user",
+      "source": "src/tools/mcp/doc/fetch.ts",
+      "operations": [
+        {
+          "name": "fetch-doc",
+          "summary": "Fetch a Feishu doc through remote MCP.",
+          "backend": [
+            "MCP:fetch-doc"
+          ],
+          "officialLinks": [
+            {
+              "kind": "mcp",
+              "label": "MCP:fetch-doc",
+              "url": "https://open.feishu.cn/document/mcp_open_tools/developers-call-remote-mcp-server"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tool": "feishu_update_doc",
+      "category": "mcp-doc",
+      "transport": "mcp",
+      "auth": "user",
+      "source": "src/tools/mcp/doc/update.ts",
+      "operations": [
+        {
+          "name": "update-doc",
+          "summary": "Update a Feishu doc through remote MCP.",
+          "backend": [
+            "MCP:update-doc"
+          ],
+          "officialLinks": [
+            {
+              "kind": "mcp",
+              "label": "MCP:update-doc",
+              "url": "https://open.feishu.cn/document/mcp_open_tools/developers-call-remote-mcp-server"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tool": "feishu_oauth",
+      "category": "auth",
+      "transport": "plugin",
+      "auth": "user",
+      "source": "src/tools/oauth.ts",
+      "operations": [
+        {
+          "name": "revoke",
+          "summary": "Revoke the stored user authorization token.",
+          "backend": [
+            "OAuth revoke (plugin-managed UAT storage)"
+          ]
+        }
+      ]
+    },
+    {
+      "tool": "feishu_oauth_batch_auth",
+      "category": "auth",
+      "transport": "plugin",
+      "auth": "user",
+      "source": "src/tools/oauth-batch-auth.ts",
+      "operations": [
+        {
+          "name": "authorize_all",
+          "summary": "Start device-flow authorization for all app-granted user scopes.",
+          "backend": [
+            "GET:/open-apis/application/v6/applications/:app_id",
+            "OAuth device flow"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/application/v6/applications/:app_id",
+              "name": "获取应用信息",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/application-v6/application/get"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tool": "feishu_ask_user_question",
+      "category": "interaction",
+      "transport": "plugin",
+      "auth": "conversation",
+      "source": "src/tools/ask-user-question.ts",
+      "operations": [
+        {
+          "name": "ask",
+          "summary": "Send an interactive Feishu card to ask follow-up questions.",
+          "backend": [
+            "CardKit message send + callback handling"
+          ]
+        }
+      ]
+    }
+  ],
+  "commands": [
+    {
+      "command": "/feishu_diagnose",
+      "source": "src/commands/index.ts",
+      "summary": "Run plugin diagnostics."
+    },
+    {
+      "command": "/feishu_doctor",
+      "source": "src/commands/index.ts",
+      "summary": "Run the richer Feishu doctor report."
+    },
+    {
+      "command": "/feishu_auth",
+      "source": "src/commands/index.ts",
+      "summary": "Trigger batch authorization guidance."
+    },
+    {
+      "command": "/feishu start",
+      "source": "src/commands/index.ts",
+      "summary": "Validate plugin configuration."
+    },
+    {
+      "command": "/feishu auth",
+      "source": "src/commands/index.ts",
+      "summary": "Alias for authorization onboarding."
+    },
+    {
+      "command": "/feishu onboarding",
+      "source": "src/commands/index.ts",
+      "summary": "Alias for authorization onboarding."
+    },
+    {
+      "command": "/feishu doctor",
+      "source": "src/commands/index.ts",
+      "summary": "Run the doctor report via the unified command."
+    },
+    {
+      "command": "/feishu help",
+      "source": "src/commands/index.ts",
+      "summary": "Show help."
+    }
+  ]
+}
