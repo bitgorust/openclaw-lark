@@ -37,11 +37,8 @@ import { getTicket } from './lark-ticket';
 import { callWithUAT } from './uat-client';
 import { getStoredToken } from './token-store';
 import { getAppGrantedScopes, invalidateAppScopeCache, missingScopes } from './app-scope-checker';
-import { getAppOwnerFallback } from './app-owner-fallback';
-import { larkLogger } from './lark-logger';
 import { type ToolActionKey, getRequiredScopes } from './scope-manager';
 import { rawLarkRequest } from './raw-request';
-import { assertOwnerAccessStrict } from './owner-policy';
 import {
   AppScopeCheckFailedError,
   AppScopeMissingError,
@@ -62,8 +59,6 @@ export {
   UserScopeInsufficientError,
 };
 export type { ScopeErrorInfo, AuthHint, TryInvokeResult };
-
-const tcLog = larkLogger('core/tool-client');
 
 // ---------------------------------------------------------------------------
 // Types
@@ -231,22 +226,7 @@ export class ToolClient {
       return this.invokeAsTenant(toolAction, fn, requiredScopes);
     }
 
-    // 5.1 获取 userOpenId，支持兜底逻辑
-    let userOpenId = options?.userOpenId ?? this.senderOpenId;
-
-    // 5.2 兜底逻辑：如果没有 senderOpenId，尝试使用应用所有者
-    if (!userOpenId) {
-      const fallbackUserId = await getAppOwnerFallback(this.account, this.sdk);
-      if (fallbackUserId) {
-        userOpenId = fallbackUserId;
-        tcLog.info(`Using app owner as fallback user`, {
-          toolAction,
-          appId: this.account.appId,
-          ownerId: fallbackUserId,
-        });
-      }
-    }
-
+    const userOpenId = options?.userOpenId ?? this.senderOpenId;
     return this.invokeAsUser(toolAction, fn, requiredScopes, userOpenId, appScopeVerified);
   }
 
@@ -329,9 +309,6 @@ export class ToolClient {
         appId: this.account.appId,
       });
     }
-
-    // Owner 检查：非 owner 用户直接拒绝（从 uat-client.ts 迁移至此）
-    await assertOwnerAccessStrict(this.account, this.sdk, userOpenId);
 
     // 预检：是否有已存储的 token
     const stored = await getStoredToken(this.account.appId, userOpenId);
