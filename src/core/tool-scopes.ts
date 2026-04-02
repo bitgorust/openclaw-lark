@@ -57,6 +57,9 @@
  * 总计：96 个工具动作
  */
 export type ToolActionKey =
+  | 'feishu_attendance_group.get'
+  | 'feishu_attendance_group.list_users'
+  | 'feishu_attendance_shift.query'
   | 'feishu_bitable_app.copy'
   | 'feishu_bitable_app.create'
   | 'feishu_bitable_app.get'
@@ -183,6 +186,9 @@ export type ToolScopeMapping = Record<ToolActionKey, string[]>;
  * @see {@link ToolActionKey} 所有可用的工具动作键
  */
 export const TOOL_SCOPES: ToolScopeMapping = {
+  'feishu_attendance_shift.query': ['attendance:task:readonly'],
+  'feishu_attendance_group.get': ['attendance:rule:readonly'],
+  'feishu_attendance_group.list_users': ['attendance:rule:readonly'],
   'feishu_bitable_app.create': ['base:app:create'],
   'feishu_bitable_app.get': ['base:app:read'],
   'feishu_bitable_app.list': ['space:document:retrieve'],
