@@ -1,7 +1,7 @@
 stages:
   - verify
 
-default:
+.node_job: &node_job
   image: node:22
   before_script:
     - corepack enable
@@ -18,25 +18,30 @@ default:
 
 lint:
   stage: verify
+  <<: *node_job
   script:
     - pnpm lint
 
 format_check:
   stage: verify
+  <<: *node_job
   script:
     - pnpm format:check
 
 typecheck:
   stage: verify
+  <<: *node_job
   script:
     - pnpm typecheck
 
 test:
   stage: verify
+  <<: *node_job
   script:
     - pnpm test
 
 build:
   stage: verify
+  <<: *node_job
   script:
     - pnpm build
