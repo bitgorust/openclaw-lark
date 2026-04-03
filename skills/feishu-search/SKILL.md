@@ -25,7 +25,7 @@ description: |
 
 | 目标类型 | 先用哪个工具搜索 | 典型后续动作 |
 |---------|------------------|-------------|
-| 人员 / 同事 / 审批人 / 参与人 | `feishu_search_user` | 发消息、建任务、建日程 |
+| 人员 / 同事 / 审批人 / 参与人 | `feishu_search_user`，必要时 `feishu_get_user` | 发消息、建任务、建日程 |
 | 群聊 / 项目群 / 部门群 | `feishu_chat` (`action: "search"`) | 读消息、发消息、查看群详情/群成员 |
 | 文档 / Wiki / 表格 / 多维表格 / 云文档资产 | `feishu_search_doc_wiki` | 读取文档、更新文档、浏览云空间/Wiki、操作 Sheet/Bitable |
 
@@ -61,6 +61,8 @@ description: |
 - 查与该人的单聊或消息：转到 `feishu-im-read`
 - 给该人建任务：使用任务工具/skill
 - 邀请该人进日程：使用日历工具/skill
+
+如果已经拿到了明确的 `open_id` / `user_id`，但还需要补充更准的联系人详情，再用 `feishu_get_user`，不要重复用关键词搜索。
 
 ### 2. 目标是“群”时：用 `feishu_chat`
 

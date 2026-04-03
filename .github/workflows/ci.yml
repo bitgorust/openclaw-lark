@@ -34,6 +34,15 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
+      - name: Feishu supported operations check
+        run: pnpm feishu:supported-operations:check
+
+      - name: Feishu canonical metadata check
+        run: pnpm feishu:canonical-metadata:check
+
+      - name: Feishu skill coverage check
+        run: pnpm feishu:skill-coverage:check
+
       - name: Lint
         run: pnpm lint
 

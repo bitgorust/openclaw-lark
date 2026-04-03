@@ -20,6 +20,8 @@ description: |
 
 | 用户意图 | 工具 | action | 必填参数 | 强烈建议 | 常用可选 |
 |---------|------|--------|---------|---------|---------|
+| 列出我可见的日历 | feishu_calendar_calendar | list | - | - | page_token |
+| 查看某个日历详情 | feishu_calendar_calendar | get | calendar_id | - | - |
 | 创建会议 | feishu_calendar_event | create | summary, start_time, end_time | user_open_id | attendees, description, location |
 | 查某时间段日程 | feishu_calendar_event | list | start_time, end_time | - | - |
 | 改日程时间 | feishu_calendar_event | patch | event_id, start_time/end_time | - | summary, description |
@@ -86,6 +88,13 @@ description: |
 1. 先用 `get` action 获取日程详情
 2. 检查返回值中是否有 `recurrence` 字段且不为空
 3. 如果有，则可以调用 `instances` 获取实例列表
+
+### 6. 先分清“日历”还是“日程”
+
+- `feishu_calendar_calendar` 处理的是日历容器本身，例如“我有哪些日历”“这个 calendar_id 是什么日历”
+- `feishu_calendar_event` 处理的是具体日程
+
+当用户先说“看看我的日历列表”“这个会议在哪个日历下面”时，先用 `feishu_calendar_calendar`，不要直接跳到 event 读写。
 
 ---
 

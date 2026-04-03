@@ -4,42 +4,21 @@ This note identifies Feishu capabilities that are available in the official serv
 
 ## Current Baseline
 
-- Existing exposed surface: 36 tools, 100 operations, 8 chat commands.
-- Existing skills cover: bitable, calendar, doc create/fetch/update, IM read, task, troubleshooting.
+- Existing exposed surface: 43 tools, 118 operations, 8 chat commands.
+- Current skill coverage from `docs/references/feishu-skill-coverage.json`: 39/39 eligible tools covered, 114/114 eligible operations covered, 0 unknown tool references.
+- Existing skills cover: approval, attendance, bitable, calendar, search, sheet, task, IM read/send, doc create/fetch/update, doc collaboration, drive/wiki, auth/troubleshooting.
 - Gaps fall into two buckets:
   - Existing tools with no dedicated skill.
   - No tool or skill support yet, despite clear product value and official API coverage.
+- `node-sdk` canonical truth has shifted the priority:
+  - server-side service API coverage is now 100% (`1432/1432`)
+  - canonical generated API inventory is now 1723 methods across 55 projects
+  - event coverage remains 88.73% (`181/204`)
+  - so next-wave skill work should optimize product value and orchestration quality, not hunt for missing server API wrappers first
 
 ## Priority 1: Add New Skill + New Tool
 
-### 1. `feishu-approval`
-
-- Why: approval is a core enterprise workflow and directly matches real user asks such as pending overtime or leave approvals.
-- Suggested first scope:
-  - list my pending approval tasks
-  - get approval instance detail
-  - approve / reject / transfer / rollback
-- Candidate APIs:
-  - `GET:/open-apis/approval/v4/instances`
-  - `GET:/open-apis/approval/v4/instances/:instance_id`
-  - `POST:/open-apis/approval/v4/tasks/approve`
-  - `POST:/open-apis/approval/v4/tasks/reject`
-  - `POST:/open-apis/approval/v4/tasks/transfer`
-  - `POST:/open-apis/approval/v4/instances/specified_rollback`
-
-### 2. `feishu-attendance`
-
-- Why: complements approval well for overtime, leave, shifts, and attendance anomaly scenarios.
-- Suggested first scope:
-  - query user daily shifts
-  - query attendance groups and members
-  - query attendance-related records needed for overtime follow-up
-- Candidate APIs:
-  - `POST:/open-apis/attendance/v1/user_daily_shifts/query`
-  - `GET:/open-apis/attendance/v1/groups/:group_id`
-  - `GET:/open-apis/attendance/v1/groups/:group_id/list_user`
-
-### 3. `feishu-meeting`
+### 1. `feishu-meeting`
 
 - Why: current repo covers calendar, but not video meeting lifecycle or meeting records.
 - Suggested first scope:
@@ -54,7 +33,7 @@ This note identifies Feishu capabilities that are available in the official serv
   - `POST:/open-apis/vc/v1/meetings/search`
   - `GET:/open-apis/vc/v1/notes/:note_id`
 
-### 4. `feishu-mail`
+### 2. `feishu-mail`
 
 - Why: reading and sending email is a common assistant workflow, currently unsupported.
 - Suggested first scope:
@@ -68,55 +47,45 @@ This note identifies Feishu capabilities that are available in the official serv
   - `POST:/open-apis/mail/v1/user_mailboxes/:user_mailbox_id/messages/send`
   - `GET:/open-apis/mail/v1/user_mailboxes/:user_mailbox_id/messages/:message_id/attachments/download_url`
 
-## Priority 2: Add Skill Only on Top of Existing Tools
+## Priority 2: Existing Skill Coverage That Still Needs Depth
 
-### 5. `feishu-sheet`
+### 3. `feishu-auth`
 
-- Reason: [sheet.ts](/data/Workspace/openclaw-lark/src/tools/oapi/sheets/sheet.ts) already supports read/write/append/find/create/export, but there is no dedicated skill.
-- User value: spreadsheet read-write is one of the most common office tasks.
+- Now covered by a dedicated skill, but the next expansion should include:
+  - more explicit tenant-only / dual-mode examples
+  - troubleshooting playbooks keyed by normalized auth errors
+  - better coordination with approval / IM / attendance skills
 
-### 6. `feishu-drive-wiki`
+### 4. `feishu-search`
 
-- Reason: drive and wiki APIs already exist in [file.ts](/data/Workspace/openclaw-lark/src/tools/oapi/drive/file.ts), [space.ts](/data/Workspace/openclaw-lark/src/tools/oapi/wiki/space.ts), and [space-node.ts](/data/Workspace/openclaw-lark/src/tools/oapi/wiki/space-node.ts), but there is no skill that teaches the model how to browse folders, resolve wiki nodes, and move/copy content.
-- Suggested scope:
-  - list folder contents
-  - resolve wiki node to underlying object
-  - copy or move wiki nodes
+- Search already has a dedicated skill, but it should become the common front door for:
+  - people resolution before approval transfer / task assignment / IM send
+  - chat resolution before IM read/send
+  - doc/wiki resolution before sheet/doc/drive flows
 
-### 7. `feishu-doc-collab`
+### 5. `feishu-drive-wiki`
 
-- Reason: comment and media operations already exist, but current document skills focus on create/fetch/update content only.
-- Suggested scope:
-  - list comments
-  - add comments
-  - resolve comment status
-  - download embedded images/files
+- Skill exists, but should absorb more of the current drive + wiki capability surface:
+  - folder browsing
+  - move/copy flows
+  - object-type handoff to downstream skills
 
-### 8. `feishu-im-send`
+### 6. `feishu-doc-collab`
 
-- Reason: IM read has a dedicated skill, but send/reply is only available at tool level through [message.ts](/data/Workspace/openclaw-lark/src/tools/oapi/im/message.ts).
-- Suggested scope:
-  - send direct message
-  - send group message
-  - reply in thread
+- Skill exists, but should expand to cover more comment-resolution and media workflows.
 
-### 9. `feishu-search`
+### 7. `feishu-im-send`
 
-- Reason: user search, chat search, and doc/wiki search exist, but the repository has no unified skill that teaches “find the right person/chat/doc first”.
-- Suggested scope:
-  - search user
-  - search chat
-  - search doc/wiki
-  - then hand off to IM/task/doc flows
+- Skill exists, but must stay aligned with the canonical tenant-only contract for send/reply and document safe targeting patterns.
 
 ## Priority 3: MCP Gaps Worth Filling
 
-### 10. `feishu-list-docs`
+### 8. `feishu-list-docs`
 
 - Why: remote MCP already supports `list-docs`, but the repo only wraps `create-doc`, `fetch-doc`, and `update-doc`.
 - Recommendation: add a thin MCP wrapper first; this is low-risk and immediately useful for doc-set browsing.
 
-### 11. Optional MCP wrappers
+### 9. Optional MCP wrappers
 
 - `get-comments`
 - `add-comments`
@@ -127,12 +96,10 @@ These are lower priority because the repository already has overlapping OAPI cov
 
 ## Recommended Delivery Order
 
-1. `feishu-approval`
-2. `feishu-sheet`
-3. `feishu-drive-wiki`
-4. `feishu-doc-collab`
-5. `feishu-im-send`
-6. `feishu-attendance`
-7. `feishu-meeting`
-8. `feishu-mail`
-9. `feishu-list-docs`
+1. `feishu-meeting`
+2. `feishu-mail`
+3. deepen `feishu-search`
+4. deepen `feishu-drive-wiki`
+5. deepen `feishu-doc-collab`
+6. deepen `feishu-im-send`
+7. `feishu-list-docs`

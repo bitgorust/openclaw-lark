@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -75,17 +76,17 @@ TOOLS = [
     'tool': 'feishu_im_user_message',
     'category': 'im',
     'transport': 'oapi',
-    'auth': 'user',
+    'auth': 'tenant',
     'source': 'src/tools/oapi/im/message.ts',
     'operations': [
       {
         'name': 'send',
-        'summary': 'Send a message to a user or chat.',
+        'summary': 'Send a message to a user or chat (tenant-only).',
         'backend': ['POST:/open-apis/im/v1/messages'],
       },
       {
         'name': 'reply',
-        'summary': 'Reply to a message, optionally in-thread.',
+        'summary': 'Reply to a message, optionally in-thread (tenant-only).',
         'backend': ['POST:/open-apis/im/v1/messages/:message_id/reply'],
       },
     ],
@@ -108,12 +109,12 @@ TOOLS = [
     'tool': 'feishu_im_user_get_messages',
     'category': 'im',
     'transport': 'oapi',
-    'auth': 'user',
+    'auth': 'tenant',
     'source': 'src/tools/oapi/im/message-read.ts',
     'operations': [
       {
         'name': 'list_messages',
-        'summary': 'List chat history for a chat or P2P conversation.',
+        'summary': 'List chat history for a chat or P2P conversation (tenant-only).',
         'backend': [
           'POST:/open-apis/im/v1/chat_p2p/batch_query',
           'GET:/open-apis/im/v1/messages (container_id_type=chat)',
@@ -125,12 +126,12 @@ TOOLS = [
     'tool': 'feishu_im_user_get_thread_messages',
     'category': 'im',
     'transport': 'oapi',
-    'auth': 'user',
+    'auth': 'tenant',
     'source': 'src/tools/oapi/im/message-read.ts',
     'operations': [
       {
         'name': 'list_thread_messages',
-        'summary': 'List messages inside a thread.',
+        'summary': 'List messages inside a thread (tenant-only).',
         'backend': ['GET:/open-apis/im/v1/messages (container_id_type=thread)'],
       },
     ],
@@ -202,7 +203,7 @@ TOOLS = [
       {'name': 'get', 'summary': 'Get an event.', 'backend': ['GET:/open-apis/calendar/v4/calendars/:calendar_id/events/:event_id']},
       {'name': 'patch', 'summary': 'Update an event.', 'backend': ['PATCH:/open-apis/calendar/v4/calendars/:calendar_id/events/:event_id']},
       {'name': 'delete', 'summary': 'Delete an event.', 'backend': ['DELETE:/open-apis/calendar/v4/calendars/:calendar_id/events/:event_id']},
-      {'name': 'search', 'summary': 'Search events.', 'backend': ['GET:/open-apis/calendar/v4/calendars/:calendar_id/events/search']},
+      {'name': 'search', 'summary': 'Search events.', 'backend': ['POST:/open-apis/calendar/v4/calendars/:calendar_id/events/search']},
       {'name': 'reply', 'summary': 'Reply to an invitation.', 'backend': ['POST:/open-apis/calendar/v4/calendars/:calendar_id/events/:event_id/reply']},
       {'name': 'instances', 'summary': 'List recurrence instances.', 'backend': ['GET:/open-apis/calendar/v4/calendars/:calendar_id/events/:event_id/instances']},
       {'name': 'instance_view', 'summary': 'List expanded event instances.', 'backend': ['GET:/open-apis/calendar/v4/calendars/:calendar_id/events/instance_view']},
@@ -227,6 +228,306 @@ TOOLS = [
     'source': 'src/tools/oapi/calendar/freebusy.ts',
     'operations': [
       {'name': 'list', 'summary': 'Batch query free/busy.', 'backend': ['POST:/open-apis/calendar/v4/freebusy/batch']},
+    ],
+  },
+  {
+    'tool': 'feishu_attendance_shift',
+    'category': 'attendance',
+    'transport': 'oapi',
+    'auth': 'tenant',
+    'source': 'src/tools/oapi/attendance/shift.ts',
+    'operations': [
+      {
+        'name': 'query',
+        'summary': 'Query daily shifts for one or more users over a bounded date range (tenant-only).',
+        'backend': ['POST:/open-apis/attendance/v1/user_daily_shifts/query'],
+      },
+    ],
+  },
+  {
+    'tool': 'feishu_attendance_group',
+    'category': 'attendance',
+    'transport': 'oapi',
+    'auth': 'tenant',
+    'source': 'src/tools/oapi/attendance/group.ts',
+    'operations': [
+      {
+        'name': 'get',
+        'summary': 'Get one attendance group by ID.',
+        'backend': ['GET:/open-apis/attendance/v1/groups/:group_id'],
+      },
+      {
+        'name': 'list_users',
+        'auth': 'dual',
+        'summary': 'List users in an attendance group with paging (tenant preferred, user allowed).',
+        'backend': ['GET:/open-apis/attendance/v1/groups/:group_id/list_user'],
+      },
+    ],
+  },
+  {
+    'tool': 'feishu_approval_instance',
+    'category': 'approval',
+    'transport': 'oapi',
+    'auth': 'tenant',
+    'source': 'src/tools/oapi/approval/instance.ts',
+    'operations': [
+      {
+        'name': 'list',
+        'summary': 'List approval instances for an approval definition within a time window (tenant-only).',
+        'backend': ['GET:/open-apis/approval/v4/instances'],
+      },
+      {
+        'name': 'get',
+        'summary': 'Get approval instance details by instance ID (tenant-only).',
+        'backend': ['GET:/open-apis/approval/v4/instances/:instance_id'],
+      },
+    ],
+  },
+  {
+    'tool': 'feishu_approval_task_search',
+    'category': 'approval',
+    'transport': 'oapi',
+    'auth': 'user',
+    'source': 'src/tools/oapi/approval/task-search.ts',
+    'operations': [
+      {
+        'name': 'query',
+        'auth': 'dual',
+        'summary': 'Query approval task queues by topic. Canonical contract is dual-mode; runtime currently prefers user mode.',
+        'backend': ['GET:/open-apis/approval/v4/tasks/query'],
+      },
+      {
+        'name': 'search',
+        'auth': 'tenant',
+        'summary': 'Search approval tasks with structured filters (tenant-only).',
+        'backend': ['POST:/open-apis/approval/v4/tasks/search'],
+      },
+    ],
+  },
+  {
+    'tool': 'feishu_approval_cc',
+    'category': 'approval',
+    'transport': 'oapi',
+    'auth': 'tenant',
+    'source': 'src/tools/oapi/approval/cc-search.ts',
+    'operations': [
+      {
+        'name': 'search',
+        'summary': 'Search approval CC records with structured filters (tenant-only).',
+        'backend': ['POST:/open-apis/approval/v4/instances/search_cc'],
+      },
+    ],
+  },
+  {
+    'tool': 'feishu_approval_comment',
+    'category': 'approval',
+    'transport': 'oapi',
+    'auth': 'tenant',
+    'source': 'src/tools/oapi/approval/comment.ts',
+    'operations': [
+      {
+        'name': 'create',
+        'summary': 'Create or reply to an approval comment (tenant-only).',
+        'backend': ['POST:/open-apis/approval/v4/instances/:instance_id/comments'],
+      },
+      {
+        'name': 'list',
+        'summary': 'List approval comments for an instance. Canonical contract is tenant-only; runtime may fallback from user-preferring flows.',
+        'backend': ['GET:/open-apis/approval/v4/instances/:instance_id/comments'],
+      },
+      {
+        'name': 'delete',
+        'summary': 'Delete one approval comment (tenant-only).',
+        'backend': ['DELETE:/open-apis/approval/v4/instances/:instance_id/comments/:comment_id'],
+      },
+      {
+        'name': 'remove',
+        'summary': 'Remove all approval comments for an instance (tenant-only).',
+        'backend': ['POST:/open-apis/approval/v4/instances/:instance_id/comments/remove'],
+      },
+    ],
+  },
+  {
+    'tool': 'feishu_approval_task',
+    'category': 'approval',
+    'transport': 'oapi',
+    'auth': 'tenant',
+    'source': 'src/tools/oapi/approval/task.ts',
+    'operations': [
+      {
+        'name': 'approve',
+        'summary': 'Approve an approval task (tenant-only).',
+        'backend': ['POST:/open-apis/approval/v4/tasks/approve'],
+      },
+      {
+        'name': 'reject',
+        'summary': 'Reject an approval task (tenant-only).',
+        'backend': ['POST:/open-apis/approval/v4/tasks/reject'],
+      },
+      {
+        'name': 'transfer',
+        'summary': 'Transfer an approval task to another user (tenant-only).',
+        'backend': ['POST:/open-apis/approval/v4/tasks/transfer'],
+      },
+      {
+        'name': 'add_sign',
+        'summary': 'Add signers to an approval instance (tenant-only).',
+        'backend': ['POST:/open-apis/approval/v4/instances/add_sign'],
+      },
+      {
+        'name': 'resubmit',
+        'summary': 'Resubmit an approval task with updated form payload (tenant-only).',
+        'backend': ['POST:/open-apis/approval/v4/tasks/resubmit'],
+      },
+      {
+        'name': 'rollback',
+        'summary': 'Rollback an approval instance to specific approved nodes (tenant-only).',
+        'backend': ['POST:/open-apis/approval/v4/instances/specified_rollback'],
+      },
+    ],
+  },
+  {
+    'tool': 'feishu_meeting_reserve',
+    'category': 'meeting',
+    'transport': 'oapi',
+    'auth': 'user',
+    'source': 'src/tools/oapi/meeting/reserve.ts',
+    'operations': [
+      {
+        'name': 'apply',
+        'auth': 'dual',
+        'summary': 'Create a meeting reservation.',
+        'backend': ['POST:/open-apis/vc/v1/reserves/apply'],
+      },
+      {
+        'name': 'get',
+        'auth': 'dual',
+        'summary': 'Get one meeting reservation.',
+        'backend': ['GET:/open-apis/vc/v1/reserves/:reserve_id'],
+      },
+      {
+        'name': 'update',
+        'auth': 'dual',
+        'summary': 'Update one meeting reservation.',
+        'backend': ['PUT:/open-apis/vc/v1/reserves/:reserve_id'],
+      },
+      {
+        'name': 'delete',
+        'auth': 'dual',
+        'summary': 'Delete one meeting reservation.',
+        'backend': ['DELETE:/open-apis/vc/v1/reserves/:reserve_id'],
+      },
+      {
+        'name': 'get_active_meeting',
+        'auth': 'dual',
+        'summary': 'Resolve the active meeting behind a reservation.',
+        'backend': ['GET:/open-apis/vc/v1/reserves/:reserve_id/get_active_meeting'],
+      },
+    ],
+  },
+  {
+    'tool': 'feishu_meeting',
+    'category': 'meeting',
+    'transport': 'oapi',
+    'auth': 'user',
+    'source': 'src/tools/oapi/meeting/meeting.ts',
+    'operations': [
+      {
+        'name': 'search',
+        'auth': 'user',
+        'summary': 'Search meetings.',
+        'backend': ['POST:/open-apis/vc/v1/meetings/search'],
+      },
+      {
+        'name': 'get',
+        'auth': 'dual',
+        'summary': 'Get one meeting.',
+        'backend': ['GET:/open-apis/vc/v1/meetings/:meeting_id'],
+      },
+      {
+        'name': 'end',
+        'auth': 'user',
+        'summary': 'End one meeting.',
+        'backend': ['PATCH:/open-apis/vc/v1/meetings/:meeting_id/end'],
+      },
+      {
+        'name': 'get_note',
+        'auth': 'user',
+        'summary': 'Get one meeting note.',
+        'backend': ['GET:/open-apis/vc/v1/notes/:note_id'],
+      },
+    ],
+  },
+  {
+    'tool': 'feishu_minutes',
+    'category': 'meeting',
+    'transport': 'oapi',
+    'auth': 'user',
+    'source': 'src/tools/oapi/meeting/minutes.ts',
+    'operations': [
+      {
+        'name': 'get',
+        'auth': 'dual',
+        'summary': 'Get one minute record.',
+        'backend': ['GET:/open-apis/minutes/v1/minutes/:minute_token'],
+      },
+      {
+        'name': 'transcript',
+        'auth': 'dual',
+        'summary': 'Get minute transcript export info.',
+        'backend': ['GET:/open-apis/minutes/v1/minutes/:minute_token/transcript'],
+      },
+      {
+        'name': 'statistics',
+        'auth': 'dual',
+        'summary': 'Get minute statistics.',
+        'backend': ['GET:/open-apis/minutes/v1/minutes/:minute_token/statistics'],
+      },
+      {
+        'name': 'artifacts',
+        'auth': 'dual',
+        'summary': 'List minute artifacts.',
+        'backend': ['GET:/open-apis/minutes/v1/minutes/:minute_token/artifacts'],
+      },
+      {
+        'name': 'media',
+        'auth': 'dual',
+        'summary': 'Get minute media export info.',
+        'backend': ['GET:/open-apis/minutes/v1/minutes/:minute_token/media'],
+      },
+    ],
+  },
+  {
+    'tool': 'feishu_mail_message',
+    'category': 'mail',
+    'transport': 'oapi',
+    'auth': 'user',
+    'source': 'src/tools/oapi/mail/message.ts',
+    'operations': [
+      {
+        'name': 'list',
+        'auth': 'dual',
+        'summary': 'List mailbox messages.',
+        'backend': ['GET:/open-apis/mail/v1/user_mailboxes/:user_mailbox_id/messages'],
+      },
+      {
+        'name': 'get',
+        'auth': 'dual',
+        'summary': 'Get one mailbox message.',
+        'backend': ['GET:/open-apis/mail/v1/user_mailboxes/:user_mailbox_id/messages/:message_id'],
+      },
+      {
+        'name': 'send',
+        'auth': 'user',
+        'summary': 'Send one mailbox message.',
+        'backend': ['POST:/open-apis/mail/v1/user_mailboxes/:user_mailbox_id/messages/send'],
+      },
+      {
+        'name': 'attachment_download_url',
+        'auth': 'dual',
+        'summary': 'Get attachment download URLs for one mailbox message.',
+        'backend': ['GET:/open-apis/mail/v1/user_mailboxes/:user_mailbox_id/messages/:message_id/attachments/download_url'],
+      },
     ],
   },
   {
@@ -290,7 +591,7 @@ TOOLS = [
       {'name': 'create', 'summary': 'Create a Bitable app.', 'backend': ['POST:/open-apis/bitable/v1/apps']},
       {'name': 'get', 'summary': 'Get a Bitable app.', 'backend': ['GET:/open-apis/bitable/v1/apps/:app_token']},
       {'name': 'list', 'summary': 'List Bitable apps via Drive.', 'backend': ['GET:/open-apis/drive/v1/files']},
-      {'name': 'patch', 'summary': 'Update a Bitable app.', 'backend': ['PATCH:/open-apis/bitable/v1/apps/:app_token']},
+      {'name': 'patch', 'summary': 'Update a Bitable app.', 'backend': ['PUT:/open-apis/bitable/v1/apps/:app_token']},
       {'name': 'copy', 'summary': 'Copy a Bitable app.', 'backend': ['POST:/open-apis/bitable/v1/apps/:app_token/copy']},
     ],
   },
@@ -499,7 +800,7 @@ TOOLS = [
     'tool': 'feishu_oauth_batch_auth',
     'category': 'auth',
     'transport': 'plugin',
-    'auth': 'user',
+    'auth': 'tenant',
     'source': 'src/tools/oauth-batch-auth.ts',
     'operations': [
       {'name': 'authorize_all', 'summary': 'Start device-flow authorization for all app-granted user scopes.', 'backend': ['GET:/open-apis/application/v6/applications/:app_id', 'OAuth device flow']},
@@ -605,7 +906,11 @@ def build_payload() -> dict:
   api_index = load_server_api_index()
   tools = json.loads(json.dumps(TOOLS))
   for tool in tools:
+    operation_auth_modes = sorted({operation.get('auth', tool['auth']) for operation in tool['operations']})
+    tool['operationAuthModes'] = operation_auth_modes
+    tool['hasMixedOperationAuth'] = len(operation_auth_modes) > 1
     for operation in tool['operations']:
+      operation['auth'] = operation.get('auth', tool['auth'])
       links = []
       for backend in operation['backend']:
         links.extend(build_links_for_backend(backend, api_index))
@@ -656,8 +961,11 @@ def render_markdown(payload: dict) -> str:
   lines.append('| Tool | Category | Transport | Auth | Operations | Source |')
   lines.append('|---|---|---|---|---:|---|')
   for tool in payload['tools']:
+    tool_auth_label = tool['auth']
+    if tool.get('hasMixedOperationAuth'):
+      tool_auth_label = f"{tool_auth_label} (mixed by operation)"
     lines.append(
-      f"| `{tool['tool']}` | {tool['category']} | {tool['transport']} | {tool['auth']} | {len(tool['operations'])} | `{tool['source']}` |"
+      f"| `{tool['tool']}` | {tool['category']} | {tool['transport']} | {tool_auth_label} | {len(tool['operations'])} | `{tool['source']}` |"
     )
   lines.append('')
   for tool in payload['tools']:
@@ -666,17 +974,20 @@ def render_markdown(payload: dict) -> str:
     lines.append(f"- Category: `{tool['category']}`")
     lines.append(f"- Transport: `{tool['transport']}`")
     lines.append(f"- Auth: `{tool['auth']}`")
+    if tool.get('hasMixedOperationAuth'):
+      formatted_auths = ', '.join(f"`{auth}`" for auth in tool['operationAuthModes'])
+      lines.append(f"- Operation auth modes: {formatted_auths}")
     lines.append(f"- Source: `{tool['source']}`")
     lines.append('')
-    lines.append('| Operation | Summary | Backend | Official Docs |')
-    lines.append('|---|---|---|---|')
+    lines.append('| Operation | Auth | Summary | Backend | Official Docs |')
+    lines.append('|---|---|---|---|---|')
     for op in tool['operations']:
       backend = '<br>'.join(op['backend'])
       links = '<br>'.join(
         f"[{link.get('name') or link['label']}]({link['url']})"
         for link in op.get('officialLinks', [])
       ) or '-'
-      lines.append(f"| `{op['name']}` | {op['summary']} | `{backend}` | {links} |")
+      lines.append(f"| `{op['name']}` | `{op['auth']}` | {op['summary']} | `{backend}` | {links} |")
     lines.append('')
   lines.append('## Chat Commands')
   lines.append('')
@@ -693,11 +1004,41 @@ def render_markdown(payload: dict) -> str:
   return '\n'.join(lines)
 
 
+def normalize_payload_for_comparison(payload: dict | None) -> dict | None:
+  if payload is None:
+    return None
+  normalized = dict(payload)
+  normalized.pop('generatedAt', None)
+  return normalized
+
+
 def main() -> int:
   payload = build_payload()
+  json_text = json.dumps(payload, ensure_ascii=False, indent=2) + '\n'
+  md_text = render_markdown(payload) + '\n'
+  check = '--check' in sys.argv[1:]
+
+  if check:
+    json_current = json.loads(OUT_JSON.read_text(encoding='utf-8')) if OUT_JSON.exists() else None
+    md_current = OUT_MD.read_text(encoding='utf-8') if OUT_MD.exists() else None
+    changed = []
+    if normalize_payload_for_comparison(json_current) != normalize_payload_for_comparison(payload):
+      changed.append(str(OUT_JSON.relative_to(ROOT)))
+    if md_current != md_text:
+      changed.append(str(OUT_MD.relative_to(ROOT)))
+
+    if changed:
+      print('feishu supported-operations artifacts are out of date:')
+      for item in changed:
+        print(f'- {item}')
+      return 1
+
+    print('feishu supported-operations artifacts are up to date')
+    return 0
+
   OUT_JSON.parent.mkdir(parents=True, exist_ok=True)
-  OUT_JSON.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
-  OUT_MD.write_text(render_markdown(payload) + '\n', encoding='utf-8')
+  OUT_JSON.write_text(json_text, encoding='utf-8')
+  OUT_MD.write_text(md_text, encoding='utf-8')
   print(f'wrote {OUT_JSON.relative_to(ROOT)}')
   print(f'wrote {OUT_MD.relative_to(ROOT)}')
   return 0

@@ -1,6 +1,6 @@
 {
   "name": "@larksuite/openclaw-lark",
-  "version": "2026.4.1-lh.2",
+  "version": "2026.4.1",
   "description": "OpenClaw Lark/Feishu channel plugin",
   "type": "module",
   "exports": {
@@ -30,6 +30,12 @@
   },
   "scripts": {
     "build": "tsdown",
+    "feishu:supported-operations": "python3 scripts/export_feishu_supported_operations.py",
+    "feishu:supported-operations:check": "python3 scripts/export_feishu_supported_operations.py --check",
+    "feishu:canonical-metadata": "node scripts/generate_feishu_canonical_metadata.mjs",
+    "feishu:canonical-metadata:check": "node scripts/generate_feishu_canonical_metadata.mjs --check",
+    "feishu:skill-coverage": "node scripts/generate_feishu_skill_coverage.mjs",
+    "feishu:skill-coverage:check": "node scripts/generate_feishu_skill_coverage.mjs --check",
     "release": "node scripts/release.mjs",
     "test": "vitest run",
     "test:watch": "vitest",

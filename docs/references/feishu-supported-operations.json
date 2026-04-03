@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-02T00:51:06.520041+00:00",
+  "generatedAt": "2026-04-03T08:45:59.928437+00:00",
   "scope": {
     "included": "Registered Feishu-facing tools and chat commands exposed by the plugin entrypoint.",
     "excluded": "Internal helper functions and lower-level channel/outbound APIs not directly registered as tools or commands."
@@ -10,8 +10,8 @@
     "mcpRemoteDocUrl": "https://open.feishu.cn/document/mcp_open_tools/developers-call-remote-mcp-server"
   },
   "totals": {
-    "toolCount": 36,
-    "operationCount": 100,
+    "toolCount": 47,
+    "operationCount": 136,
     "commandCount": 8
   },
   "tools": [
@@ -29,6 +29,7 @@
             "GET:/open-apis/authen/v1/user_info",
             "GET:/open-apis/contact/v3/users/:user_id"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -44,7 +45,11 @@
             }
           ]
         }
-      ]
+      ],
+      "operationAuthModes": [
+        "user"
+      ],
+      "hasMixedOperationAuth": false
     },
     {
       "tool": "feishu_search_user",
@@ -59,6 +64,7 @@
           "backend": [
             "GET:/open-apis/search/v1/user"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -68,7 +74,11 @@
             }
           ]
         }
-      ]
+      ],
+      "operationAuthModes": [
+        "user"
+      ],
+      "hasMixedOperationAuth": false
     },
     {
       "tool": "feishu_chat",
@@ -83,6 +93,7 @@
           "backend": [
             "GET:/open-apis/im/v1/chats/search"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -98,6 +109,7 @@
           "backend": [
             "GET:/open-apis/im/v1/chats/:chat_id"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -107,7 +119,11 @@
             }
           ]
         }
-      ]
+      ],
+      "operationAuthModes": [
+        "user"
+      ],
+      "hasMixedOperationAuth": false
     },
     {
       "tool": "feishu_chat_members",
@@ -122,6 +138,7 @@
           "backend": [
             "GET:/open-apis/im/v1/chats/:chat_id/members"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -131,21 +148,26 @@
             }
           ]
         }
-      ]
+      ],
+      "operationAuthModes": [
+        "user"
+      ],
+      "hasMixedOperationAuth": false
     },
     {
       "tool": "feishu_im_user_message",
       "category": "im",
       "transport": "oapi",
-      "auth": "user",
+      "auth": "tenant",
       "source": "src/tools/oapi/im/message.ts",
       "operations": [
         {
           "name": "send",
-          "summary": "Send a message to a user or chat.",
+          "summary": "Send a message to a user or chat (tenant-only).",
           "backend": [
             "POST:/open-apis/im/v1/messages"
           ],
+          "auth": "tenant",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -157,10 +179,11 @@
         },
         {
           "name": "reply",
-          "summary": "Reply to a message, optionally in-thread.",
+          "summary": "Reply to a message, optionally in-thread (tenant-only).",
           "backend": [
             "POST:/open-apis/im/v1/messages/:message_id/reply"
           ],
+          "auth": "tenant",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -170,7 +193,11 @@
             }
           ]
         }
-      ]
+      ],
+      "operationAuthModes": [
+        "tenant"
+      ],
+      "hasMixedOperationAuth": false
     },
     {
       "tool": "feishu_im_user_fetch_resource",
@@ -185,6 +212,7 @@
           "backend": [
             "GET:/open-apis/im/v1/messages/:message_id/resources/:file_key"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -194,22 +222,27 @@
             }
           ]
         }
-      ]
+      ],
+      "operationAuthModes": [
+        "user"
+      ],
+      "hasMixedOperationAuth": false
     },
     {
       "tool": "feishu_im_user_get_messages",
       "category": "im",
       "transport": "oapi",
-      "auth": "user",
+      "auth": "tenant",
       "source": "src/tools/oapi/im/message-read.ts",
       "operations": [
         {
           "name": "list_messages",
-          "summary": "List chat history for a chat or P2P conversation.",
+          "summary": "List chat history for a chat or P2P conversation (tenant-only).",
           "backend": [
             "POST:/open-apis/im/v1/chat_p2p/batch_query",
             "GET:/open-apis/im/v1/messages (container_id_type=chat)"
           ],
+          "auth": "tenant",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -219,21 +252,26 @@
             }
           ]
         }
-      ]
+      ],
+      "operationAuthModes": [
+        "tenant"
+      ],
+      "hasMixedOperationAuth": false
     },
     {
       "tool": "feishu_im_user_get_thread_messages",
       "category": "im",
       "transport": "oapi",
-      "auth": "user",
+      "auth": "tenant",
       "source": "src/tools/oapi/im/message-read.ts",
       "operations": [
         {
           "name": "list_thread_messages",
-          "summary": "List messages inside a thread.",
+          "summary": "List messages inside a thread (tenant-only).",
           "backend": [
             "GET:/open-apis/im/v1/messages (container_id_type=thread)"
           ],
+          "auth": "tenant",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -243,7 +281,11 @@
             }
           ]
         }
-      ]
+      ],
+      "operationAuthModes": [
+        "tenant"
+      ],
+      "hasMixedOperationAuth": false
     },
     {
       "tool": "feishu_im_user_search_messages",
@@ -259,9 +301,14 @@
             "POST:/open-apis/search/v2/message/create",
             "POST:/open-apis/im/v1/chats/batch_query",
             "GET:/open-apis/im/v1/messages/mget"
-          ]
+          ],
+          "auth": "user"
         }
-      ]
+      ],
+      "operationAuthModes": [
+        "user"
+      ],
+      "hasMixedOperationAuth": false
     },
     {
       "tool": "feishu_im_bot_image",
@@ -276,6 +323,7 @@
           "backend": [
             "GET:/open-apis/im/v1/messages/:message_id/resources/:file_key"
           ],
+          "auth": "tenant",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -285,7 +333,11 @@
             }
           ]
         }
-      ]
+      ],
+      "operationAuthModes": [
+        "tenant"
+      ],
+      "hasMixedOperationAuth": false
     },
     {
       "tool": "feishu_calendar_calendar",
@@ -300,6 +352,7 @@
           "backend": [
             "GET:/open-apis/calendar/v4/calendars"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -315,6 +368,7 @@
           "backend": [
             "GET:/open-apis/calendar/v4/calendars/:calendar_id"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -330,6 +384,7 @@
           "backend": [
             "POST:/open-apis/calendar/v4/calendars/primary"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -339,7 +394,11 @@
             }
           ]
         }
-      ]
+      ],
+      "operationAuthModes": [
+        "user"
+      ],
+      "hasMixedOperationAuth": false
     },
     {
       "tool": "feishu_calendar_event",
@@ -355,6 +414,7 @@
             "POST:/open-apis/calendar/v4/calendars/:calendar_id/events",
             "POST:/open-apis/calendar/v4/calendars/:calendar_id/events/:event_id/attendees"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -376,6 +436,7 @@
           "backend": [
             "GET:/open-apis/calendar/v4/calendars/:calendar_id/events/instance_view"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -391,6 +452,7 @@
           "backend": [
             "GET:/open-apis/calendar/v4/calendars/:calendar_id/events/:event_id"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -406,6 +468,7 @@
           "backend": [
             "PATCH:/open-apis/calendar/v4/calendars/:calendar_id/events/:event_id"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -421,6 +484,7 @@
           "backend": [
             "DELETE:/open-apis/calendar/v4/calendars/:calendar_id/events/:event_id"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -434,7 +498,16 @@
           "name": "search",
           "summary": "Search events.",
           "backend": [
-            "GET:/open-apis/calendar/v4/calendars/:calendar_id/events/search"
+            "POST:/open-apis/calendar/v4/calendars/:calendar_id/events/search"
+          ],
+          "auth": "user",
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "POST:/open-apis/calendar/v4/calendars/:calendar_id/events/search",
+              "name": "搜索日程",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/calendar-v4/calendar-event/search"
+            }
           ]
         },
         {
@@ -443,6 +516,7 @@
           "backend": [
             "POST:/open-apis/calendar/v4/calendars/:calendar_id/events/:event_id/reply"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -458,6 +532,7 @@
           "backend": [
             "GET:/open-apis/calendar/v4/calendars/:calendar_id/events/:event_id/instances"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -473,6 +548,7 @@
           "backend": [
             "GET:/open-apis/calendar/v4/calendars/:calendar_id/events/instance_view"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -482,7 +558,11 @@
             }
           ]
         }
-      ]
+      ],
+      "operationAuthModes": [
+        "user"
+      ],
+      "hasMixedOperationAuth": false
     },
     {
       "tool": "feishu_calendar_event_attendee",
@@ -497,6 +577,7 @@
           "backend": [
             "POST:/open-apis/calendar/v4/calendars/:calendar_id/events/:event_id/attendees"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -512,6 +593,7 @@
           "backend": [
             "GET:/open-apis/calendar/v4/calendars/:calendar_id/events/:event_id/attendees"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -521,7 +603,11 @@
             }
           ]
         }
-      ]
+      ],
+      "operationAuthModes": [
+        "user"
+      ],
+      "hasMixedOperationAuth": false
     },
     {
       "tool": "feishu_calendar_freebusy",
@@ -536,6 +622,7 @@
           "backend": [
             "POST:/open-apis/calendar/v4/freebusy/batch"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -545,7 +632,734 @@
             }
           ]
         }
-      ]
+      ],
+      "operationAuthModes": [
+        "user"
+      ],
+      "hasMixedOperationAuth": false
+    },
+    {
+      "tool": "feishu_attendance_shift",
+      "category": "attendance",
+      "transport": "oapi",
+      "auth": "tenant",
+      "source": "src/tools/oapi/attendance/shift.ts",
+      "operations": [
+        {
+          "name": "query",
+          "summary": "Query daily shifts for one or more users over a bounded date range (tenant-only).",
+          "backend": [
+            "POST:/open-apis/attendance/v1/user_daily_shifts/query"
+          ],
+          "auth": "tenant",
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "POST:/open-apis/attendance/v1/user_daily_shifts/query",
+              "name": "查询排班表",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/attendance-v1/user_daily_shift/query"
+            }
+          ]
+        }
+      ],
+      "operationAuthModes": [
+        "tenant"
+      ],
+      "hasMixedOperationAuth": false
+    },
+    {
+      "tool": "feishu_attendance_group",
+      "category": "attendance",
+      "transport": "oapi",
+      "auth": "tenant",
+      "source": "src/tools/oapi/attendance/group.ts",
+      "operations": [
+        {
+          "name": "get",
+          "summary": "Get one attendance group by ID.",
+          "backend": [
+            "GET:/open-apis/attendance/v1/groups/:group_id"
+          ],
+          "auth": "tenant",
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/attendance/v1/groups/:group_id",
+              "name": "按 ID 查询考勤组",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/attendance-v1/group/get"
+            }
+          ]
+        },
+        {
+          "name": "list_users",
+          "auth": "dual",
+          "summary": "List users in an attendance group with paging (tenant preferred, user allowed).",
+          "backend": [
+            "GET:/open-apis/attendance/v1/groups/:group_id/list_user"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/attendance/v1/groups/:group_id/list_user",
+              "name": "查询考勤组下所有成员",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/attendance-v1/group/list_user"
+            }
+          ]
+        }
+      ],
+      "operationAuthModes": [
+        "dual",
+        "tenant"
+      ],
+      "hasMixedOperationAuth": true
+    },
+    {
+      "tool": "feishu_approval_instance",
+      "category": "approval",
+      "transport": "oapi",
+      "auth": "tenant",
+      "source": "src/tools/oapi/approval/instance.ts",
+      "operations": [
+        {
+          "name": "list",
+          "summary": "List approval instances for an approval definition within a time window (tenant-only).",
+          "backend": [
+            "GET:/open-apis/approval/v4/instances"
+          ],
+          "auth": "tenant",
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/approval/v4/instances",
+              "name": "批量获取审批实例 ID",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/approval-v4/instance/list"
+            }
+          ]
+        },
+        {
+          "name": "get",
+          "summary": "Get approval instance details by instance ID (tenant-only).",
+          "backend": [
+            "GET:/open-apis/approval/v4/instances/:instance_id"
+          ],
+          "auth": "tenant",
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/approval/v4/instances/:instance_id",
+              "name": "获取单个审批实例详情",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/approval-v4/instance/get"
+            }
+          ]
+        }
+      ],
+      "operationAuthModes": [
+        "tenant"
+      ],
+      "hasMixedOperationAuth": false
+    },
+    {
+      "tool": "feishu_approval_task_search",
+      "category": "approval",
+      "transport": "oapi",
+      "auth": "user",
+      "source": "src/tools/oapi/approval/task-search.ts",
+      "operations": [
+        {
+          "name": "query",
+          "auth": "dual",
+          "summary": "Query approval task queues by topic. Canonical contract is dual-mode; runtime currently prefers user mode.",
+          "backend": [
+            "GET:/open-apis/approval/v4/tasks/query"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/approval/v4/tasks/query",
+              "name": "查询用户的任务列表",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/approval-v4/task/query"
+            }
+          ]
+        },
+        {
+          "name": "search",
+          "auth": "tenant",
+          "summary": "Search approval tasks with structured filters (tenant-only).",
+          "backend": [
+            "POST:/open-apis/approval/v4/tasks/search"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "POST:/open-apis/approval/v4/tasks/search",
+              "name": "查询任务列表",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/approval-v4/task/search"
+            }
+          ]
+        }
+      ],
+      "operationAuthModes": [
+        "dual",
+        "tenant"
+      ],
+      "hasMixedOperationAuth": true
+    },
+    {
+      "tool": "feishu_approval_cc",
+      "category": "approval",
+      "transport": "oapi",
+      "auth": "tenant",
+      "source": "src/tools/oapi/approval/cc-search.ts",
+      "operations": [
+        {
+          "name": "search",
+          "summary": "Search approval CC records with structured filters (tenant-only).",
+          "backend": [
+            "POST:/open-apis/approval/v4/instances/search_cc"
+          ],
+          "auth": "tenant",
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "POST:/open-apis/approval/v4/instances/search_cc",
+              "name": "查询抄送列表",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/approval-v4/instance/search_cc"
+            }
+          ]
+        }
+      ],
+      "operationAuthModes": [
+        "tenant"
+      ],
+      "hasMixedOperationAuth": false
+    },
+    {
+      "tool": "feishu_approval_comment",
+      "category": "approval",
+      "transport": "oapi",
+      "auth": "tenant",
+      "source": "src/tools/oapi/approval/comment.ts",
+      "operations": [
+        {
+          "name": "create",
+          "summary": "Create or reply to an approval comment (tenant-only).",
+          "backend": [
+            "POST:/open-apis/approval/v4/instances/:instance_id/comments"
+          ],
+          "auth": "tenant",
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "POST:/open-apis/approval/v4/instances/:instance_id/comments",
+              "name": "创建评论",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/approval-v4/instance-comment/create"
+            }
+          ]
+        },
+        {
+          "name": "list",
+          "summary": "List approval comments for an instance. Canonical contract is tenant-only; runtime may fallback from user-preferring flows.",
+          "backend": [
+            "GET:/open-apis/approval/v4/instances/:instance_id/comments"
+          ],
+          "auth": "tenant",
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/approval/v4/instances/:instance_id/comments",
+              "name": "获取评论",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/approval-v4/instance-comment/list"
+            }
+          ]
+        },
+        {
+          "name": "delete",
+          "summary": "Delete one approval comment (tenant-only).",
+          "backend": [
+            "DELETE:/open-apis/approval/v4/instances/:instance_id/comments/:comment_id"
+          ],
+          "auth": "tenant",
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "DELETE:/open-apis/approval/v4/instances/:instance_id/comments/:comment_id",
+              "name": "删除评论",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/approval-v4/instance-comment/delete"
+            }
+          ]
+        },
+        {
+          "name": "remove",
+          "summary": "Remove all approval comments for an instance (tenant-only).",
+          "backend": [
+            "POST:/open-apis/approval/v4/instances/:instance_id/comments/remove"
+          ],
+          "auth": "tenant",
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "POST:/open-apis/approval/v4/instances/:instance_id/comments/remove",
+              "name": "清空评论",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/approval-v4/instance-comment/remove"
+            }
+          ]
+        }
+      ],
+      "operationAuthModes": [
+        "tenant"
+      ],
+      "hasMixedOperationAuth": false
+    },
+    {
+      "tool": "feishu_approval_task",
+      "category": "approval",
+      "transport": "oapi",
+      "auth": "tenant",
+      "source": "src/tools/oapi/approval/task.ts",
+      "operations": [
+        {
+          "name": "approve",
+          "summary": "Approve an approval task (tenant-only).",
+          "backend": [
+            "POST:/open-apis/approval/v4/tasks/approve"
+          ],
+          "auth": "tenant",
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "POST:/open-apis/approval/v4/tasks/approve",
+              "name": "同意审批任务",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/approval-v4/task/approve"
+            }
+          ]
+        },
+        {
+          "name": "reject",
+          "summary": "Reject an approval task (tenant-only).",
+          "backend": [
+            "POST:/open-apis/approval/v4/tasks/reject"
+          ],
+          "auth": "tenant",
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "POST:/open-apis/approval/v4/tasks/reject",
+              "name": "拒绝审批任务",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/approval-v4/task/reject"
+            }
+          ]
+        },
+        {
+          "name": "transfer",
+          "summary": "Transfer an approval task to another user (tenant-only).",
+          "backend": [
+            "POST:/open-apis/approval/v4/tasks/transfer"
+          ],
+          "auth": "tenant",
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "POST:/open-apis/approval/v4/tasks/transfer",
+              "name": "转交审批任务",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/approval-v4/task/transfer"
+            }
+          ]
+        },
+        {
+          "name": "add_sign",
+          "summary": "Add signers to an approval instance (tenant-only).",
+          "backend": [
+            "POST:/open-apis/approval/v4/instances/add_sign"
+          ],
+          "auth": "tenant",
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "POST:/open-apis/approval/v4/instances/add_sign",
+              "name": "审批任务加签",
+              "url": "https://open.feishu.cn/document/ukTMukTMukTM/ukTM5UjL5ETO14SOxkTN/approval-task-addsign"
+            }
+          ]
+        },
+        {
+          "name": "resubmit",
+          "summary": "Resubmit an approval task with updated form payload (tenant-only).",
+          "backend": [
+            "POST:/open-apis/approval/v4/tasks/resubmit"
+          ],
+          "auth": "tenant",
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "POST:/open-apis/approval/v4/tasks/resubmit",
+              "name": "重新提交审批任务",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/approval-v4/task/resubmit"
+            }
+          ]
+        },
+        {
+          "name": "rollback",
+          "summary": "Rollback an approval instance to specific approved nodes (tenant-only).",
+          "backend": [
+            "POST:/open-apis/approval/v4/instances/specified_rollback"
+          ],
+          "auth": "tenant",
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "POST:/open-apis/approval/v4/instances/specified_rollback",
+              "name": "退回审批任务",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/approval-v4/instance/specified_rollback"
+            }
+          ]
+        }
+      ],
+      "operationAuthModes": [
+        "tenant"
+      ],
+      "hasMixedOperationAuth": false
+    },
+    {
+      "tool": "feishu_meeting_reserve",
+      "category": "meeting",
+      "transport": "oapi",
+      "auth": "user",
+      "source": "src/tools/oapi/meeting/reserve.ts",
+      "operations": [
+        {
+          "name": "apply",
+          "auth": "dual",
+          "summary": "Create a meeting reservation.",
+          "backend": [
+            "POST:/open-apis/vc/v1/reserves/apply"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "POST:/open-apis/vc/v1/reserves/apply",
+              "name": "预约会议",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/vc-v1/reserve/apply"
+            }
+          ]
+        },
+        {
+          "name": "get",
+          "auth": "dual",
+          "summary": "Get one meeting reservation.",
+          "backend": [
+            "GET:/open-apis/vc/v1/reserves/:reserve_id"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/vc/v1/reserves/:reserve_id",
+              "name": "获取预约",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/vc-v1/reserve/get"
+            }
+          ]
+        },
+        {
+          "name": "update",
+          "auth": "dual",
+          "summary": "Update one meeting reservation.",
+          "backend": [
+            "PUT:/open-apis/vc/v1/reserves/:reserve_id"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "PUT:/open-apis/vc/v1/reserves/:reserve_id",
+              "name": "更新预约",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/vc-v1/reserve/update"
+            }
+          ]
+        },
+        {
+          "name": "delete",
+          "auth": "dual",
+          "summary": "Delete one meeting reservation.",
+          "backend": [
+            "DELETE:/open-apis/vc/v1/reserves/:reserve_id"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "DELETE:/open-apis/vc/v1/reserves/:reserve_id",
+              "name": "删除预约",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/vc-v1/reserve/delete"
+            }
+          ]
+        },
+        {
+          "name": "get_active_meeting",
+          "auth": "dual",
+          "summary": "Resolve the active meeting behind a reservation.",
+          "backend": [
+            "GET:/open-apis/vc/v1/reserves/:reserve_id/get_active_meeting"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/vc/v1/reserves/:reserve_id/get_active_meeting",
+              "name": "获取活跃会议",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/vc-v1/reserve/get_active_meeting"
+            }
+          ]
+        }
+      ],
+      "operationAuthModes": [
+        "dual"
+      ],
+      "hasMixedOperationAuth": false
+    },
+    {
+      "tool": "feishu_meeting",
+      "category": "meeting",
+      "transport": "oapi",
+      "auth": "user",
+      "source": "src/tools/oapi/meeting/meeting.ts",
+      "operations": [
+        {
+          "name": "search",
+          "auth": "user",
+          "summary": "Search meetings.",
+          "backend": [
+            "POST:/open-apis/vc/v1/meetings/search"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "POST:/open-apis/vc/v1/meetings/search",
+              "name": "搜索会议记录",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/vc-v1/meeting/search"
+            }
+          ]
+        },
+        {
+          "name": "get",
+          "auth": "dual",
+          "summary": "Get one meeting.",
+          "backend": [
+            "GET:/open-apis/vc/v1/meetings/:meeting_id"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/vc/v1/meetings/:meeting_id",
+              "name": "获取会议详情",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/vc-v1/meeting/get"
+            }
+          ]
+        },
+        {
+          "name": "end",
+          "auth": "user",
+          "summary": "End one meeting.",
+          "backend": [
+            "PATCH:/open-apis/vc/v1/meetings/:meeting_id/end"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "PATCH:/open-apis/vc/v1/meetings/:meeting_id/end",
+              "name": "结束会议",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/vc-v1/meeting/end"
+            }
+          ]
+        },
+        {
+          "name": "get_note",
+          "auth": "user",
+          "summary": "Get one meeting note.",
+          "backend": [
+            "GET:/open-apis/vc/v1/notes/:note_id"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/vc/v1/notes/:note_id",
+              "name": "获取纪要详情",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/vc-v1/note/get"
+            }
+          ]
+        }
+      ],
+      "operationAuthModes": [
+        "dual",
+        "user"
+      ],
+      "hasMixedOperationAuth": true
+    },
+    {
+      "tool": "feishu_minutes",
+      "category": "meeting",
+      "transport": "oapi",
+      "auth": "user",
+      "source": "src/tools/oapi/meeting/minutes.ts",
+      "operations": [
+        {
+          "name": "get",
+          "auth": "dual",
+          "summary": "Get one minute record.",
+          "backend": [
+            "GET:/open-apis/minutes/v1/minutes/:minute_token"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/minutes/v1/minutes/:minute_token",
+              "name": "获取妙记信息",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/minutes-v1/minute/get"
+            }
+          ]
+        },
+        {
+          "name": "transcript",
+          "auth": "dual",
+          "summary": "Get minute transcript export info.",
+          "backend": [
+            "GET:/open-apis/minutes/v1/minutes/:minute_token/transcript"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/minutes/v1/minutes/:minute_token/transcript",
+              "name": "导出妙记文字记录",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/minutes-v1/minute-transcript/get"
+            }
+          ]
+        },
+        {
+          "name": "statistics",
+          "auth": "dual",
+          "summary": "Get minute statistics.",
+          "backend": [
+            "GET:/open-apis/minutes/v1/minutes/:minute_token/statistics"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/minutes/v1/minutes/:minute_token/statistics",
+              "name": "获取妙记统计数据",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/minutes-v1/minute-statistics/get"
+            }
+          ]
+        },
+        {
+          "name": "artifacts",
+          "auth": "dual",
+          "summary": "List minute artifacts.",
+          "backend": [
+            "GET:/open-apis/minutes/v1/minutes/:minute_token/artifacts"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/minutes/v1/minutes/:minute_token/artifacts",
+              "name": "获取妙记AI产物",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/minutes-v1/minute/artifacts"
+            }
+          ]
+        },
+        {
+          "name": "media",
+          "auth": "dual",
+          "summary": "Get minute media export info.",
+          "backend": [
+            "GET:/open-apis/minutes/v1/minutes/:minute_token/media"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/minutes/v1/minutes/:minute_token/media",
+              "name": "下载妙记音视频文件",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/minutes-v1/minute-media/get"
+            }
+          ]
+        }
+      ],
+      "operationAuthModes": [
+        "dual"
+      ],
+      "hasMixedOperationAuth": false
+    },
+    {
+      "tool": "feishu_mail_message",
+      "category": "mail",
+      "transport": "oapi",
+      "auth": "user",
+      "source": "src/tools/oapi/mail/message.ts",
+      "operations": [
+        {
+          "name": "list",
+          "auth": "dual",
+          "summary": "List mailbox messages.",
+          "backend": [
+            "GET:/open-apis/mail/v1/user_mailboxes/:user_mailbox_id/messages"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/mail/v1/user_mailboxes/:user_mailbox_id/messages",
+              "name": "列出邮件",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/mail-v1/user_mailbox-message/list"
+            }
+          ]
+        },
+        {
+          "name": "get",
+          "auth": "dual",
+          "summary": "Get one mailbox message.",
+          "backend": [
+            "GET:/open-apis/mail/v1/user_mailboxes/:user_mailbox_id/messages/:message_id"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/mail/v1/user_mailboxes/:user_mailbox_id/messages/:message_id",
+              "name": "获取邮件详情",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/mail-v1/user_mailbox-message/get"
+            }
+          ]
+        },
+        {
+          "name": "send",
+          "auth": "user",
+          "summary": "Send one mailbox message.",
+          "backend": [
+            "POST:/open-apis/mail/v1/user_mailboxes/:user_mailbox_id/messages/send"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "POST:/open-apis/mail/v1/user_mailboxes/:user_mailbox_id/messages/send",
+              "name": "发送邮件",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/mail-v1/user_mailbox-message/send"
+            }
+          ]
+        },
+        {
+          "name": "attachment_download_url",
+          "auth": "dual",
+          "summary": "Get attachment download URLs for one mailbox message.",
+          "backend": [
+            "GET:/open-apis/mail/v1/user_mailboxes/:user_mailbox_id/messages/:message_id/attachments/download_url"
+          ],
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "GET:/open-apis/mail/v1/user_mailboxes/:user_mailbox_id/messages/:message_id/attachments/download_url",
+              "name": "获取附件下载链接",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/mail-v1/user_mailbox-message-attachment/download_url"
+            }
+          ]
+        }
+      ],
+      "operationAuthModes": [
+        "dual",
+        "user"
+      ],
+      "hasMixedOperationAuth": true
     },
     {
       "tool": "feishu_task_task",
@@ -560,6 +1374,7 @@
           "backend": [
             "POST:/open-apis/task/v2/tasks"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -575,6 +1390,7 @@
           "backend": [
             "GET:/open-apis/task/v2/tasks/:task_guid"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -590,6 +1406,7 @@
           "backend": [
             "GET:/open-apis/task/v2/tasks"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -605,6 +1422,7 @@
           "backend": [
             "PATCH:/open-apis/task/v2/tasks/:task_guid"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -614,7 +1432,11 @@
             }
           ]
         }
-      ]
+      ],
+      "operationAuthModes": [
+        "user"
+      ],
+      "hasMixedOperationAuth": false
     },
     {
       "tool": "feishu_task_tasklist",
@@ -629,6 +1451,7 @@
           "backend": [
             "POST:/open-apis/task/v2/tasklists"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -644,6 +1467,7 @@
           "backend": [
             "GET:/open-apis/task/v2/tasklists/:tasklist_guid"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -659,6 +1483,7 @@
           "backend": [
             "GET:/open-apis/task/v2/tasklists"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -674,6 +1499,7 @@
           "backend": [
             "GET:/open-apis/task/v2/tasklists/:tasklist_guid/tasks"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -689,6 +1515,7 @@
           "backend": [
             "PATCH:/open-apis/task/v2/tasklists/:tasklist_guid"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -704,6 +1531,7 @@
           "backend": [
             "POST:/open-apis/task/v2/tasklists/:tasklist_guid/add_members"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -713,7 +1541,11 @@
             }
           ]
         }
-      ]
+      ],
+      "operationAuthModes": [
+        "user"
+      ],
+      "hasMixedOperationAuth": false
     },
     {
       "tool": "feishu_task_comment",
@@ -728,6 +1560,7 @@
           "backend": [
             "POST:/open-apis/task/v2/comments"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -743,6 +1576,7 @@
           "backend": [
             "GET:/open-apis/task/v2/comments"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -758,6 +1592,7 @@
           "backend": [
             "GET:/open-apis/task/v2/comments/:comment_id"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -767,7 +1602,11 @@
             }
           ]
         }
-      ]
+      ],
+      "operationAuthModes": [
+        "user"
+      ],
+      "hasMixedOperationAuth": false
     },
     {
       "tool": "feishu_task_subtask",
@@ -782,6 +1621,7 @@
           "backend": [
             "POST:/open-apis/task/v2/tasks/:task_guid/subtasks"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -797,6 +1637,7 @@
           "backend": [
             "GET:/open-apis/task/v2/tasks/:task_guid/subtasks"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -806,7 +1647,11 @@
             }
           ]
         }
-      ]
+      ],
+      "operationAuthModes": [
+        "user"
+      ],
+      "hasMixedOperationAuth": false
     },
     {
       "tool": "feishu_bitable_app",
@@ -821,6 +1666,7 @@
           "backend": [
             "POST:/open-apis/bitable/v1/apps"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -836,6 +1682,7 @@
           "backend": [
             "GET:/open-apis/bitable/v1/apps/:app_token"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -851,6 +1698,7 @@
           "backend": [
             "GET:/open-apis/drive/v1/files"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -864,7 +1712,16 @@
           "name": "patch",
           "summary": "Update a Bitable app.",
           "backend": [
-            "PATCH:/open-apis/bitable/v1/apps/:app_token"
+            "PUT:/open-apis/bitable/v1/apps/:app_token"
+          ],
+          "auth": "user",
+          "officialLinks": [
+            {
+              "kind": "oapi",
+              "label": "PUT:/open-apis/bitable/v1/apps/:app_token",
+              "name": "更新多维表格元数据",
+              "url": "https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/app/update"
+            }
           ]
         },
         {
@@ -873,6 +1730,7 @@
           "backend": [
             "POST:/open-apis/bitable/v1/apps/:app_token/copy"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -882,7 +1740,11 @@
             }
           ]
         }
-      ]
+      ],
+      "operationAuthModes": [
+        "user"
+      ],
+      "hasMixedOperationAuth": false
     },
     {
       "tool": "feishu_bitable_app_table",
@@ -897,6 +1759,7 @@
           "backend": [
             "POST:/open-apis/bitable/v1/apps/:app_token/tables"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -912,6 +1775,7 @@
           "backend": [
             "GET:/open-apis/bitable/v1/apps/:app_token/tables"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -927,6 +1791,7 @@
           "backend": [
             "PATCH:/open-apis/bitable/v1/apps/:app_token/tables/:table_id"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -942,6 +1807,7 @@
           "backend": [
             "POST:/open-apis/bitable/v1/apps/:app_token/tables/batch_create"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -951,7 +1817,11 @@
             }
           ]
         }
-      ]
+      ],
+      "operationAuthModes": [
+        "user"
+      ],
+      "hasMixedOperationAuth": false
     },
     {
       "tool": "feishu_bitable_app_table_record",
@@ -966,6 +1836,7 @@
           "backend": [
             "POST:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/records"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -981,6 +1852,7 @@
           "backend": [
             "POST:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/records/search"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -996,6 +1868,7 @@
           "backend": [
             "PUT:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/records/:record_id"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -1011,6 +1884,7 @@
           "backend": [
             "DELETE:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/records/:record_id"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -1026,6 +1900,7 @@
           "backend": [
             "POST:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/records/batch_create"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -1041,6 +1916,7 @@
           "backend": [
             "POST:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/records/batch_update"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -1056,6 +1932,7 @@
           "backend": [
             "POST:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/records/batch_delete"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -1065,7 +1942,11 @@
             }
           ]
         }
-      ]
+      ],
+      "operationAuthModes": [
+        "user"
+      ],
+      "hasMixedOperationAuth": false
     },
     {
       "tool": "feishu_bitable_app_table_field",
@@ -1080,6 +1961,7 @@
           "backend": [
             "POST:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/fields"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -1095,6 +1977,7 @@
           "backend": [
             "GET:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/fields"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -1110,6 +1993,7 @@
           "backend": [
             "PUT:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/fields/:field_id"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -1125,6 +2009,7 @@
           "backend": [
             "DELETE:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/fields/:field_id"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -1134,7 +2019,11 @@
             }
           ]
         }
-      ]
+      ],
+      "operationAuthModes": [
+        "user"
+      ],
+      "hasMixedOperationAuth": false
     },
     {
       "tool": "feishu_bitable_app_table_view",
@@ -1149,6 +2038,7 @@
           "backend": [
             "POST:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/views"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -1164,6 +2054,7 @@
           "backend": [
             "GET:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/views/:view_id"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -1179,6 +2070,7 @@
           "backend": [
             "GET:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/views"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -1194,6 +2086,7 @@
           "backend": [
             "PATCH:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/views/:view_id"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -1203,7 +2096,11 @@
             }
           ]
         }
-      ]
+      ],
+      "operationAuthModes": [
+        "user"
+      ],
+      "hasMixedOperationAuth": false
     },
     {
       "tool": "feishu_drive_file",
@@ -1218,6 +2115,7 @@
           "backend": [
             "GET:/open-apis/drive/v1/files"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -1233,6 +2131,7 @@
           "backend": [
             "POST:/open-apis/drive/v1/metas/batch_query"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -1248,6 +2147,7 @@
           "backend": [
             "POST:/open-apis/drive/v1/files/:file_token/copy"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -1263,6 +2163,7 @@
           "backend": [
             "POST:/open-apis/drive/v1/files/:file_token/move"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -1278,6 +2179,7 @@
           "backend": [
             "DELETE:/open-apis/drive/v1/files/:file_token"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -1293,6 +2195,7 @@
           "backend": [
             "POST:/open-apis/drive/v1/files/upload_all"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -1308,6 +2211,7 @@
           "backend": [
             "GET:/open-apis/drive/v1/files/:file_token/download"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -1317,7 +2221,11 @@
             }
           ]
         }
-      ]
+      ],
+      "operationAuthModes": [
+        "user"
+      ],
+      "hasMixedOperationAuth": false
     },
     {
       "tool": "feishu_doc_media",
@@ -1334,6 +2242,7 @@
             "POST:/open-apis/drive/v1/medias/upload_all",
             "PATCH:/open-apis/docx/v1/documents/:document_id/blocks/batch_update"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -1362,6 +2271,7 @@
             "GET:/open-apis/drive/v1/medias/:file_token/download",
             "GET:/open-apis/board/v1/whiteboards/:whiteboard_id/download_as_image"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -1377,7 +2287,11 @@
             }
           ]
         }
-      ]
+      ],
+      "operationAuthModes": [
+        "user"
+      ],
+      "hasMixedOperationAuth": false
     },
     {
       "tool": "feishu_doc_comments",
@@ -1393,6 +2307,7 @@
             "GET:/open-apis/drive/v1/files/:file_token/comments",
             "GET:/open-apis/drive/v1/files/:file_token/comments/:comment_id/replies"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -1414,6 +2329,7 @@
           "backend": [
             "POST:/open-apis/drive/v1/files/:file_token/comments"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -1429,6 +2345,7 @@
           "backend": [
             "PATCH:/open-apis/drive/v1/files/:file_token/comments/:comment_id"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -1438,7 +2355,11 @@
             }
           ]
         }
-      ]
+      ],
+      "operationAuthModes": [
+        "user"
+      ],
+      "hasMixedOperationAuth": false
     },
     {
       "tool": "feishu_wiki_space",
@@ -1453,6 +2374,7 @@
           "backend": [
             "GET:/open-apis/wiki/v2/spaces"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -1468,6 +2390,7 @@
           "backend": [
             "GET:/open-apis/wiki/v2/spaces/:space_id"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -1483,6 +2406,7 @@
           "backend": [
             "POST:/open-apis/wiki/v2/spaces"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -1492,7 +2416,11 @@
             }
           ]
         }
-      ]
+      ],
+      "operationAuthModes": [
+        "user"
+      ],
+      "hasMixedOperationAuth": false
     },
     {
       "tool": "feishu_wiki_space_node",
@@ -1507,6 +2435,7 @@
           "backend": [
             "GET:/open-apis/wiki/v2/spaces/:space_id/nodes"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -1522,6 +2451,7 @@
           "backend": [
             "GET:/open-apis/wiki/v2/spaces/get_node"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -1537,6 +2467,7 @@
           "backend": [
             "POST:/open-apis/wiki/v2/spaces/:space_id/nodes"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -1552,6 +2483,7 @@
           "backend": [
             "POST:/open-apis/wiki/v2/spaces/:space_id/nodes/:node_token/move"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -1567,6 +2499,7 @@
           "backend": [
             "POST:/open-apis/wiki/v2/spaces/:space_id/nodes/:node_token/copy"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -1576,7 +2509,11 @@
             }
           ]
         }
-      ]
+      ],
+      "operationAuthModes": [
+        "user"
+      ],
+      "hasMixedOperationAuth": false
     },
     {
       "tool": "feishu_search_doc_wiki",
@@ -1591,6 +2528,7 @@
           "backend": [
             "POST:/open-apis/search/v2/doc_wiki/search"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -1600,7 +2538,11 @@
             }
           ]
         }
-      ]
+      ],
+      "operationAuthModes": [
+        "user"
+      ],
+      "hasMixedOperationAuth": false
     },
     {
       "tool": "feishu_sheet",
@@ -1616,6 +2558,7 @@
             "GET:/open-apis/sheets/v3/spreadsheets/:spreadsheet_token",
             "GET:/open-apis/sheets/v3/spreadsheets/:spreadsheet_token/sheets/query"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -1636,21 +2579,24 @@
           "summary": "Read cell values.",
           "backend": [
             "GET:/open-apis/sheets/v2/spreadsheets/:spreadsheet_token/values/:range"
-          ]
+          ],
+          "auth": "user"
         },
         {
           "name": "write",
           "summary": "Overwrite cell values.",
           "backend": [
             "PUT:/open-apis/sheets/v2/spreadsheets/:spreadsheet_token/values"
-          ]
+          ],
+          "auth": "user"
         },
         {
           "name": "append",
           "summary": "Append rows.",
           "backend": [
             "POST:/open-apis/sheets/v2/spreadsheets/:spreadsheet_token/values_append"
-          ]
+          ],
+          "auth": "user"
         },
         {
           "name": "find",
@@ -1658,6 +2604,7 @@
           "backend": [
             "POST:/open-apis/sheets/v3/spreadsheets/:spreadsheet_token/sheets/:sheet_id/find"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -1674,6 +2621,7 @@
             "POST:/open-apis/sheets/v3/spreadsheets",
             "PUT:/open-apis/sheets/v2/spreadsheets/:spreadsheet_token/values"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -1691,6 +2639,7 @@
             "GET:/open-apis/drive/v1/export_tasks/:ticket",
             "GET:/open-apis/drive/v1/export_tasks/file/:file_token/download"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -1706,7 +2655,11 @@
             }
           ]
         }
-      ]
+      ],
+      "operationAuthModes": [
+        "user"
+      ],
+      "hasMixedOperationAuth": false
     },
     {
       "tool": "feishu_create_doc",
@@ -1721,6 +2674,7 @@
           "backend": [
             "MCP:create-doc"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "mcp",
@@ -1729,7 +2683,11 @@
             }
           ]
         }
-      ]
+      ],
+      "operationAuthModes": [
+        "user"
+      ],
+      "hasMixedOperationAuth": false
     },
     {
       "tool": "feishu_fetch_doc",
@@ -1744,6 +2702,7 @@
           "backend": [
             "MCP:fetch-doc"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "mcp",
@@ -1752,7 +2711,11 @@
             }
           ]
         }
-      ]
+      ],
+      "operationAuthModes": [
+        "user"
+      ],
+      "hasMixedOperationAuth": false
     },
     {
       "tool": "feishu_update_doc",
@@ -1767,6 +2730,7 @@
           "backend": [
             "MCP:update-doc"
           ],
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "mcp",
@@ -1775,7 +2739,11 @@
             }
           ]
         }
-      ]
+      ],
+      "operationAuthModes": [
+        "user"
+      ],
+      "hasMixedOperationAuth": false
     },
     {
       "tool": "feishu_oauth",
@@ -1789,15 +2757,20 @@
           "summary": "Revoke the stored user authorization token.",
           "backend": [
             "OAuth revoke (plugin-managed UAT storage)"
-          ]
+          ],
+          "auth": "user"
         }
-      ]
+      ],
+      "operationAuthModes": [
+        "user"
+      ],
+      "hasMixedOperationAuth": false
     },
     {
       "tool": "feishu_oauth_batch_auth",
       "category": "auth",
       "transport": "plugin",
-      "auth": "user",
+      "auth": "tenant",
       "source": "src/tools/oauth-batch-auth.ts",
       "operations": [
         {
@@ -1807,6 +2780,7 @@
             "GET:/open-apis/application/v6/applications/:app_id",
             "OAuth device flow"
           ],
+          "auth": "tenant",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -1816,7 +2790,11 @@
             }
           ]
         }
-      ]
+      ],
+      "operationAuthModes": [
+        "tenant"
+      ],
+      "hasMixedOperationAuth": false
     },
     {
       "tool": "feishu_ask_user_question",
@@ -1830,9 +2808,14 @@
           "summary": "Send an interactive Feishu card to ask follow-up questions.",
           "backend": [
             "CardKit message send + callback handling"
-          ]
+          ],
+          "auth": "conversation"
         }
-      ]
+      ],
+      "operationAuthModes": [
+        "conversation"
+      ],
+      "hasMixedOperationAuth": false
     }
   ],
   "commands": [

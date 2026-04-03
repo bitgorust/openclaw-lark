@@ -1,12 +1,13 @@
 ---
 name: feishu-task
 description: |
-  飞书任务管理工具,用于创建、查询、更新任务和清单。
+  飞书任务管理工具,用于创建、查询、更新任务和清单，并处理任务评论、子任务。
 
   **当以下情况时使用此 Skill**:
   (1) 需要创建、查询、更新任务
   (2) 需要创建、管理任务清单
   (3) 需要查看任务列表或清单内的任务
+  (3.1) 需要给任务写评论、查看任务评论、创建/查看子任务
   (4) 用户提到"任务"、"待办"、"to-do"、"清单"、"task"
   (5) 需要设置任务负责人、关注人、截止时间
 ---
@@ -19,6 +20,8 @@ description: |
 - ✅ **current_user_id 强烈建议**：从消息上下文的 SenderId 获取（ou_...），工具会自动添加为 follower（如不在 members 中），确保创建者可以编辑任务
 - ✅ **patch/get 必须**：task_guid
 - ✅ **tasklist.tasks 必须**：tasklist_guid
+- ✅ **task comment**：`feishu_task_comment.create/get/list` 都需要 `task_guid`
+- ✅ **subtask**：`feishu_task_subtask.create/list` 都需要 `task_guid`
 - ✅ **完成任务**：completed_at = "2026-02-26 15:00:00"
 - ✅ **反完成（恢复未完成）**：completed_at = "0"
 
@@ -37,6 +40,10 @@ description: |
 | 创建清单 | feishu_task_tasklist | create | name | - | members |
 | 查看清单任务 | feishu_task_tasklist | tasks | tasklist_guid | - | completed |
 | 添加清单成员 | feishu_task_tasklist | add_members | tasklist_guid, members[] | - | - |
+| 给任务写评论 | feishu_task_comment | create | task_guid, content | - | attachments |
+| 查看任务评论 | feishu_task_comment | list/get | task_guid | - | user_id_type |
+| 创建子任务 | feishu_task_subtask | create | task_guid, summary | current_user_id（SenderId） | members, due |
+| 查看子任务 | feishu_task_subtask | list | task_guid | - | completed |
 
 ---
 
@@ -120,6 +127,18 @@ description: |
 | chat（群组） | editor/viewer | 整个群组获得权限 |
 
 **说明**：创建清单时，创建者自动成为 owner，无需在 members 中指定。
+
+### 6. 评论和子任务是任务域的一等能力
+
+- 任务评论使用 `feishu_task_comment`
+- 子任务使用 `feishu_task_subtask`
+- 当用户说“给这个任务补充说明”“在任务下面留个备注”“拆一个子任务出来”时，不要只盯着 `feishu_task_task.patch`
+
+推荐选择：
+
+- 改任务主字段：`feishu_task_task.patch`
+- 追加讨论、进展说明、附件说明：`feishu_task_comment.create`
+- 把大任务拆成可跟踪的子项：`feishu_task_subtask.create`
 
 ---
 

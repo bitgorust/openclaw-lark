@@ -70,7 +70,7 @@ description: |
 |----------|------|------|
 | `docx` | `feishu_fetch_doc` | doc_id = obj_token |
 | `sheet` | `feishu_sheet` | spreadsheet_token = obj_token |
-| `bitable` | `feishu_bitable_*` 系列 | app_token = obj_token |
+| `bitable` | `feishu_bitable_app` / `feishu_bitable_app_table` / `feishu_bitable_app_table_record` / `feishu_bitable_app_table_field` / `feishu_bitable_app_table_view` | `app_token = obj_token` |
 | 其他 | 告知用户暂不支持该类型 | — |
 
 
@@ -90,4 +90,4 @@ description: |
 | 下载图片/文件/画板 | `feishu_doc_media`（action: download） |
 | 解析 wiki token 类型 | `feishu_wiki_space_node`（action: get） |
 | 读写电子表格 | `feishu_sheet` |
-| 操作多维表格 | `feishu_bitable_*` 系列 |
+| 操作多维表格 | `feishu_bitable_app`、`feishu_bitable_app_table`、`feishu_bitable_app_table_record`、`feishu_bitable_app_table_field`、`feishu_bitable_app_table_view` |
