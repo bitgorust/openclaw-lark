@@ -109,9 +109,10 @@ async function main() {
   }
 
   await fs.ensureDir(releaseDir);
-  const packResult = await exec('npm', ['pack', '--json'], { stdio: 'pipe' });
-  const packJson = JSON.parse(packResult.stdout);
-  const packedFile = packJson[0]?.filename;
+  const packedFile = await packPackage({
+    packageName: packageJson.name,
+    version,
+  });
 
   if (!packedFile) {
     throw new Error('npm pack did not return a tarball filename.');
@@ -253,6 +254,53 @@ async function execReleaseCommand(command, options = {}) {
   }
 
   return exec('corepack', ['pnpm', ...args], options);
+}
+
+function parseNpmPackJson(output) {
+  const text = output.trim();
+  if (!text) return null;
+
+  const firstBracket = text.indexOf('[');
+  const lastBracket = text.lastIndexOf(']');
+  if (firstBracket < 0 || lastBracket < firstBracket) return null;
+
+  const candidate = text.slice(firstBracket, lastBracket + 1);
+  return JSON.parse(candidate);
+}
+
+function buildPackedFilename(packageName, version) {
+  return `${packageName.replace(/^@/, '').replace(/\//g, '-')}-${version}.tgz`;
+}
+
+async function packPackage({ packageName, version }) {
+  const expectedFilename = buildPackedFilename(packageName, version);
+  const tarballsBefore = new Set((await fs.readdir(repoRoot)).filter((file) => file.endsWith('.tgz')));
+  const packResult = await exec('npm', ['pack', '--json'], { stdio: 'pipe' });
+
+  try {
+    const packJson = parseNpmPackJson(packResult.stdout);
+    const packedFile = packJson?.[0]?.filename;
+    if (packedFile) {
+      return packedFile;
+    }
+  } catch {
+    // Fallback below handles npm pack output formats that don't preserve JSON stdout reliably.
+  }
+
+  const tarballsAfter = (await fs.readdir(repoRoot)).filter((file) => file.endsWith('.tgz'));
+  const newTarballs = tarballsAfter.filter((file) => !tarballsBefore.has(file));
+  if (newTarballs.length === 1) {
+    return newTarballs[0];
+  }
+
+  if (await fs.pathExists(path.join(repoRoot, expectedFilename))) {
+    return expectedFilename;
+  }
+
+  throw new Error(
+    `npm pack completed but release.mjs could not resolve the tarball filename. ` +
+      `stdout=${JSON.stringify(packResult.stdout)} stderr=${JSON.stringify(packResult.stderr)}`,
+  );
 }
 
 async function writeChecksumFile(filePath) {
