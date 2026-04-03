@@ -23,7 +23,24 @@ import {
 } from '../helpers';
 import { getApprovalAuthPolicy } from './auth-policy';
 
-const APPROVAL_LOCALES = ['zh-CN', 'en-US', 'ja-JP'] as const;
+const APPROVAL_LOCALES = [
+  'zh-CN',
+  'en-US',
+  'ja-JP',
+  'zh-HK',
+  'zh-TW',
+  'de-DE',
+  'es-ES',
+  'fr-FR',
+  'id-ID',
+  'it-IT',
+  'ko-KR',
+  'pt-BR',
+  'th-TH',
+  'vi-VN',
+  'ms-MY',
+  'ru-RU',
+] as const;
 const APPROVAL_USER_ID_TYPES = ['open_id', 'union_id', 'user_id'] as const;
 
 const FeishuApprovalInstanceSchema = Type.Union([
@@ -459,7 +476,7 @@ export function registerFeishuApprovalInstanceTool(api: OpenClawPluginApi): void
                   }>('feishu_approval_instance.get', `/open-apis/approval/v4/instances/${encodeURIComponent(instanceId)}`, {
                     method: 'GET',
                     query: detailQuery,
-                    as: authPolicy.currentExecutionMode,
+                    as: listCall.auth_mode,
                   });
 
                   if (detailRes.code !== undefined && detailRes.code !== 0) {

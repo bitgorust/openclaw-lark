@@ -58,12 +58,12 @@ describe('approval instance helpers', () => {
   it('builds optional get query only when fields are present', () => {
     expect(
       buildApprovalInstanceGetQuery({
-        locale: 'en-US',
+        locale: 'ru-RU',
         user_id: 'ou_applicant',
         user_id_type: 'open_id',
       }),
     ).toEqual({
-      locale: 'en-US',
+      locale: 'ru-RU',
       user_id: 'ou_applicant',
       user_id_type: 'open_id',
     });
@@ -331,6 +331,11 @@ describe('approval auth policy', () => {
       targetAuthMode: 'user-required',
       currentExecutionMode: 'user',
       rationale: 'User task query is explicitly user-oriented and should run with user identity.',
+    });
+    expect(getApprovalAuthPolicy('task-search', 'search')).toEqual({
+      targetAuthMode: 'app-only',
+      currentExecutionMode: 'tenant',
+      rationale: 'Task search is the complex filtered retrieval surface and should currently run with tenant identity.',
     });
     expect(getApprovalAuthPolicy('cc', 'search')).toEqual({
       targetAuthMode: 'user-required',
