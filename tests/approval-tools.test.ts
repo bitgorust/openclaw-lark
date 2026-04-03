@@ -313,39 +313,39 @@ describe('approval error shaping', () => {
 describe('approval auth policy', () => {
   it('tracks target auth mode separately from current execution mode', () => {
     expect(getApprovalAuthPolicy('instance', 'list')).toEqual({
-      targetAuthMode: 'dual-mode',
-      currentExecutionMode: 'user',
-      rationale: 'Instance queries should prefer user identity for personal-context reads, while retaining tenant-mode fallback for bounded scoped lookups.',
+      targetAuthMode: 'app-only',
+      currentExecutionMode: 'tenant',
+      rationale: 'approval instance list/get endpoints are tenant-only in the canonical contract',
     });
     expect(getApprovalAuthPolicy('task', 'approve')).toEqual({
-      targetAuthMode: 'user-required',
-      currentExecutionMode: 'user',
-      rationale: 'Task actions carry acting-user semantics in conversational approval flows and should default to user identity.',
+      targetAuthMode: 'app-only',
+      currentExecutionMode: 'tenant',
+      rationale: 'approval task action endpoints are tenant-only in the canonical contract',
     });
     expect(getApprovalAuthPolicy('task', 'add_sign')).toEqual({
-      targetAuthMode: 'user-required',
-      currentExecutionMode: 'user',
-      rationale: 'Task actions carry acting-user semantics in conversational approval flows and should default to user identity.',
+      targetAuthMode: 'app-only',
+      currentExecutionMode: 'tenant',
+      rationale: 'approval task action endpoints are tenant-only in the canonical contract',
     });
     expect(getApprovalAuthPolicy('task-search', 'query')).toEqual({
-      targetAuthMode: 'user-required',
+      targetAuthMode: 'dual-mode',
       currentExecutionMode: 'user',
-      rationale: 'User task query is explicitly user-oriented and should run with user identity.',
+      rationale: 'approval task query is dual-mode canonically, so user remains the preferred execution mode',
     });
     expect(getApprovalAuthPolicy('task-search', 'search')).toEqual({
       targetAuthMode: 'app-only',
       currentExecutionMode: 'tenant',
-      rationale: 'Task search is the complex filtered retrieval surface and should currently run with tenant identity.',
+      rationale: 'approval task search is tenant-only in the canonical contract',
     });
     expect(getApprovalAuthPolicy('cc', 'search')).toEqual({
-      targetAuthMode: 'user-required',
-      currentExecutionMode: 'user',
-      rationale: 'CC search is a personal inbox-style query and should run with user identity.',
+      targetAuthMode: 'app-only',
+      currentExecutionMode: 'tenant',
+      rationale: 'approval CC search is tenant-only in the canonical contract',
     });
     expect(getApprovalAuthPolicy('comment', 'list')).toEqual({
-      targetAuthMode: 'dual-mode',
-      currentExecutionMode: 'user',
-      rationale: 'Comment list requests should prefer user identity and can fall back to tenant mode for explicit instance reads.',
+      targetAuthMode: 'app-only',
+      currentExecutionMode: 'tenant',
+      rationale: 'approval comment endpoints are tenant-only in the canonical contract',
     });
   });
 });

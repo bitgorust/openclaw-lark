@@ -399,7 +399,7 @@ export function registerFeishuApprovalInstanceTool(api: OpenClawPluginApi): void
       name: 'feishu_approval_instance',
       label: 'Feishu Approval Instance',
       description:
-        '飞书审批实例工具。用于按审批定义和时间窗口列出审批实例、获取单个审批实例详情。Actions: list（列出实例 ID，可选自动展开详情）, get（查看实例详情）。时间参数支持 ISO 8601 / RFC 3339 或 Unix 毫秒时间戳字符串。实例查询会优先以用户身份执行；若当前会话缺少用户授权，则对明确范围的实例查询回退到应用身份。',
+        '飞书审批实例工具。用于按审批定义和时间窗口列出审批实例、获取单个审批实例详情。Actions: list（列出实例 ID，可选自动展开详情）, get（查看实例详情）。时间参数支持 ISO 8601 / RFC 3339 或 Unix 毫秒时间戳字符串。按当前 canonical contract，实例查询主端点以应用身份执行。',
       parameters: FeishuApprovalInstanceSchema,
       async execute(_toolCallId: string, params: unknown) {
         const p = params as FeishuApprovalInstanceParams;

@@ -29,6 +29,11 @@ function getLarkConfig(cfg: ClawdbotConfig): FeishuConfig | undefined {
   return cfg?.channels?.feishu as FeishuConfig | undefined;
 }
 
+function getLarkDefaultAccountSetting(cfg: ClawdbotConfig): string | undefined {
+  const section = getLarkConfig(cfg) as (FeishuConfig & { defaultAccount?: string }) | undefined;
+  return section?.defaultAccount;
+}
+
 /** Return the per-account override map, if present. */
 function getAccountMap(section: FeishuConfig): Record<string, Partial<FeishuConfig>> | undefined {
   return (section as FeishuConfig & { accounts?: Record<string, Partial<FeishuConfig>> }).accounts;
@@ -73,6 +78,10 @@ function toBrand(domain: string | undefined): LarkBrand {
   return (domain as LarkBrand) ?? 'feishu';
 }
 
+function normalizeOptionalAccountId(id: unknown): string | undefined {
+  return typeof id === 'string' ? normalizeAccountId(id) : undefined;
+}
+
 // ---------------------------------------------------------------------------
 // Public API
 // ---------------------------------------------------------------------------
@@ -109,7 +118,17 @@ export function getLarkAccountIds(cfg: ClawdbotConfig): string[] {
 
 /** Return the first (default) account ID. */
 export function getDefaultLarkAccountId(cfg: ClawdbotConfig): string {
-  return getLarkAccountIds(cfg)[0];
+  const preferred = normalizeOptionalAccountId(getLarkDefaultAccountSetting(cfg));
+  if (preferred) {
+    return preferred;
+  }
+
+  const accountIds = getLarkAccountIds(cfg);
+  if (accountIds.includes(DEFAULT_ACCOUNT_ID)) {
+    return DEFAULT_ACCOUNT_ID;
+  }
+
+  return accountIds[0] ?? DEFAULT_ACCOUNT_ID;
 }
 
 /**

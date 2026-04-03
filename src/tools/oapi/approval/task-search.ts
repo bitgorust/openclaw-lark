@@ -295,7 +295,7 @@ export function registerFeishuApprovalTaskSearchTool(api: OpenClawPluginApi): vo
       name: 'feishu_approval_task_search',
       label: 'Feishu Approval Task Search',
       description:
-        '飞书审批任务查询工具。Actions: query（按用户和 topic 查询任务列表）, search（按官方 tasks/search 条件查询任务列表）。该工具是审批域用户态查询能力的基础入口。',
+        '飞书审批任务查询工具。Actions: query（按用户和 topic 查询任务列表）, search（按官方 tasks/search 条件查询任务列表）。其中 query 按 canonical contract 支持 user/tenant 双模式，search 以应用身份执行。',
       parameters: FeishuApprovalTaskSearchSchema,
       async execute(_toolCallId: string, params: unknown) {
         const p = params as FeishuApprovalTaskSearchParams;
@@ -304,7 +304,6 @@ export function registerFeishuApprovalTaskSearchTool(api: OpenClawPluginApi): vo
 
           switch (p.action) {
             case 'query': {
-              const authPolicy = getApprovalAuthPolicy('task-search', 'query');
               const query = buildApprovalTaskQueryRequest(p, client.senderOpenId);
               log.info(`query: topic=${p.topic ?? 'default'}, page_size=${query.page_size ?? 'default'}`);
 
@@ -319,7 +318,6 @@ export function registerFeishuApprovalTaskSearchTool(api: OpenClawPluginApi): vo
               }>('feishu_approval_task_search.query', '/open-apis/approval/v4/tasks/query', {
                 method: 'GET',
                 query,
-                as: authPolicy.currentExecutionMode,
               });
 
               if (res.code && res.code !== 0) {

@@ -4,10 +4,9 @@
  *
  * Approval auth policy.
  *
- * This module separates long-term product auth intent from current execution mode.
- * Some approval actions ultimately need user-mode execution, but the current
- * implementation may still run them in tenant mode until the user-token path is
- * fully wired for that endpoint family.
+ * This file now mirrors the canonical token contract calibrated from
+ * `node-sdk` approval coverage. It remains as a narrow compatibility shim for
+ * approval tools that still ask for family/action level policy objects.
  */
 
 export type ApprovalToolFamily = 'instance' | 'task' | 'task-search' | 'cc' | 'comment';
@@ -37,81 +36,48 @@ export interface ApprovalAuthPolicy {
   rationale: string;
 }
 
-/**
- * Return the target auth model and the current execution mode for an approval action.
- *
- * `targetAuthMode` answers the product question: what identity should this action
- * support in the end state?
- *
- * `currentExecutionMode` answers the implementation question: what identity does
- * the current codepath use right now?
- */
 export function getApprovalAuthPolicy(
   family: ApprovalToolFamily,
   action: ApprovalAction,
 ): ApprovalAuthPolicy {
   if (family === 'instance') {
-    switch (action) {
-      case 'list':
-        return {
-          targetAuthMode: 'dual-mode',
-          currentExecutionMode: 'user',
-          rationale: 'Instance queries should prefer user identity for personal-context reads, while retaining tenant-mode fallback for bounded scoped lookups.',
-        };
-      case 'get':
-        return {
-          targetAuthMode: 'dual-mode',
-          currentExecutionMode: 'user',
-          rationale: 'Explicit instance lookups should prefer user identity when the request originates from a personal workflow, with tenant-mode fallback kept for compatibility.',
-        };
-    }
+    return {
+      targetAuthMode: 'app-only',
+      currentExecutionMode: 'tenant',
+      rationale: 'approval instance list/get endpoints are tenant-only in the canonical contract',
+    };
   }
 
   if (family === 'task-search') {
-    switch (action) {
-      case 'search':
-        return {
-          targetAuthMode: 'app-only',
-          currentExecutionMode: 'tenant',
-          rationale: 'Task search is the complex filtered retrieval surface and should currently run with tenant identity.',
-        };
-      case 'query':
-        return {
-          targetAuthMode: 'user-required',
-          currentExecutionMode: 'user',
-          rationale: 'User task query is explicitly user-oriented and should run with user identity.',
-        };
+    if (action === 'query') {
+      return {
+        targetAuthMode: 'dual-mode',
+        currentExecutionMode: 'user',
+        rationale: 'approval task query is dual-mode canonically, so user remains the preferred execution mode',
+      };
     }
+
+    return {
+      targetAuthMode: 'app-only',
+      currentExecutionMode: 'tenant',
+      rationale: 'approval task search is tenant-only in the canonical contract',
+    };
   }
 
   if (family === 'cc') {
-    switch (action) {
-      case 'search':
-        return {
-          targetAuthMode: 'user-required',
-          currentExecutionMode: 'user',
-          rationale: 'CC search is a personal inbox-style query and should run with user identity.',
-        };
-    }
+    return {
+      targetAuthMode: 'app-only',
+      currentExecutionMode: 'tenant',
+      rationale: 'approval CC search is tenant-only in the canonical contract',
+    };
   }
 
   if (family === 'comment') {
-    switch (action) {
-      case 'list':
-        return {
-          targetAuthMode: 'dual-mode',
-          currentExecutionMode: 'user',
-          rationale: 'Comment list requests should prefer user identity and can fall back to tenant mode for explicit instance reads.',
-        };
-      case 'create':
-      case 'delete':
-      case 'remove':
-        return {
-          targetAuthMode: 'user-required',
-          currentExecutionMode: 'user',
-          rationale: 'Approval comment writes carry acting-user semantics and should run with user identity.',
-        };
-    }
+    return {
+      targetAuthMode: 'app-only',
+      currentExecutionMode: 'tenant',
+      rationale: 'approval comment endpoints are tenant-only in the canonical contract',
+    };
   }
 
   switch (action) {
@@ -122,9 +88,9 @@ export function getApprovalAuthPolicy(
     case 'add_sign':
     case 'resubmit':
       return {
-        targetAuthMode: 'user-required',
-        currentExecutionMode: 'user',
-        rationale: 'Task actions carry acting-user semantics in conversational approval flows and should default to user identity.',
+        targetAuthMode: 'app-only',
+        currentExecutionMode: 'tenant',
+        rationale: 'approval task action endpoints are tenant-only in the canonical contract',
       };
   }
 

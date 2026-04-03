@@ -53,7 +53,7 @@ function createMockApi() {
 
 describe('attendance tool execute path', () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
   });
 
   it('queries attendance shifts via tenant auth', async () => {
@@ -149,7 +149,6 @@ describe('attendance tool execute path', () => {
           employee_type: 'employee_id',
           dept_type: 'open_department_id',
         },
-        as: 'tenant',
       },
     );
 
@@ -206,7 +205,6 @@ describe('attendance tool execute path', () => {
           member_clock_type: '1',
           page_size: '100',
         },
-        as: 'tenant',
       },
     );
 

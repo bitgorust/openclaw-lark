@@ -31,9 +31,9 @@ description: |
 - `feishu_approval_task.rollback` 必填：`task_id`, `reason`, `task_def_key_list`
 - 时间优先使用 ISO 8601 / RFC 3339（带时区），例如 `2026-04-02T09:00:00+08:00`
 - 任务操作默认把当前消息发送者的 `SenderId` 当作 `user_id`
-- `feishu_approval_task_search.query` 面向“待我审批 / 我发起的 / 抄送我的 / 我已审批 / 我已转交”等用户任务分组，默认优先走用户态；如果当前会话缺少用户授权，系统应自动拉起 OAuth 授权链路并在授权后重试
-- `feishu_approval_task_search.search` 面向复杂条件检索，当前明确优先走应用态 / tenant 身份，不要把它当成个人任务分组队列的默认入口
-- 审批抄送、审批任务动作默认优先走用户态；如果当前会话缺少用户授权，系统应自动拉起 OAuth 授权链路并在授权后重试
+- `feishu_approval_task_search.query` 面向“待我审批 / 我发起的 / 抄送我的 / 我已审批 / 我已转交”等任务分组；当前 canonical contract 是 dual-mode，运行时仍优先 user，缺用户授权时可走自动授权或回退
+- `feishu_approval_task_search.search` 面向复杂条件检索，当前按 tenant / app 身份执行，不要把它当成个人任务分组队列的默认入口
+- `feishu_approval_cc`、`feishu_approval_comment`、`feishu_approval_instance`、`feishu_approval_task` 当前都按 tenant / app 身份执行，不应再假设“默认优先用户态”
 - 审批域查询正在从实例查询扩展到任务查询。优先根据用户目标选择 task queue 查询或实例查询，而不是固定只走实例列表
 - 如果用户要处理某一条审批，优先让其提供 `task_id`、`instance_id`、审批链接，或一条具体审批通知消息
 
@@ -109,6 +109,10 @@ description: |
 4. 如果用户同时给了审批定义、标题关键词、时间范围，再考虑切到 `search`
 5. 不要先走 `feishu_approval_instance.list`
 
+补充：
+- `query` 是当前审批域里少数仍保留 user 优先语义的入口
+- 一旦用户目标转成复杂条件检索或后续写操作，通常会切到 tenant-only 端点
+
 ### 2. “我发起的审批”
 
 当用户说：
@@ -136,6 +140,9 @@ description: |
 2. 如果用户明确想看任务队列分组视角，也可以使用 `feishu_approval_task_search.query` 且 `topic: "3"`
 3. 如果用户强调“未读抄送”，默认加 `read_status: "UNREAD"`
 4. 如果用户强调“全部抄送”或“最近抄送”，优先补时间窗或分页，不要误切到实例列表
+
+补充：
+- `feishu_approval_cc.search` 当前是 tenant-only，不要因为“抄送我的”就假设必须 user 态
 
 ### 4. “我已审批” / “我已转交”
 

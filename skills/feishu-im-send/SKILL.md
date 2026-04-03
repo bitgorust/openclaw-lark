@@ -26,7 +26,8 @@ description: |
   - `msg_type`
   - `content`
 - `reply_in_thread=true` 时，回复进入话题
-- 全部以用户身份发送，只能发用户有权限发送的会话
+- `feishu_im_user_message` 当前按 tenant / app 身份执行，不是用户态发送
+- 是否能发出消息由应用能力、会话可达性和对应权限决定，不要把它当成“代当前用户发消息”
 
 ## 快速索引
 

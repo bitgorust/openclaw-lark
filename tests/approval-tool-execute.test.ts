@@ -57,7 +57,7 @@ function createMockApi() {
 
 describe('approval tool execute path', () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
   });
 
   it('lists approval instances and expands details by default', async () => {
@@ -117,7 +117,7 @@ describe('approval tool execute path', () => {
           user_id: 'ou_sender',
           user_id_type: 'open_id',
         },
-        as: 'user',
+        as: 'tenant',
       },
     );
 
@@ -131,12 +131,12 @@ describe('approval tool execute path', () => {
           user_id: 'ou_sender',
           user_id_type: 'open_id',
         },
-        as: 'user',
+        as: 'tenant',
       },
     );
 
     expect(parseToolResult(result)).toMatchObject({
-      auth_mode: 'user',
+      auth_mode: 'tenant',
       auth_fallback: false,
       instance_ids: ['inst_1'],
       has_more: false,
@@ -152,26 +152,17 @@ describe('approval tool execute path', () => {
     });
   });
 
-  it('falls back to tenant mode when user auth is unavailable for bounded instance list queries', async () => {
+  it('lists bounded approval instances directly with tenant-mode auth', async () => {
     const { api, registeredTools } = createMockApi();
     registerFeishuApprovalInstanceTool(api as any);
 
-    mockInvokeByPath
-      .mockRejectedValueOnce(
-        new UserAuthRequiredError('ou_sender', {
-          apiName: 'feishu_approval_instance.list',
-          scopes: ['approval:approval:readonly'],
-          appScopeVerified: true,
-          appId: 'cli_xxx',
-        }),
-      )
-      .mockResolvedValueOnce({
-        code: 0,
-        data: {
-          instance_code_list: ['inst_2'],
-          has_more: false,
-        },
-      });
+    mockInvokeByPath.mockResolvedValueOnce({
+      code: 0,
+      data: {
+        instance_code_list: ['inst_2'],
+        has_more: false,
+      },
+    });
 
     const result = await registeredTools.feishu_approval_instance.execute('call-1b', {
       action: 'list',
@@ -186,14 +177,6 @@ describe('approval tool execute path', () => {
       'feishu_approval_instance.list',
       '/open-apis/approval/v4/instances',
       expect.objectContaining({
-        as: 'user',
-      }),
-    );
-    expect(mockInvokeByPath).toHaveBeenNthCalledWith(
-      2,
-      'feishu_approval_instance.list',
-      '/open-apis/approval/v4/instances',
-      expect.objectContaining({
         as: 'tenant',
       }),
     );
@@ -201,7 +184,7 @@ describe('approval tool execute path', () => {
 
     expect(parseToolResult(result)).toEqual({
       auth_mode: 'tenant',
-      auth_fallback: true,
+      auth_fallback: false,
       instance_ids: ['inst_2'],
       instances: [{ instance_id: 'inst_2' }],
       has_more: false,
@@ -213,19 +196,11 @@ describe('approval tool execute path', () => {
     });
   });
 
-  it('uses tenant mode for detail expansion after list fallback', async () => {
+  it('uses tenant mode for detail expansion after list', async () => {
     const { api, registeredTools } = createMockApi();
     registerFeishuApprovalInstanceTool(api as any);
 
     mockInvokeByPath
-      .mockRejectedValueOnce(
-        new UserAuthRequiredError('ou_sender', {
-          apiName: 'feishu_approval_instance.list',
-          scopes: ['approval:approval:readonly'],
-          appScopeVerified: true,
-          appId: 'cli_xxx',
-        }),
-      )
       .mockResolvedValueOnce({
         code: 0,
         data: {
@@ -252,7 +227,7 @@ describe('approval tool execute path', () => {
     });
 
     expect(mockInvokeByPath).toHaveBeenNthCalledWith(
-      3,
+      2,
       'feishu_approval_instance.get',
       '/open-apis/approval/v4/instances/inst_3',
       {
@@ -267,7 +242,7 @@ describe('approval tool execute path', () => {
 
     expect(parseToolResult(result)).toMatchObject({
       auth_mode: 'tenant',
-      auth_fallback: true,
+      auth_fallback: false,
       instance_ids: ['inst_3'],
       instances: [
         {
@@ -302,23 +277,14 @@ describe('approval tool execute path', () => {
     });
   });
 
-  it('returns shaped approval API errors for get when both user and tenant calls fail with API error', async () => {
+  it('returns shaped approval API errors for get with tenant-mode execution', async () => {
     const { api, registeredTools } = createMockApi();
     registerFeishuApprovalInstanceTool(api as any);
 
-    mockInvokeByPath
-      .mockRejectedValueOnce(
-        new UserAuthRequiredError('ou_sender', {
-          apiName: 'feishu_approval_instance.get',
-          scopes: ['approval:approval:readonly'],
-          appScopeVerified: true,
-          appId: 'cli_xxx',
-        }),
-      )
-      .mockRejectedValueOnce({
-        code: 1390003,
-        msg: 'instance code not found',
-      });
+    mockInvokeByPath.mockRejectedValueOnce({
+      code: 1390003,
+      msg: 'instance code not found',
+    });
 
     const result = await registeredTools.feishu_approval_instance.execute('call-2', {
       action: 'get',
@@ -334,22 +300,13 @@ describe('approval tool execute path', () => {
     });
   });
 
-  it('still returns a shaped approval error when both user and tenant paths hit raw access-token failure', async () => {
+  it('returns a shaped approval error when tenant-mode execution hits raw access-token failure', async () => {
     const { api, registeredTools } = createMockApi();
     registerFeishuApprovalInstanceTool(api as any);
 
-    mockInvokeByPath
-      .mockRejectedValueOnce(
-        new UserAuthRequiredError('ou_sender', {
-          apiName: 'feishu_approval_instance.list',
-          scopes: ['approval:approval:readonly'],
-          appScopeVerified: true,
-          appId: 'cli_xxx',
-        }),
-      )
-      .mockRejectedValueOnce({
-        msg: 'Missing access token for authorization',
-      });
+    mockInvokeByPath.mockRejectedValueOnce({
+      msg: 'Missing access token for authorization',
+    });
 
     const result = await registeredTools.feishu_approval_instance.execute('call-token', {
       action: 'list',
@@ -401,7 +358,7 @@ describe('approval tool execute path', () => {
         query: {
           user_id_type: 'open_id',
         },
-        as: 'user',
+        as: 'tenant',
       },
     );
 
@@ -447,7 +404,7 @@ describe('approval tool execute path', () => {
         query: {
           user_id_type: 'open_id',
         },
-        as: 'user',
+        as: 'tenant',
       },
     );
   });
@@ -488,7 +445,7 @@ describe('approval tool execute path', () => {
           approval_method: 2,
         },
         query: undefined,
-        as: 'user',
+        as: 'tenant',
       },
     );
 
@@ -538,7 +495,7 @@ describe('approval tool execute path', () => {
         query: {
           user_id_type: 'open_id',
         },
-        as: 'user',
+        as: 'tenant',
       },
     );
 
@@ -583,7 +540,7 @@ describe('approval tool execute path', () => {
     expect(parseToolResult(result)).toEqual({ auth: 'started' });
   });
 
-  it('queries user approval tasks with user-mode auth', async () => {
+  it('queries approval tasks without forcing auth mode', async () => {
     const { api, registeredTools } = createMockApi();
     registerFeishuApprovalTaskSearchTool(api as any);
 
@@ -622,7 +579,6 @@ describe('approval tool execute path', () => {
           topic: '1',
           page_size: '20',
         },
-        as: 'user',
       },
     );
 
@@ -762,7 +718,7 @@ describe('approval tool execute path', () => {
     });
   });
 
-  it('searches approval cc list with user-mode auth', async () => {
+  it('searches approval cc list with tenant-mode auth', async () => {
     const { api, registeredTools } = createMockApi();
     registerFeishuApprovalCcTool(api as any);
 
@@ -814,7 +770,7 @@ describe('approval tool execute path', () => {
           user_id: 'ou_sender',
           read_status: 'UNREAD',
         },
-        as: 'user',
+        as: 'tenant',
       },
     );
 
@@ -909,7 +865,7 @@ describe('approval tool execute path', () => {
     });
   });
 
-  it('lists approval comments with user-mode auth', async () => {
+  it('lists approval comments with tenant-mode auth', async () => {
     const { api, registeredTools } = createMockApi();
     registerFeishuApprovalCommentTool(api as any);
 
@@ -945,13 +901,13 @@ describe('approval tool execute path', () => {
           user_id: 'ou_sender',
           page_size: '20',
         },
-        as: 'user',
+        as: 'tenant',
       },
     );
 
     expect(parseToolResult(result)).toEqual({
       action: 'list',
-      auth_mode: 'user',
+      auth_mode: 'tenant',
       auth_fallback: false,
       comments: [
         {
@@ -989,25 +945,16 @@ describe('approval tool execute path', () => {
     });
   });
 
-  it('falls back to tenant mode when approval comment list lacks user auth', async () => {
+  it('lists approval comments directly with tenant-mode auth', async () => {
     const { api, registeredTools } = createMockApi();
     registerFeishuApprovalCommentTool(api as any);
 
-    mockInvokeByPath
-      .mockRejectedValueOnce(
-        new UserAuthRequiredError('ou_sender', {
-          apiName: 'feishu_approval_comment.list',
-          scopes: ['approval:approval:readonly'],
-          appScopeVerified: true,
-          appId: 'cli_xxx',
-        }),
-      )
-      .mockResolvedValueOnce({
-        code: 0,
-        data: {
-          comments: [],
-        },
-      });
+    mockInvokeByPath.mockResolvedValueOnce({
+      code: 0,
+      data: {
+        comments: [],
+      },
+    });
 
     const result = await registeredTools.feishu_approval_comment.execute('call-comment-list-fallback', {
       action: 'list',
@@ -1018,18 +965,12 @@ describe('approval tool execute path', () => {
       1,
       'feishu_approval_comment.list',
       '/open-apis/approval/v4/instances/inst_1/comments',
-      expect.objectContaining({ as: 'user' }),
-    );
-    expect(mockInvokeByPath).toHaveBeenNthCalledWith(
-      2,
-      'feishu_approval_comment.list',
-      '/open-apis/approval/v4/instances/inst_1/comments',
       expect.objectContaining({ as: 'tenant' }),
     );
     expect(parseToolResult(result)).toEqual({
       action: 'list',
       auth_mode: 'tenant',
-      auth_fallback: true,
+      auth_fallback: false,
       comments: [],
       raw: {
         comments: [],
@@ -1037,7 +978,7 @@ describe('approval tool execute path', () => {
     });
   });
 
-  it('creates approval comments with user-mode auth', async () => {
+  it('creates approval comments with tenant-mode auth', async () => {
     const { api, registeredTools } = createMockApi();
     registerFeishuApprovalCommentTool(api as any);
 
@@ -1071,7 +1012,7 @@ describe('approval tool execute path', () => {
           disable_bot: undefined,
           extra: undefined,
         },
-        as: 'user',
+        as: 'tenant',
       },
     );
 

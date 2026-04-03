@@ -212,7 +212,9 @@ export function registerFeishuAttendanceGroupTool(api: OpenClawPluginApi): void 
       name: 'feishu_attendance_group',
       label: 'Feishu Attendance Group',
       description:
-        '【以应用身份】飞书考勤组工具。用于获取单个考勤组详情，或分页列出考勤组成员。Actions: get, list_users。',
+        '飞书考勤组工具。用于获取单个考勤组详情，或分页列出考勤组成员。' +
+        '其中 get 按 canonical contract 为应用身份，list_users 支持 user/tenant 双模式并由共享认证策略自动选择。' +
+        ' Actions: get, list_users。',
       parameters: FeishuAttendanceGroupSchema,
       async execute(_toolCallId: string, params: unknown) {
         const p = params as FeishuAttendanceGroupParams;
@@ -232,7 +234,6 @@ export function registerFeishuAttendanceGroupTool(api: OpenClawPluginApi): void 
               }>('feishu_attendance_group.get', `/open-apis/attendance/v1/groups/${p.group_id}`, {
                 method: 'GET',
                 query,
-                as: 'tenant',
               });
 
               if (res.code && res.code !== 0) throw res;
@@ -254,7 +255,6 @@ export function registerFeishuAttendanceGroupTool(api: OpenClawPluginApi): void 
               }>('feishu_attendance_group.list_users', `/open-apis/attendance/v1/groups/${p.group_id}/list_user`, {
                 method: 'GET',
                 query,
-                as: 'tenant',
               });
 
               if (res.code && res.code !== 0) throw res;

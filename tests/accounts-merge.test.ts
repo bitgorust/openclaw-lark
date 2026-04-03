@@ -4,7 +4,7 @@
 
 import { describe, expect, it } from 'vitest';
 import type { ClawdbotConfig } from 'openclaw/plugin-sdk';
-import { getLarkAccount, getLarkAccountIds } from '../src/core/accounts';
+import { getDefaultLarkAccountId, getLarkAccount, getLarkAccountIds } from '../src/core/accounts';
 
 function makeCfg(feishu: Record<string, unknown>): ClawdbotConfig {
   return { channels: { feishu } } as unknown as ClawdbotConfig;
@@ -211,5 +211,44 @@ describe('mergeAccountConfig – deep merge for nested objects', () => {
     const account = getLarkAccount(cfg, 'a');
     expect(account.config.dmPolicy).toBe('open');
     expect(account.config.historyLimit).toBe(10); // inherited
+  });
+});
+
+describe('getDefaultLarkAccountId', () => {
+  it('prefers channels.feishu.defaultAccount when explicitly configured', () => {
+    const cfg = makeCfg({
+      appId: 'base',
+      appSecret: 'secret',
+      defaultAccount: 'hr',
+      accounts: {
+        hr: { appId: 'hr-app', appSecret: 'hr-secret' },
+        ops: { appId: 'ops-app', appSecret: 'ops-secret' },
+      },
+    });
+
+    expect(getDefaultLarkAccountId(cfg)).toBe('hr');
+  });
+
+  it('falls back to mapped default account when top-level credentials coexist with named accounts', () => {
+    const cfg = makeCfg({
+      appId: 'base',
+      appSecret: 'secret',
+      accounts: {
+        hr: { appId: 'hr-app', appSecret: 'hr-secret' },
+      },
+    });
+
+    expect(getDefaultLarkAccountId(cfg)).toBe('default');
+  });
+
+  it('falls back to the first named account when no mapped default exists', () => {
+    const cfg = makeCfg({
+      accounts: {
+        hr: { appId: 'hr-app', appSecret: 'hr-secret' },
+        ops: { appId: 'ops-app', appSecret: 'ops-secret' },
+      },
+    });
+
+    expect(getDefaultLarkAccountId(cfg)).toBe('hr');
   });
 });

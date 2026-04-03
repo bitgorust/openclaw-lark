@@ -14,7 +14,9 @@ description: |
 
 ## 执行前必读
 
-- 这组工具以应用身份调用，前提是当前飞书应用已开通考勤相关权限
+- 这组工具不是完全同一种认证模式：
+- `feishu_attendance_shift` 和 `feishu_attendance_group` 的 `get` 当前按 tenant / app 身份执行
+- `feishu_attendance_group` 的 `list_users` 支持 user / tenant 双模式，运行时会按共享认证策略自动选择
 - 查询排班时，时间跨度不要超过 30 天
 - 如果用户只给姓名，没有给员工 ID，先用搜索或通讯录能力把人员标识补齐，再查询考勤
 - 考勤结果适合用于“先确认排班，再决定审批/通知/任务安排”，不要跳过核实直接推断
@@ -77,3 +79,4 @@ description: |
 | 返回权限错误 | 应用未开通考勤相关权限 | 让管理员补齐考勤权限 |
 | 考勤组成员不全 | 没有继续翻页 | 检查 `has_more` 和 `page_token` |
 | 结果 ID 不适合后续流程 | `employee_type` 选得不对 | 按后续用途选择更合适的 ID 类型 |
+| 出现 user access token not support | 把 tenant-only 的排班或考勤组详情接口当成用户态接口调用了 | 对 `feishu_attendance_shift` 和 `feishu_attendance_group.get` 保持 tenant 模式，不要强行要求用户授权 |

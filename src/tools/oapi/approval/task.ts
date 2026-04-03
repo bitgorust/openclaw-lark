@@ -270,7 +270,7 @@ export function registerFeishuApprovalTaskTool(api: OpenClawPluginApi): void {
       name: 'feishu_approval_task',
       label: 'Feishu Approval Task',
       description:
-        '飞书审批任务工具。用于同意、拒绝、转交、加签、重新提交或退回审批任务。Actions: approve, reject, transfer, add_sign, resubmit, rollback。默认把当前消息发送者 open_id 作为操作人 user_id，并优先以用户身份执行以匹配真实审批人语义。',
+        '飞书审批任务工具。用于同意、拒绝、转交、加签、重新提交或退回审批任务。Actions: approve, reject, transfer, add_sign, resubmit, rollback。默认把当前消息发送者 open_id 作为操作人 user_id。按当前 canonical contract，任务动作端点以应用身份执行。',
       parameters: FeishuApprovalTaskSchema,
       async execute(_toolCallId: string, params: unknown) {
         const p = params as FeishuApprovalTaskParams;

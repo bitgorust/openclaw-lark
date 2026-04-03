@@ -12,6 +12,7 @@
 
 import type { ClawdbotConfig } from 'openclaw/plugin-sdk';
 import { DEFAULT_ACCOUNT_ID } from 'openclaw/plugin-sdk/account-id';
+import { deleteAccountFromConfigSection, setAccountEnabledInConfigSection } from 'openclaw/plugin-sdk/core';
 import type { FeishuConfig } from '../core/types';
 import { getLarkAccount, getLarkAccountIds } from '../core/accounts';
 import { collectIsolationWarnings } from '../core/security-check';
@@ -50,7 +51,13 @@ function mergeFeishuAccountConfig(
 
 /** Set the `enabled` flag on a Feishu account. */
 export function setAccountEnabled(cfg: ClawdbotConfig, accountId: string, enabled: boolean): ClawdbotConfig {
-  return mergeFeishuAccountConfig(cfg, accountId, { enabled });
+  return setAccountEnabledInConfigSection({
+    cfg,
+    sectionKey: 'feishu',
+    accountId,
+    enabled,
+    allowTopLevel: true,
+  }) as ClawdbotConfig;
 }
 
 /** Apply an arbitrary config patch to a Feishu account. */
@@ -64,36 +71,12 @@ export function applyAccountConfig(
 
 /** Delete a Feishu account entry from the config. */
 export function deleteAccount(cfg: ClawdbotConfig, accountId: string): ClawdbotConfig {
-  const isDefault = !accountId || accountId === DEFAULT_ACCOUNT_ID;
-
-  if (isDefault) {
-    // Delete entire feishu config
-    const next = { ...cfg } as ClawdbotConfig;
-    const nextChannels = { ...cfg.channels };
-    delete (nextChannels as Record<string, unknown>).feishu;
-    if (Object.keys(nextChannels).length > 0) {
-      next.channels = nextChannels;
-    } else {
-      delete next.channels;
-    }
-    return next;
-  }
-
-  // Delete specific account from accounts
-  const feishuCfg = cfg.channels?.feishu as FeishuConfig | undefined;
-  const accounts = { ...feishuCfg?.accounts };
-  delete accounts[accountId];
-
-  return {
-    ...cfg,
-    channels: {
-      ...cfg.channels,
-      feishu: {
-        ...feishuCfg,
-        accounts: Object.keys(accounts).length > 0 ? accounts : undefined,
-      },
-    },
-  };
+  return deleteAccountFromConfigSection({
+    cfg,
+    sectionKey: 'feishu',
+    accountId: !accountId || accountId === DEFAULT_ACCOUNT_ID ? DEFAULT_ACCOUNT_ID : accountId,
+    clearBaseFields: ['appId', 'appSecret', 'encryptKey', 'verificationToken', 'name', 'enabled'],
+  }) as ClawdbotConfig;
 }
 
 /** Collect security warnings for a Feishu account. */

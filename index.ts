@@ -8,8 +8,7 @@
  * doc, wiki, drive, perm, bitable, task, calendar.
  */
 
-import type { OpenClawPluginApi } from 'openclaw/plugin-sdk';
-import { emptyPluginConfigSchema } from 'openclaw/plugin-sdk';
+import { defineChannelPluginEntry, emptyPluginConfigSchema } from 'openclaw/plugin-sdk/core';
 import { feishuPlugin } from './src/channel/plugin';
 import { LarkClient } from './src/core/lark-client';
 import { registerOapiTools } from './src/tools/oapi/index';
@@ -99,15 +98,16 @@ export { isMessageExpired } from './src/messaging/inbound/dedup';
 // Plugin definition
 // ---------------------------------------------------------------------------
 
-const plugin = {
+const plugin = defineChannelPluginEntry({
   id: 'openclaw-lark',
   name: 'Feishu',
   description: 'Lark/Feishu channel plugin with im/doc/wiki/drive/task/calendar tools',
   configSchema: emptyPluginConfigSchema(),
-  register(api: OpenClawPluginApi): void {
-    LarkClient.setRuntime(api.runtime);
-    api.registerChannel({ plugin: feishuPlugin });
-
+  plugin: feishuPlugin,
+  setRuntime: (runtime) => {
+    LarkClient.setRuntime(runtime);
+  },
+  registerFull(api) {
     // ========================================
 
     // Register OAPI tools (calendar, task - using Feishu Open API directly)
@@ -188,6 +188,6 @@ const plugin = {
       emitSecurityWarnings(api.config, api.logger);
     }
   },
-};
+});
 
 export default plugin;

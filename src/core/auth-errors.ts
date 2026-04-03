@@ -85,6 +85,13 @@ export type TryInvokeResult<T> =
   | { ok: false; error: string; authHint: AuthHint }
   | { ok: false; error: string; authHint?: undefined };
 
+export interface CapabilityAuthErrorInfo {
+  toolAction: string;
+  requiredMode: 'user' | 'tenant';
+  requestedMode?: 'user' | 'tenant';
+  canonicalAuthModes: string[];
+}
+
 // ---------------------------------------------------------------------------
 // Error classes
 // ---------------------------------------------------------------------------
@@ -201,5 +208,35 @@ export class UserScopeInsufficientError extends Error {
     this.userOpenId = userOpenId;
     this.apiName = info.apiName;
     this.missingScopes = info.scopes;
+  }
+}
+
+export class TenantOnlyCapabilityError extends Error {
+  readonly toolAction: string;
+  readonly canonicalAuthModes: string[];
+  readonly requestedMode?: 'user' | 'tenant';
+
+  constructor(info: CapabilityAuthErrorInfo) {
+    super(`capability ${info.toolAction} is tenant-only`);
+    this.name = 'TenantOnlyCapabilityError';
+    this.toolAction = info.toolAction;
+    this.canonicalAuthModes = info.canonicalAuthModes;
+    this.requestedMode = info.requestedMode;
+  }
+}
+
+export class UnsupportedAuthModeError extends Error {
+  readonly toolAction: string;
+  readonly requiredMode: 'user' | 'tenant';
+  readonly requestedMode?: 'user' | 'tenant';
+  readonly canonicalAuthModes: string[];
+
+  constructor(info: CapabilityAuthErrorInfo) {
+    super(`capability ${info.toolAction} does not support auth mode ${info.requestedMode ?? 'unknown'}`);
+    this.name = 'UnsupportedAuthModeError';
+    this.toolAction = info.toolAction;
+    this.requiredMode = info.requiredMode;
+    this.requestedMode = info.requestedMode;
+    this.canonicalAuthModes = info.canonicalAuthModes;
   }
 }

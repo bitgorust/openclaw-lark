@@ -16,10 +16,12 @@ description: |
 
 ## 执行前必读
 
-- 该 Skill 中的所有消息读取工具均以用户身份调用，只能读取用户有权限的会话
+- 该 Skill 不是单一认证模式：
+- `feishu_im_user_get_messages` 和 `feishu_im_user_get_thread_messages` 当前按 tenant / app 身份执行
+- `feishu_im_user_search_messages` 和 `feishu_im_user_fetch_resource` 当前按 user 身份执行，需要用户 OAuth 授权
 - `feishu_im_user_get_messages` 中 `open_id` 和 `chat_id` 必须二选一
 - 消息中出现 `thread_id` 时，根据用户意图判断是否用 `feishu_im_user_get_thread_messages` 读取话题内回复
-- 以用户身份读取后，如果消息内容中出现资源标记时，用 `feishu_im_user_fetch_resource` 下载，需要 `message_id` + `file_key` + `type`
+- 当 tenant 态读取结果里出现资源标记，后续若要下载资源，改用 `feishu_im_user_fetch_resource`，它需要用户授权以及 `message_id` + `file_key` + `type`
 
 ---
 
@@ -161,3 +163,4 @@ description: |
 | 话题消息返回为空 | thread_id 格式不正确 | 确认为 `omt_xxx` 格式 |
 | 图片/文件下载失败 | file_key 或 message_id 不匹配 | 确认 file_key 来自该 message_id |
 | 权限不足 | 用户未授权或无权限 | 确认已完成 OAuth 授权且是会话成员 |
+| 读取历史消息时报 user access token not support | 把 tenant-only 历史消息接口当成 user 接口调用了 | 对历史消息 / 线程消息坚持使用 `feishu_im_user_get_messages` / `feishu_im_user_get_thread_messages` 的 tenant 模式，不要强行走用户态 |

@@ -38,7 +38,13 @@ import { larkLogger } from '../core/lark-logger';
 const log = larkLogger('tools/auto-auth');
 import { formatLarkError } from '../core/api-error';
 import { getLarkAccount } from '../core/accounts';
-import { AppScopeMissingError, UserAuthRequiredError, UserScopeInsufficientError } from '../core/tool-client';
+import {
+  AppScopeMissingError,
+  TenantOnlyCapabilityError,
+  UnsupportedAuthModeError,
+  UserAuthRequiredError,
+  UserScopeInsufficientError,
+} from '../core/tool-client';
 import { getAppGrantedScopes, invalidateAppScopeCache, isAppScopeSatisfied } from '../core/app-scope-checker';
 import { LarkClient } from '../core/lark-client';
 import { createCardEntity, sendCardByCardId, updateCardKitCardForAuth } from '../card/cardkit';
@@ -942,6 +948,26 @@ export async function handleInvokeErrorWithAutoAuth(err: unknown, cfg: ClawdbotC
       message: '当前应用仅限所有者（App Owner）使用。您没有权限使用相关功能。',
       user_open_id: err.userOpenId,
       // 注意：不序列化 err.appOwnerId，避免泄露 owner 的 open_id
+    });
+  }
+
+  if (err instanceof TenantOnlyCapabilityError) {
+    return json({
+      error: 'tenant_only_capability',
+      message: '该能力当前仅支持应用身份调用，用户授权无法解决此问题。',
+      tool_action: err.toolAction,
+      canonical_auth_modes: err.canonicalAuthModes,
+    });
+  }
+
+  if (err instanceof UnsupportedAuthModeError) {
+    return json({
+      error: 'unsupported_auth_mode',
+      message: '该能力不支持当前请求的认证模式，请改用能力允许的认证方式。',
+      tool_action: err.toolAction,
+      required_mode: err.requiredMode,
+      requested_mode: err.requestedMode ?? null,
+      canonical_auth_modes: err.canonicalAuthModes,
     });
   }
 

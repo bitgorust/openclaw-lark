@@ -39,11 +39,14 @@ import { getStoredToken } from './token-store';
 import { getAppGrantedScopes, invalidateAppScopeCache, missingScopes } from './app-scope-checker';
 import { type ToolActionKey, getRequiredScopes } from './scope-manager';
 import { rawLarkRequest } from './raw-request';
+import { type ExecutionAuthMode, getCapabilityAuthPolicy, isAuthModeAllowed } from './capability-auth';
 import {
   AppScopeCheckFailedError,
   AppScopeMissingError,
   LARK_ERROR,
   NeedAuthorizationError,
+  TenantOnlyCapabilityError,
+  UnsupportedAuthModeError,
   UserAuthRequiredError,
   UserScopeInsufficientError,
 } from './auth-errors';
@@ -55,6 +58,8 @@ export {
   NeedAuthorizationError,
   AppScopeCheckFailedError,
   AppScopeMissingError,
+  TenantOnlyCapabilityError,
+  UnsupportedAuthModeError,
   UserAuthRequiredError,
   UserScopeInsufficientError,
 };
@@ -171,6 +176,46 @@ export class ToolClient {
     return this._invokeInternal(toolAction, fn, options);
   }
 
+  private async invokeWithMode<T>(
+    toolAction: ToolActionKey,
+    fn: InvokeFn<T>,
+    tokenType: ExecutionAuthMode,
+    options: InvokeOptions | undefined,
+    requiredScopes: string[],
+  ): Promise<T> {
+    // ---- App Granted Scopes 检查（应用已开通的权限）----
+    // UAT 调用额外检查 offline_access（OAuth Device Flow 的前提权限），
+    // 但不加入 requiredScopes（避免阻断业务 scope 进入用户授权流程）。
+    const appCheckScopes = tokenType === 'user' ? [...new Set([...requiredScopes, 'offline_access'])] : requiredScopes;
+
+    let appScopeVerified = true;
+    if (appCheckScopes.length > 0) {
+      const appGrantedScopes = await getAppGrantedScopes(this.sdk, this.account.appId, tokenType);
+
+      if (appGrantedScopes.length > 0) {
+        const missingAppScopes = missingScopes(appGrantedScopes, appCheckScopes);
+        if (missingAppScopes.length > 0) {
+          throw new AppScopeMissingError(
+            { apiName: toolAction, scopes: missingAppScopes, appId: this.account.appId },
+            'all',
+            tokenType,
+            requiredScopes,
+          );
+        }
+      } else {
+        // 查询失败（返回空数组）→ 跳过本地 scope 预检，让服务端返回更准确的错误。
+        appScopeVerified = false;
+      }
+    }
+
+    if (tokenType === 'tenant') {
+      return this.invokeAsTenant(toolAction, fn, requiredScopes);
+    }
+
+    const userOpenId = options?.userOpenId ?? this.senderOpenId;
+    return this.invokeAsUser(toolAction, fn, requiredScopes, userOpenId, appScopeVerified);
+  }
+
   /**
    * 内部 invoke 实现，只支持 ToolActionKey（严格类型检查）
    */
@@ -188,46 +233,42 @@ export class ToolClient {
       );
     }
 
-    // 2. 从 scope.ts 查询 API 需要的 scopes（Required Scopes）
     const requiredScopes = getRequiredScopes(toolAction);
+    const authPolicy = getCapabilityAuthPolicy(toolAction);
+    const tokenType: ExecutionAuthMode = options?.as ?? authPolicy.preferredMode;
 
-    // 3. 决定 token 类型（默认 user，用户可通过 options.as 覆盖）
-    const tokenType = options?.as ?? 'user';
-
-    // ---- App Granted Scopes 检查（应用已开通的权限）----
-    // UAT 调用额外检查 offline_access（OAuth Device Flow 的前提权限），
-    // 但不加入 requiredScopes（避免阻断业务 scope 进入用户授权流程）。
-    const appCheckScopes = tokenType === 'user' ? [...new Set([...requiredScopes, 'offline_access'])] : requiredScopes;
-
-    let appScopeVerified = true;
-    if (appCheckScopes.length > 0) {
-      const appGrantedScopes = await getAppGrantedScopes(this.sdk, this.account.appId, tokenType);
-
-      if (appGrantedScopes.length > 0) {
-        // 严格模式：应用必须开通所有 Required Scopes（+ offline_access）
-        const missingAppScopes = missingScopes(appGrantedScopes, appCheckScopes);
-        if (missingAppScopes.length > 0) {
-          throw new AppScopeMissingError(
-            { apiName: toolAction, scopes: missingAppScopes, appId: this.account.appId },
-            'all',
-            tokenType,
-            requiredScopes,
-          );
-        }
-      } else {
-        // 查询失败（返回空数组）→ 标记 appScopeVerified=false，跳过本地 scope 预检，
-        // 让服务端来判断是应用缺权限还是用户缺授权。
-        appScopeVerified = false;
+    if (options?.as && !isAuthModeAllowed(toolAction, options.as)) {
+      if (authPolicy.canonicalAuthModes.includes('tenant-only') && options.as === 'user') {
+        throw new TenantOnlyCapabilityError({
+          toolAction,
+          requiredMode: 'tenant',
+          requestedMode: options.as,
+          canonicalAuthModes: authPolicy.canonicalAuthModes,
+        });
       }
+
+      throw new UnsupportedAuthModeError({
+        toolAction,
+        requiredMode: authPolicy.preferredMode,
+        requestedMode: options.as,
+        canonicalAuthModes: authPolicy.canonicalAuthModes,
+      });
     }
 
-    // 5. 执行调用
-    if (tokenType === 'tenant') {
-      return this.invokeAsTenant(toolAction, fn, requiredScopes);
+    try {
+      return await this.invokeWithMode(toolAction, fn, tokenType, options, requiredScopes);
+    } catch (err) {
+      if (
+        !options?.as &&
+        authPolicy.fallbackMode === 'tenant' &&
+        (err instanceof AppScopeMissingError ||
+          err instanceof UserAuthRequiredError ||
+          err instanceof UserScopeInsufficientError)
+      ) {
+        return this.invokeWithMode(toolAction, fn, 'tenant', options, requiredScopes);
+      }
+      throw err;
     }
-
-    const userOpenId = options?.userOpenId ?? this.senderOpenId;
-    return this.invokeAsUser(toolAction, fn, requiredScopes, userOpenId, appScopeVerified);
   }
 
   /**

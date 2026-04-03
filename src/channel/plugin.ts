@@ -12,8 +12,9 @@
 import type { ChannelPlugin, ClawdbotConfig } from 'openclaw/plugin-sdk';
 import type { ChannelThreadingToolContext } from 'openclaw/plugin-sdk/channel-contract';
 import { DEFAULT_ACCOUNT_ID } from 'openclaw/plugin-sdk/account-id';
+import { createChatChannelPlugin } from 'openclaw/plugin-sdk/core';
 import { PAIRING_APPROVED_MESSAGE } from 'openclaw/plugin-sdk/channel-status';
-import type { LarkAccount } from '../core/types';
+import type { FeishuProbeResult, LarkAccount } from '../core/types';
 import { getDefaultLarkAccountId, getLarkAccount, getLarkAccountIds } from '../core/accounts';
 import { feishuOutbound } from '../messaging/outbound/outbound';
 import { feishuMessageActions } from '../messaging/outbound/actions';
@@ -75,17 +76,155 @@ const meta = {
 // Channel plugin definition
 // ---------------------------------------------------------------------------
 
-export const feishuPlugin: ChannelPlugin<LarkAccount> = {
-  id: 'feishu',
+export const feishuPlugin: ChannelPlugin<LarkAccount, FeishuProbeResult> = createChatChannelPlugin({
+  base: {
+    id: 'feishu',
+    meta: {
+      ...meta,
+    },
+    capabilities: {
+      chatTypes: ['direct', 'group'],
+      media: true,
+      reactions: true,
+      threads: true,
+      polls: false,
+      nativeCommands: true,
+      blockStreaming: true,
+    },
+    agentPrompt: {
+      messageToolHints: () => [
+        '- Feishu targeting: omit `target` to reply to the current conversation (auto-inferred). Explicit targets: `user:open_id` or `chat:chat_id`.',
+        '- Feishu supports interactive cards for rich messages.',
+        '- Feishu reactions use UPPERCASE emoji type names (e.g. `OK`,`THUMBSUP`,`THANKS`,`MUSCLE`,`FINGERHEART`,`APPLAUSE`,`FISTBUMP`,`JIAYI`,`DONE`,`SMILE`,`BLUSH` ), not Unicode emoji characters.',
+        "- Feishu `action=delete`/`action=unsend` only deletes messages sent by the bot. When the user quotes a message and says 'delete this', use the **quoted message's** message_id, not the user's own message_id.",
+      ],
+    },
+    groups: {
+      resolveToolPolicy: resolveFeishuGroupToolPolicy,
+    },
+    reload: { configPrefixes: ['channels.feishu'] },
+    configSchema: {
+      schema: FEISHU_CONFIG_JSON_SCHEMA,
+    },
+    config: {
+      listAccountIds: (cfg) => getLarkAccountIds(cfg),
+      resolveAccount: (cfg, accountId) => getLarkAccount(cfg, accountId),
+      defaultAccountId: (cfg) => getDefaultLarkAccountId(cfg),
 
-  meta: {
-    ...meta,
+      setAccountEnabled: ({ cfg, accountId, enabled }) => {
+        return setAccountEnabled(cfg, accountId, enabled);
+      },
+
+      deleteAccount: ({ cfg, accountId }) => {
+        return deleteAccount(cfg, accountId);
+      },
+
+      isConfigured: (account) => account.configured,
+
+      describeAccount: (account) => ({
+        accountId: account.accountId,
+        enabled: account.enabled,
+        configured: account.configured,
+        name: account.name,
+        appId: account.appId,
+        brand: account.brand,
+      }),
+
+      resolveAllowFrom: ({ cfg, accountId }) => {
+        const account = getLarkAccount(cfg, accountId);
+        return (account.config?.allowFrom ?? []).map((entry) => String(entry));
+      },
+
+      formatAllowFrom: ({ allowFrom }) =>
+        allowFrom
+          .map((entry) => String(entry).trim())
+          .filter(Boolean)
+          .map((entry) => entry.toLowerCase()),
+    },
+    security: {
+      collectWarnings: ({ cfg, accountId }) =>
+        collectFeishuSecurityWarnings({ cfg, accountId: accountId ?? DEFAULT_ACCOUNT_ID }),
+    },
+    setup: {
+      resolveAccountId: () => DEFAULT_ACCOUNT_ID,
+      applyAccountConfig: ({ cfg, accountId }) => {
+        return applyAccountConfig(cfg, accountId, { enabled: true });
+      },
+    },
+    messaging: {
+      normalizeTarget: (raw) => normalizeFeishuTarget(raw) ?? undefined,
+      targetResolver: {
+        looksLikeId: looksLikeFeishuId,
+        hint: '<chatId|user:openId|chat:chatId>',
+      },
+    },
+    directory: {
+      self: async () => null,
+      listPeers: async (p) => listFeishuDirectoryPeers(adaptDirectoryParams(p)),
+      listGroups: async (p) => listFeishuDirectoryGroups(adaptDirectoryParams(p)),
+      listPeersLive: async (p) => listFeishuDirectoryPeersLive(adaptDirectoryParams(p)),
+      listGroupsLive: async (p) => listFeishuDirectoryGroupsLive(adaptDirectoryParams(p)),
+    },
+    actions: feishuMessageActions,
+    status: {
+      defaultRuntime: {
+        accountId: DEFAULT_ACCOUNT_ID,
+        running: false,
+        lastStartAt: null,
+        lastStopAt: null,
+        lastError: null,
+        port: null,
+      },
+      buildChannelSummary: ({ snapshot }) => ({
+        configured: snapshot.configured ?? false,
+        running: snapshot.running ?? false,
+        lastStartAt: snapshot.lastStartAt ?? null,
+        lastStopAt: snapshot.lastStopAt ?? null,
+        lastError: snapshot.lastError ?? null,
+        port: snapshot.port ?? null,
+        probe: snapshot.probe,
+        lastProbeAt: snapshot.lastProbeAt ?? null,
+      }),
+      probeAccount: async ({ account }) => {
+        return await LarkClient.fromAccount(account).probe({ maxAgeMs: PROBE_CACHE_TTL_MS });
+      },
+      buildAccountSnapshot: ({ account, runtime, probe }) => ({
+        accountId: account.accountId,
+        enabled: account.enabled,
+        configured: account.configured,
+        name: account.name,
+        appId: account.appId,
+        brand: account.brand,
+        running: runtime?.running ?? false,
+        lastStartAt: runtime?.lastStartAt ?? null,
+        lastStopAt: runtime?.lastStopAt ?? null,
+        lastError: runtime?.lastError ?? null,
+        port: runtime?.port ?? null,
+        probe,
+      }),
+    },
+    gateway: {
+      startAccount: async (ctx) => {
+        const { monitorFeishuProvider } = await import('./monitor.js');
+        const account = getLarkAccount(ctx.cfg, ctx.accountId);
+        const port = account.config?.webhookPort ?? null;
+        ctx.setStatus({ accountId: ctx.accountId, port });
+        ctx.log?.info(`starting feishu[${ctx.accountId}] (mode: ${account.config?.connectionMode ?? 'websocket'})`);
+        return monitorFeishuProvider({
+          config: ctx.cfg,
+          runtime: ctx.runtime,
+          abortSignal: ctx.abortSignal,
+          accountId: ctx.accountId,
+        });
+      },
+
+      stopAccount: async (ctx) => {
+        ctx.log?.info(`stopping feishu[${ctx.accountId}]`);
+        await LarkClient.clearCache(ctx.accountId);
+        ctx.log?.info(`stopped feishu[${ctx.accountId}]`);
+      },
+    },
   },
-
-  // -------------------------------------------------------------------------
-  // Pairing
-  // -------------------------------------------------------------------------
-
   pairing: {
     idLabel: 'feishuUserId',
     normalizeAllowEntry: (entry) => entry.replace(/^(feishu|user|open_id):/i, ''),
@@ -110,150 +249,7 @@ export const feishuPlugin: ChannelPlugin<LarkAccount> = {
       }
     },
   },
-
-  // -------------------------------------------------------------------------
-  // Capabilities
-  // -------------------------------------------------------------------------
-
-  capabilities: {
-    chatTypes: ['direct', 'group'],
-    media: true,
-    reactions: true,
-    threads: true,
-    polls: false,
-    nativeCommands: true,
-    blockStreaming: true,
-  },
-
-  // -------------------------------------------------------------------------
-  // Agent prompt
-  // -------------------------------------------------------------------------
-
-  agentPrompt: {
-    messageToolHints: () => [
-      '- Feishu targeting: omit `target` to reply to the current conversation (auto-inferred). Explicit targets: `user:open_id` or `chat:chat_id`.',
-      '- Feishu supports interactive cards for rich messages.',
-      '- Feishu reactions use UPPERCASE emoji type names (e.g. `OK`,`THUMBSUP`,`THANKS`,`MUSCLE`,`FINGERHEART`,`APPLAUSE`,`FISTBUMP`,`JIAYI`,`DONE`,`SMILE`,`BLUSH` ), not Unicode emoji characters.',
-      "- Feishu `action=delete`/`action=unsend` only deletes messages sent by the bot. When the user quotes a message and says 'delete this', use the **quoted message's** message_id, not the user's own message_id.",
-    ],
-  },
-
-  // -------------------------------------------------------------------------
-  // Groups
-  // -------------------------------------------------------------------------
-
-  groups: {
-    resolveToolPolicy: resolveFeishuGroupToolPolicy,
-  },
-
-  // -------------------------------------------------------------------------
-  // Reload
-  // -------------------------------------------------------------------------
-
-  reload: { configPrefixes: ['channels.feishu'] },
-
-  // -------------------------------------------------------------------------
-  // Config schema (JSON Schema)
-  // -------------------------------------------------------------------------
-
-  configSchema: {
-    schema: FEISHU_CONFIG_JSON_SCHEMA,
-  },
-
-  // -------------------------------------------------------------------------
-  // Config adapter
-  // -------------------------------------------------------------------------
-
-  config: {
-    listAccountIds: (cfg) => getLarkAccountIds(cfg),
-    resolveAccount: (cfg, accountId) => getLarkAccount(cfg, accountId),
-    defaultAccountId: (cfg) => getDefaultLarkAccountId(cfg),
-
-    setAccountEnabled: ({ cfg, accountId, enabled }) => {
-      return setAccountEnabled(cfg, accountId, enabled);
-    },
-
-    deleteAccount: ({ cfg, accountId }) => {
-      return deleteAccount(cfg, accountId);
-    },
-
-    isConfigured: (account) => account.configured,
-
-    describeAccount: (account) => ({
-      accountId: account.accountId,
-      enabled: account.enabled,
-      configured: account.configured,
-      name: account.name,
-      appId: account.appId,
-      brand: account.brand,
-    }),
-
-    resolveAllowFrom: ({ cfg, accountId }) => {
-      const account = getLarkAccount(cfg, accountId);
-      return (account.config?.allowFrom ?? []).map((entry) => String(entry));
-    },
-
-    formatAllowFrom: ({ allowFrom }) =>
-      allowFrom
-        .map((entry) => String(entry).trim())
-        .filter(Boolean)
-        .map((entry) => entry.toLowerCase()),
-  },
-
-  // -------------------------------------------------------------------------
-  // Security
-  // -------------------------------------------------------------------------
-
-  security: {
-    collectWarnings: ({ cfg, accountId }) =>
-      collectFeishuSecurityWarnings({ cfg, accountId: accountId ?? DEFAULT_ACCOUNT_ID }),
-  },
-
-  // -------------------------------------------------------------------------
-  // Setup
-  // -------------------------------------------------------------------------
-
-  setup: {
-    resolveAccountId: () => DEFAULT_ACCOUNT_ID,
-    applyAccountConfig: ({ cfg, accountId }) => {
-      return applyAccountConfig(cfg, accountId, { enabled: true });
-    },
-  },
-
-  // -------------------------------------------------------------------------
-  // Messaging
-  // -------------------------------------------------------------------------
-
-  messaging: {
-    normalizeTarget: (raw) => normalizeFeishuTarget(raw) ?? undefined,
-    targetResolver: {
-      looksLikeId: looksLikeFeishuId,
-      hint: '<chatId|user:openId|chat:chatId>',
-    },
-  },
-
-  // -------------------------------------------------------------------------
-  // Directory
-  // -------------------------------------------------------------------------
-
-  directory: {
-    self: async () => null,
-    listPeers: async (p) => listFeishuDirectoryPeers(adaptDirectoryParams(p)),
-    listGroups: async (p) => listFeishuDirectoryGroups(adaptDirectoryParams(p)),
-    listPeersLive: async (p) => listFeishuDirectoryPeersLive(adaptDirectoryParams(p)),
-    listGroupsLive: async (p) => listFeishuDirectoryGroupsLive(adaptDirectoryParams(p)),
-  },
-
-  // -------------------------------------------------------------------------
-  // Outbound
-  // -------------------------------------------------------------------------
-
   outbound: feishuOutbound,
-
-  // -------------------------------------------------------------------------
-  // Threading
-  // -------------------------------------------------------------------------
-
   threading: {
     buildToolContext: ({ context, hasRepliedRef }): ChannelThreadingToolContext => ({
       currentChannelId: normalizeFeishuTarget(context.To ?? '') ?? undefined,
@@ -262,78 +258,4 @@ export const feishuPlugin: ChannelPlugin<LarkAccount> = {
       hasRepliedRef,
     }),
   },
-
-  // -------------------------------------------------------------------------
-  // Actions
-  // -------------------------------------------------------------------------
-
-  actions: feishuMessageActions,
-
-  // -------------------------------------------------------------------------
-  // Status
-  // -------------------------------------------------------------------------
-
-  status: {
-    defaultRuntime: {
-      accountId: DEFAULT_ACCOUNT_ID,
-      running: false,
-      lastStartAt: null,
-      lastStopAt: null,
-      lastError: null,
-      port: null,
-    },
-    buildChannelSummary: ({ snapshot }) => ({
-      configured: snapshot.configured ?? false,
-      running: snapshot.running ?? false,
-      lastStartAt: snapshot.lastStartAt ?? null,
-      lastStopAt: snapshot.lastStopAt ?? null,
-      lastError: snapshot.lastError ?? null,
-      port: snapshot.port ?? null,
-      probe: snapshot.probe,
-      lastProbeAt: snapshot.lastProbeAt ?? null,
-    }),
-    probeAccount: async ({ account }) => {
-      return await LarkClient.fromAccount(account).probe({ maxAgeMs: PROBE_CACHE_TTL_MS });
-    },
-    buildAccountSnapshot: ({ account, runtime, probe }) => ({
-      accountId: account.accountId,
-      enabled: account.enabled,
-      configured: account.configured,
-      name: account.name,
-      appId: account.appId,
-      brand: account.brand,
-      running: runtime?.running ?? false,
-      lastStartAt: runtime?.lastStartAt ?? null,
-      lastStopAt: runtime?.lastStopAt ?? null,
-      lastError: runtime?.lastError ?? null,
-      port: runtime?.port ?? null,
-      probe,
-    }),
-  },
-
-  // -------------------------------------------------------------------------
-  // Gateway
-  // -------------------------------------------------------------------------
-
-  gateway: {
-    startAccount: async (ctx) => {
-      const { monitorFeishuProvider } = await import('./monitor.js');
-      const account = getLarkAccount(ctx.cfg, ctx.accountId);
-      const port = account.config?.webhookPort ?? null;
-      ctx.setStatus({ accountId: ctx.accountId, port });
-      ctx.log?.info(`starting feishu[${ctx.accountId}] (mode: ${account.config?.connectionMode ?? 'websocket'})`);
-      return monitorFeishuProvider({
-        config: ctx.cfg,
-        runtime: ctx.runtime,
-        abortSignal: ctx.abortSignal,
-        accountId: ctx.accountId,
-      });
-    },
-
-    stopAccount: async (ctx) => {
-      ctx.log?.info(`stopping feishu[${ctx.accountId}]`);
-      await LarkClient.clearCache(ctx.accountId);
-      ctx.log?.info(`stopped feishu[${ctx.accountId}]`);
-    },
-  },
-};
+});
