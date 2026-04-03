@@ -37,13 +37,13 @@
 
 为同时保留 upstream 版本语义和内部发布序号，推荐使用 fork 后缀：
 
-- `2026.4.1-laihua.1`
-- `2026.4.1-laihua.2`
-- `2026.4.2-laihua.1`
+- `2026.4.1-laipic.1`
+- `2026.4.1-laipic.2`
+- `2026.4.2-laipic.1`
 
 推荐 tag 与版本号保持一致：
 
-- `v2026.4.1-laihua.1`
+- `v2026.4.1-laipic.1`
 
 规则：
 
@@ -110,7 +110,7 @@ NODE_SDK_ROOT=/path/to/larksuite-node-sdk pnpm release:prepare
 
 - `chore: configure private npm publishing`
 - `fix: adjust internal package publish metadata`
-- `chore: release 2026.4.1-laihua.1`
+- `chore: release 2026.4.1-laipic.1`
 
 ### 5. 发布
 
@@ -123,11 +123,11 @@ pnpm login:private
 更新版本号后发布：
 
 ```bash
-npm version 2026.4.1-laihua.1 --no-git-tag-version
+npm version 2026.4.1-laipic.1 --no-git-tag-version
 pnpm publish:private
-git tag v2026.4.1-laihua.1
+git tag v2026.4.1-laipic.1
 git push origin main
-git push origin v2026.4.1-laihua.1
+git push origin v2026.4.1-laipic.1
 ```
 
 如果只想先验证包内容：
@@ -154,8 +154,8 @@ git push origin main
 ```bash
 git checkout main
 git pull origin main
-git checkout -b chore/release-2026.4.1-laihua.1
-npm version 2026.4.1-laihua.1 --no-git-tag-version
+git checkout -b chore/release-2026.4.1-laipic.1
+npm version 2026.4.1-laipic.1 --no-git-tag-version
 ```
 
 ### 3. 本地验证
@@ -168,15 +168,15 @@ NODE_SDK_ROOT=/path/to/larksuite-node-sdk pnpm release:prepare
 
 ```bash
 git add package.json
-git commit -m "chore: release 2026.4.1-laihua.1"
+git commit -m "chore: release 2026.4.1-laipic.1"
 ```
 
 ### 5. 合回 main 并打 tag
 
 ```bash
 git checkout main
-git merge --ff-only chore/release-2026.4.1-laihua.1
-git tag v2026.4.1-laihua.1
+git merge --ff-only chore/release-2026.4.1-laipic.1
+git tag v2026.4.1-laipic.1
 ```
 
 ### 6. 发布到私库
@@ -185,7 +185,7 @@ git tag v2026.4.1-laihua.1
 pnpm login:private
 pnpm publish:private
 git push origin main
-git push origin v2026.4.1-laihua.1
+git push origin v2026.4.1-laipic.1
 ```
 
 ## 注意事项

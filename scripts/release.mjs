@@ -193,7 +193,7 @@ async function main() {
 
 function printUsage() {
   console.log(`Usage:
-  pnpm release -- --version 2026.4.1-lh.1 [--upstream-base 2026.4.1]
+  pnpm release -- --version 2026.4.1-laipic.1 [--upstream-base 2026.4.1]
   NODE_SDK_ROOT=/path/to/larksuite-node-sdk pnpm release:prepare
 
 Options:
