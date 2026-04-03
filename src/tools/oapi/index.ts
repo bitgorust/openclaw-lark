@@ -38,7 +38,12 @@ import {
   registerFeishuBitableAppTool,
 } from './bitable/index';
 import { registerGetUserTool, registerSearchUserTool } from './common/index';
-// import { registerFeishuMailTools } from "./mail/index";
+import { registerFeishuMailMessageTool } from './mail/index';
+import {
+  registerFeishuMeetingReserveTool,
+  registerFeishuMeetingTool,
+  registerFeishuMinutesTool,
+} from './meeting/index';
 import { registerFeishuSearchTools } from './search/index';
 import { registerFeishuDriveTools } from './drive/index';
 import { registerFeishuWikiTools } from './wiki/index';
@@ -80,6 +85,14 @@ export function registerOapiTools(api: OpenClawPluginApi): void {
   registerFeishuApprovalCcTool(api);
   registerFeishuApprovalCommentTool(api);
 
+  // Meeting and minutes tools
+  registerFeishuMeetingReserveTool(api);
+  registerFeishuMeetingTool(api);
+  registerFeishuMinutesTool(api);
+
+  // Mail tools
+  registerFeishuMailMessageTool(api);
+
   // Bitable tools
   registerFeishuBitableAppTool(api);
   registerFeishuBitableAppTableTool(api);
@@ -103,6 +116,6 @@ export function registerOapiTools(api: OpenClawPluginApi): void {
   registerFeishuImBotTools(api);
 
   api.logger.debug?.(
-    'Registered all OAPI tools (calendar, attendance, task, approval, bitable, search, drive, wiki, sheets, im)',
+    'Registered all OAPI tools (calendar, attendance, task, approval, meeting-reserve, meeting, minutes, mail, bitable, search, drive, wiki, sheets, im)',
   );
 }

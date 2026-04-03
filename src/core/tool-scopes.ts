@@ -8,7 +8,9 @@
  *
  * ## 维护方式
  *
- * ⚠️ 此文件采用**手动维护**，新增或修改工具时需同步更新。
+ * 此文件采用“generated override + manual fallback”维护：
+ * - generated 部分来自 `node-sdk` canonical 产物
+ * - manual 部分仅保留尚未纳入生成链路的动作兜底
  *
  * ### 新增工具动作
  *
@@ -19,16 +21,22 @@
  *      | "feishu_new_tool.action"  // 新增
  *    ```
  *
- * 2. 在 `TOOL_SCOPES` 对象中添加对应配置：
+ * 2. 优先更新 `docs/references/feishu-supported-operations.json` 与生成脚本，
+ *    然后运行：
+ *    ```bash
+ *    node scripts/generate_feishu_canonical_metadata.mjs
+ *    ```
+ *
+ * 3. 如果该动作尚未纳入生成链路，再在 `MANUAL_TOOL_SCOPES` 中添加兜底配置：
  *    ```typescript
- *    export const TOOL_SCOPES: ToolScopeMapping = {
+ *    const MANUAL_TOOL_SCOPES: ToolScopeMapping = {
  *      "feishu_new_tool.action": [
  *        "required:scope:here"
  *      ],
  *    };
  *    ```
  *
- * 3. 运行 TypeScript 类型检查验证一致性：
+ * 4. 运行类型检查验证一致性：
  *    ```bash
  *    cd openclaw/feishu && npx tsc --noEmit
  *    ```
@@ -42,6 +50,8 @@
  *
  * 最后更新: 2026-03-03
  */
+
+import { GENERATED_TOOL_SCOPES } from './generated/feishu-tool-scopes.js';
 
 // ===== 类型定义 =====
 
@@ -75,6 +85,24 @@ export type ToolActionKey =
   | 'feishu_attendance_group.get'
   | 'feishu_attendance_group.list_users'
   | 'feishu_attendance_shift.query'
+  | 'feishu_mail_message.attachment_download_url'
+  | 'feishu_mail_message.get'
+  | 'feishu_mail_message.list'
+  | 'feishu_mail_message.send'
+  | 'feishu_meeting.end'
+  | 'feishu_meeting.get'
+  | 'feishu_meeting.get_note'
+  | 'feishu_meeting.search'
+  | 'feishu_meeting_reserve.apply'
+  | 'feishu_meeting_reserve.delete'
+  | 'feishu_meeting_reserve.get'
+  | 'feishu_meeting_reserve.get_active_meeting'
+  | 'feishu_meeting_reserve.update'
+  | 'feishu_minutes.artifacts'
+  | 'feishu_minutes.get'
+  | 'feishu_minutes.media'
+  | 'feishu_minutes.statistics'
+  | 'feishu_minutes.transcript'
   | 'feishu_bitable_app.copy'
   | 'feishu_bitable_app.create'
   | 'feishu_bitable_app.get'
@@ -183,7 +211,12 @@ export type ToolScopeMapping = Record<ToolActionKey, string[]>;
 /**
  * Tool Scope 数据
  *
- * 每个工具动作所需的飞书权限列表（Required Scopes）
+ * 每个工具动作所需的飞书权限列表（Required Scopes）。
+ *
+ * 维护策略：
+ * - `GENERATED_TOOL_SCOPES` 来自 `node-sdk` canonical 产物，是主真相源
+ * - 本文件内的 `MANUAL_TOOL_SCOPES` 仅为尚未纳入生成链路或非标准后端的兜底
+ * - 导出的 `TOOL_SCOPES` 采用“generated override manual fallback”
  *
  * ## 数据说明
  *
@@ -200,7 +233,7 @@ export type ToolScopeMapping = Record<ToolActionKey, string[]>;
  *
  * @see {@link ToolActionKey} 所有可用的工具动作键
  */
-export const TOOL_SCOPES: ToolScopeMapping = {
+const MANUAL_TOOL_SCOPES: ToolScopeMapping = {
   'feishu_approval_cc.search': ['approval:approval:readonly'],
   'feishu_approval_comment.create': ['approval:approval'],
   'feishu_approval_comment.delete': ['approval:approval'],
@@ -219,6 +252,24 @@ export const TOOL_SCOPES: ToolScopeMapping = {
   'feishu_attendance_shift.query': ['attendance:task:readonly'],
   'feishu_attendance_group.get': ['attendance:rule:readonly'],
   'feishu_attendance_group.list_users': ['attendance:rule:readonly'],
+  'feishu_meeting_reserve.apply': ['vc:reserve'],
+  'feishu_meeting_reserve.get': ['vc:reserve:readonly'],
+  'feishu_meeting_reserve.update': ['vc:reserve'],
+  'feishu_meeting_reserve.delete': ['vc:reserve'],
+  'feishu_meeting_reserve.get_active_meeting': ['vc:reserve:readonly'],
+  'feishu_minutes.get': ['minutes:minutes', 'minutes:minutes.basic:read', 'minutes:minutes:readonly'],
+  'feishu_minutes.transcript': ['minutes:minute:download', 'minutes:minutes.transcript:export'],
+  'feishu_minutes.statistics': ['minutes:minutes', 'minutes:minutes.statistics:read', 'minutes:minutes:readonly'],
+  'feishu_minutes.artifacts': ['minutes:minutes.artifacts:read'],
+  'feishu_minutes.media': ['minutes:minute:download', 'minutes:minutes.media:export'],
+  'feishu_mail_message.list': ['mail:user_mailbox.message:readonly'],
+  'feishu_mail_message.get': ['mail:user_mailbox.message:readonly'],
+  'feishu_mail_message.send': ['mail:user_mailbox.message:send'],
+  'feishu_mail_message.attachment_download_url': ['mail:user_mailbox.message.body:read'],
+  'feishu_meeting.search': ['vc:meeting.search:read'],
+  'feishu_meeting.get': ['vc:meeting.meetingevent:read', 'vc:meeting:readonly'],
+  'feishu_meeting.end': ['vc:meeting'],
+  'feishu_meeting.get_note': ['vc:note:read'],
   'feishu_bitable_app.create': ['base:app:create'],
   'feishu_bitable_app.get': ['base:app:read'],
   'feishu_bitable_app.list': ['space:document:retrieve'],
@@ -363,6 +414,11 @@ export const TOOL_SCOPES: ToolScopeMapping = {
   ],
   'feishu_sheet.export': ['docs:document:export'],
 } as const;
+
+export const TOOL_SCOPES: ToolScopeMapping = {
+  ...MANUAL_TOOL_SCOPES,
+  ...(GENERATED_TOOL_SCOPES as unknown as Partial<ToolScopeMapping>),
+};
 
 // ===== 必需的应用身份权限 =====
 
