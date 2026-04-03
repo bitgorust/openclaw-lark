@@ -26,6 +26,7 @@ src/tools/docs/
 !/docs/references/feishu-supported-operations.json
 !/docs/references/feishu-supported-operations.md
 !/docs/references/feishu-skill-gap-analysis.md
+!/docs/fork-release.md
 
 /**/package-lock.json
 /**/.DS_Store

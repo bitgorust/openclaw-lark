@@ -7,10 +7,6 @@ const repoRoot = path.resolve(path.dirname(new URL(import.meta.url).pathname), '
 
 const FALLBACK_NODE_SDK_CANDIDATES = [
   path.resolve(repoRoot, '../node-sdk'),
-  path.resolve(repoRoot, '../../../Workspace/github/node-sdk'),
-  path.resolve(repoRoot, '../github/node-sdk'),
-  path.resolve(repoRoot, '../../github/node-sdk'),
-  path.resolve(repoRoot, '../../../github/node-sdk'),
 ].filter(Boolean);
 
 const SUPPORTED_OPS_PATH = path.join(repoRoot, 'docs', 'references', 'feishu-supported-operations.json');
