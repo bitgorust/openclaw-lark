@@ -54,6 +54,21 @@ async function main() {
 
   const verificationSteps = [
     {
+      label: 'feishu-supported-operations',
+      command: 'pnpm feishu:supported-operations:check',
+      run: !argv['skip-verify'],
+    },
+    {
+      label: 'feishu-canonical-metadata',
+      command: 'pnpm feishu:canonical-metadata:check',
+      run: !argv['skip-verify'],
+    },
+    {
+      label: 'feishu-skill-coverage',
+      command: 'pnpm feishu:skill-coverage:check',
+      run: !argv['skip-verify'],
+    },
+    {
       label: 'install',
       command: 'pnpm install --frozen-lockfile',
       run: !argv['skip-install'],
@@ -180,6 +195,7 @@ async function main() {
 function printUsage() {
   console.log(`Usage:
   pnpm release -- --version 2026.4.1-lh.1 [--upstream-base 2026.4.1]
+  NODE_SDK_ROOT=/path/to/larksuite-node-sdk pnpm release:prepare
 
 Options:
   --version         Target release version. Defaults to package.json version.
@@ -191,6 +207,9 @@ Options:
   --skip-runtime    Skip building the deployable runtime package.
   --allow-dirty     Allow a dirty git working tree.
   --help            Show this message.
+
+Environment:
+  NODE_SDK_ROOT     Required for Feishu canonical metadata verification in release checks.
 `);
 }
 

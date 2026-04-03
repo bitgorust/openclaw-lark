@@ -91,7 +91,8 @@ export function getCapabilityAuthPolicy(toolAction: ToolActionKey): CapabilityAu
       preferredMode: 'user',
       fallbackMode: 'tenant',
       source,
-      rationale: 'canonical contract is dual-mode; prefer user context and fall back to tenant when user auth is unavailable',
+      rationale:
+        'canonical contract is dual-mode; prefer user context and fall back to tenant when user auth is unavailable',
     };
   }
 
@@ -104,10 +105,7 @@ export function getCapabilityAuthPolicy(toolAction: ToolActionKey): CapabilityAu
   };
 }
 
-export function isAuthModeAllowed(
-  toolAction: ToolActionKey,
-  executionMode: ExecutionAuthMode,
-): boolean {
+export function isAuthModeAllowed(toolAction: ToolActionKey, executionMode: ExecutionAuthMode): boolean {
   const modes = getCanonicalAuthModes(toolAction);
   if (modes.includes('unknown')) return true;
   if (executionMode === 'user') {
