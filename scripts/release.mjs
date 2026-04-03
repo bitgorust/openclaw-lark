@@ -105,8 +105,7 @@ async function main() {
       continue;
     }
 
-    const [file, ...args] = step.command.split(' ');
-    await exec(file, args, { stdio: 'inherit' });
+    await execReleaseCommand(step.command, { stdio: 'inherit' });
   }
 
   await fs.ensureDir(releaseDir);
@@ -241,6 +240,19 @@ async function exec(file, args, options = {}) {
     cwd: repoRoot,
     ...options,
   });
+}
+
+async function execReleaseCommand(command, options = {}) {
+  const [file, ...args] = command.split(' ');
+  if (file !== 'pnpm') {
+    return exec(file, args, options);
+  }
+
+  if (process.env.npm_execpath) {
+    return exec(process.execPath, [process.env.npm_execpath, ...args], options);
+  }
+
+  return exec('corepack', ['pnpm', ...args], options);
 }
 
 async function writeChecksumFile(filePath) {
