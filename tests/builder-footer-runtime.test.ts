@@ -4,6 +4,7 @@
 
 import { describe, expect, it } from 'vitest';
 import { buildCardContent, compactNumber, formatFooterRuntimeSegments } from '../src/card/builder';
+import type { ToolUseDisplayStep } from '../src/card/tool-use-display';
 
 // ---------------------------------------------------------------------------
 // compactNumber
@@ -152,5 +153,78 @@ describe('buildCardContent – footer line joining', () => {
   it('renders no footer element when all footer flags are off', () => {
     const card = buildCardContent('complete', { text: 'hello' });
     expect(footerElements(card)).toHaveLength(0);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// buildCardContent – tool-use step markdown rendering
+// ---------------------------------------------------------------------------
+
+describe('buildCardContent – tool-use step rendering', () => {
+  function singleToolUseStep(card: ReturnType<typeof buildCardContent>) {
+    const panel = (card.elements[0] ?? {}) as Record<string, unknown>;
+    const steps = (panel.elements ?? []) as Array<Record<string, unknown>>;
+    return steps[0] ?? {};
+  }
+
+  it('renders tool-use steps with markdown status and fenced result blocks', () => {
+    const toolUseSteps = [
+      {
+        title: 'Run command (2.0 s)',
+        detail: 'pnpm test',
+        status: 'success',
+        iconToken: 'setting_outlined',
+        resultBlock: {
+          language: 'json',
+          content: '{\n  "status": "completed",\n  "exitCode": 0\n}',
+        },
+      },
+    ] satisfies ToolUseDisplayStep[];
+
+    const card = buildCardContent('complete', {
+      text: 'hello',
+      toolUseSteps,
+    });
+
+    const panel = (card.elements[0] ?? {}) as Record<string, unknown>;
+    const step = singleToolUseStep(card);
+    expect(panel.vertical_spacing).toBe('4px');
+    expect(((step.icon ?? {}) as Record<string, unknown>).color).toBe('grey');
+    expect(((step.text ?? {}) as Record<string, unknown>).tag).toBe('lark_md');
+    expect(((step.text ?? {}) as Record<string, unknown>).text_size).toBe('notation');
+    expect(((step.text ?? {}) as Record<string, unknown>).content).toMatch(/Succeeded|Completed/);
+    expect(((step.text ?? {}) as Record<string, unknown>).content).toContain("<font color='grey'>pnpm test</font>");
+    expect(((step.text ?? {}) as Record<string, unknown>).content).not.toContain('`pnpm test`');
+    expect(((step.text ?? {}) as Record<string, unknown>).content).toContain('```json');
+    expect(((step.text ?? {}) as Record<string, unknown>).content).toContain('"status": "completed"');
+    expect(((step.text ?? {}) as Record<string, unknown>).content).not.toContain('<br>');
+    expect(((step.text ?? {}) as Record<string, unknown>).content).not.toContain('\n\n**Result**');
+  });
+
+  it('renders tool-use errors as fenced text blocks', () => {
+    const toolUseSteps = [
+      {
+        title: 'Run command (420 ms)',
+        detail: 'pnpm lint',
+        status: 'error',
+        iconToken: 'setting_outlined',
+        errorBlock: {
+          language: 'text',
+          content: 'exit code 1',
+        },
+      },
+    ] satisfies ToolUseDisplayStep[];
+
+    const card = buildCardContent('complete', {
+      text: 'hello',
+      toolUseSteps,
+    });
+
+    const step = singleToolUseStep(card);
+    expect(((step.icon ?? {}) as Record<string, unknown>).color).toBe('grey');
+    expect(((step.text ?? {}) as Record<string, unknown>).text_size).toBe('notation');
+    expect(((step.text ?? {}) as Record<string, unknown>).content).toContain('Failed');
+    expect(((step.text ?? {}) as Record<string, unknown>).content).toContain('```text');
+    expect(((step.text ?? {}) as Record<string, unknown>).content).toContain('exit code 1');
   });
 });

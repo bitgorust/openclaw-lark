@@ -8,10 +8,7 @@
 
 import { describe, expect, it } from 'vitest';
 import type { ToolUseTraceStep } from '../src/card/tool-use-trace-store';
-import {
-  buildToolUseTitleSuffix,
-  normalizeToolUseDisplay,
-} from '../src/card/tool-use-display';
+import { buildToolUseTitleSuffix, normalizeToolUseDisplay } from '../src/card/tool-use-display';
 
 // ---------------------------------------------------------------------------
 // Helper: build a minimal ToolUseTraceStep
@@ -34,9 +31,7 @@ function traceStep(overrides: Partial<ToolUseTraceStep> & { toolName: string }):
 
 describe('normalizeToolUseDisplay data source priority', () => {
   it('uses traceSteps as the source of truth', () => {
-    const traceSteps: ToolUseTraceStep[] = [
-      traceStep({ toolName: 'read', params: { file_path: '/a.ts' } }),
-    ];
+    const traceSteps: ToolUseTraceStep[] = [traceStep({ toolName: 'read', params: { file_path: '/a.ts' } })];
 
     const result = normalizeToolUseDisplay({ traceSteps });
     expect(result.stepCount).toBe(1);
@@ -134,11 +129,14 @@ describe('duration display', () => {
 // ---------------------------------------------------------------------------
 
 describe('error display', () => {
-  it('includes error info in step detail', () => {
+  it('stores error info in a dedicated error block without icon color metadata', () => {
     const result = normalizeToolUseDisplay({
       traceSteps: [traceStep({ toolName: 'bash', error: 'exit code 1', status: 'error', params: { command: 'test' } })],
     });
-    expect(result.steps[0]!.detail).toContain('Failed: exit code 1');
+    expect(result.steps[0]!.status).toBe('error');
+    expect(result.steps[0]).not.toHaveProperty('iconColor');
+    expect(result.steps[0]!.errorBlock?.language).toBe('text');
+    expect(result.steps[0]!.errorBlock?.content).toBe('exit code 1');
   });
 });
 
@@ -160,10 +158,10 @@ describe('result detail gating', () => {
       showResultDetails: false,
     });
 
-    expect(result.steps[0]!.detail).not.toContain('Result:');
+    expect(result.steps[0]!.resultBlock).toBeUndefined();
   });
 
-  it('shows result detail when showResultDetails is true', () => {
+  it('shows string result detail as a text code block when showResultDetails is true', () => {
     const result = normalizeToolUseDisplay({
       traceSteps: [
         traceStep({
@@ -176,7 +174,28 @@ describe('result detail gating', () => {
       showResultDetails: true,
     });
 
-    expect(result.steps[0]!.detail).toContain('Result: 3 tests passed');
+    expect(result.steps[0]!.status).toBe('success');
+    expect(result.steps[0]).not.toHaveProperty('iconColor');
+    expect(result.steps[0]!.resultBlock?.language).toBe('text');
+    expect(result.steps[0]!.resultBlock?.content).toBe('3 tests passed');
+  });
+
+  it('formats object results as pretty json blocks', () => {
+    const result = normalizeToolUseDisplay({
+      traceSteps: [
+        traceStep({
+          toolName: 'bash',
+          params: { command: 'pnpm test' },
+          result: { status: 'completed', exitCode: 0, durationMs: 1715 },
+          status: 'success',
+        }),
+      ],
+      showResultDetails: true,
+    });
+
+    expect(result.steps[0]!.resultBlock?.language).toBe('json');
+    expect(result.steps[0]!.resultBlock?.content).toContain('"status": "completed"');
+    expect(result.steps[0]!.resultBlock?.content).toContain('"exitCode": 0');
   });
 
   it('does not add a second display-layer truncation for long command details', () => {
@@ -193,6 +212,7 @@ describe('result detail gating', () => {
     });
 
     expect(result.steps[0]!.detail).toContain('bash -lc');
+    expect(result.steps[0]).not.toHaveProperty('detailStyle');
     expect(result.steps[0]!.detail!.length).toBeGreaterThan(144);
     expect(result.steps[0]!.detail).not.toContain('...');
   });

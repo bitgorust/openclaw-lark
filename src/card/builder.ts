@@ -756,7 +756,7 @@ function buildStreamingToolUseActivePanel(params: { steps: ToolUseDisplayStep[];
       icon_expanded_angle: -180,
     },
     border: { color: 'grey', corner_radius: '5px' },
-    vertical_spacing: '8px',
+    vertical_spacing: '4px',
     padding: '8px 8px 8px 8px',
     elements: steps.map(buildToolUseStepElement),
   };
@@ -798,7 +798,7 @@ function buildStreamingToolUsePendingPanel(): CardElement {
       icon_expanded_angle: -180,
     },
     border: { color: 'grey', corner_radius: '5px' },
-    vertical_spacing: '8px',
+    vertical_spacing: '4px',
     padding: '8px 8px 8px 8px',
     elements: [],
   };
@@ -846,7 +846,7 @@ function buildToolUsePanel(params: {
       icon_expanded_angle: -180,
     },
     border: { color: 'grey', corner_radius: '5px' },
-    vertical_spacing: '8px',
+    vertical_spacing: '4px',
     padding: '8px 8px 8px 8px',
     elements: stepElements,
   };
@@ -861,9 +861,8 @@ function buildToolUseStepElement(step: ToolUseDisplayStep): CardElement {
       color: 'grey',
     },
     text: {
-      tag: 'plain_text',
-      content: step.detail ? `${step.title}\n${step.detail}` : step.title,
-      text_color: 'grey',
+      tag: 'lark_md',
+      content: buildToolUseStepMarkdown(step),
       text_size: 'notation',
     },
   };
@@ -885,4 +884,59 @@ function buildToolUsePlaceholder(labels?: { zh: string; en: string }): CardEleme
       text_size: 'notation',
     },
   };
+}
+
+function buildToolUseStepMarkdown(step: ToolUseDisplayStep): string {
+  const status = formatToolUseStepStatus(step.status);
+  const lines: string[] = [
+    `**${escapeToolUseMarkdownText(step.title)}** · <font color='${status.color}'>${status.label}</font>`,
+  ];
+
+  const detail = formatToolUseStepDetail(step);
+  if (detail) {
+    lines.push(detail);
+  }
+
+  if (step.errorBlock) {
+    lines.push('**Error**');
+    lines.push(formatToolUseCodeBlock(step.errorBlock.content, step.errorBlock.language));
+  } else if (step.resultBlock) {
+    lines.push('**Result**');
+    lines.push(formatToolUseCodeBlock(step.resultBlock.content, step.resultBlock.language));
+  }
+
+  return optimizeMarkdownStyle(lines.join('\n'), 1);
+}
+
+function formatToolUseStepStatus(status: ToolUseDisplayStep['status']): { label: string; color: string } {
+  switch (status) {
+    case 'running':
+      return { label: 'Running', color: 'turquoise' };
+    case 'error':
+      return { label: 'Failed', color: 'red' };
+    case 'success':
+    default:
+      return { label: 'Succeeded', color: 'green' };
+  }
+}
+
+function formatToolUseStepDetail(step: ToolUseDisplayStep): string | undefined {
+  const detail = step.detail?.trim();
+  if (!detail) return undefined;
+  return `<font color='grey'>${escapeToolUseMarkdownText(detail)}</font>`;
+}
+
+function formatToolUseCodeBlock(content: string, language: 'json' | 'text'): string {
+  const normalized = content.replace(/\r\n/g, '\n').trim();
+  const fence = '`'.repeat(Math.max(3, longestBacktickRun(normalized) + 1));
+  return `${fence}${language}\n${normalized}\n${fence}`;
+}
+
+function longestBacktickRun(value: string): number {
+  const matches = value.match(/`+/g) ?? [];
+  return matches.reduce((max, run) => Math.max(max, run.length), 0);
+}
+
+function escapeToolUseMarkdownText(value: string): string {
+  return value.replace(/\\/g, '\\\\').replace(/([`*_{}[\]<>])/g, '\\$1');
 }
