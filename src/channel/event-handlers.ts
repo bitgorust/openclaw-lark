@@ -20,7 +20,7 @@ import { handleAskUserAction } from '../tools/ask-user-question';
 import { buildQueueKey, enqueueFeishuChatTask, getActiveDispatcher, hasActiveTask } from './chat-queue';
 import { extractRawTextFromEvent, isLikelyAbortText } from './abort-detect';
 import type { MonitorContext } from './types';
-import { dispatchCardAction } from './card-action-forward';
+import { dispatchFeishuPluginInteractiveHandler } from './interactive-dispatch';
 
 const elog = larkLogger('channel/event-handlers');
 
@@ -252,8 +252,8 @@ export async function handleCardActionEvent(ctx: MonitorContext, data: unknown):
     const authResult = await handleCardAction(data, ctx.cfg, ctx.accountId);
     if (authResult !== undefined) return authResult;
 
-    // 业务自定义卡片交互：平台仅负责转发 card.action.trigger 给业务插件注册的 handler。
-    return await dispatchCardAction({ accountId: ctx.accountId, data });
+    // 业务自定义卡片交互：使用 SDK 标准 interactive dispatch 管道转发给业务插件。
+    return await dispatchFeishuPluginInteractiveHandler({ cfg: ctx.cfg, accountId: ctx.accountId, data });
   } catch (err) {
     elog.warn(`card.action.trigger handler error: ${err}`);
   }
