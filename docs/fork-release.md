@@ -19,6 +19,7 @@
   - `package.json`
   - `.npmrc`
   - `docs/fork-release.md`
+  - `docs/feishu-metadata-pipeline.md`
 
 ## 分支策略
 
@@ -82,6 +83,7 @@ git merge upstream/main
 
 ```bash
 NODE_SDK_ROOT=/path/to/larksuite-node-sdk pnpm release:prepare
+pnpm release:prepare
 ```
 
 这会执行：
@@ -89,6 +91,8 @@ NODE_SDK_ROOT=/path/to/larksuite-node-sdk pnpm release:prepare
 - `pnpm feishu:supported-operations:check`
 - `pnpm feishu:canonical-metadata:check`
 - `pnpm feishu:skill-coverage:check`
+- `pnpm feishu:scope-list:check`
+- `pnpm feishu:refresh-metadata:check`
 - `pnpm lint`
 - `pnpm format:check`
 - `pnpm typecheck`
@@ -99,7 +103,12 @@ NODE_SDK_ROOT=/path/to/larksuite-node-sdk pnpm release:prepare
 检查点：
 
 - `dist/`、`skills/`、`openclaw.plugin.json` 被正确打包
-- Feishu truth-source 产物与技能覆盖产物没有漂移
+- 基于 `docs/references/feishu-server-api-list.json`
+  和 `docs/references/feishu-scope-list.json` 的 truth-source 产物没有漂移
+- `src/core/generated/feishu-tool-auth.json`
+- `src/core/generated/feishu-tool-scope-specs.json`
+- `src/core/generated/feishu-tool-scopes.json`
+  与对应 TS 包装文件保持同步
 - publish registry 指向公司私库
 
 ### 4. 合并到 main
@@ -161,7 +170,7 @@ npm version 2026.4.1-laipic.1 --no-git-tag-version
 ### 3. 本地验证
 
 ```bash
-NODE_SDK_ROOT=/path/to/larksuite-node-sdk pnpm release:prepare
+pnpm release:prepare
 ```
 
 ### 4. 提交发布版本
@@ -190,8 +199,11 @@ git push origin v2026.4.1-laipic.1
 
 ## 注意事项
 
-- `NODE_SDK_ROOT` 是 Feishu canonical metadata 校验的正式输入
-- `scripts/generate_feishu_canonical_metadata.mjs` 只保留同级 `../node-sdk` 作为本地开发兜底，不再依赖机器专属路径
+- `NODE_SDK_ROOT` 仍然是 canonical metadata 校验的正式输入
+- `docs/references/feishu-server-api-list.json` 和 `docs/references/feishu-scope-list.json` 是仓库内保留的官方 truth-source 快照
+- 当前仓库内的 Feishu runtime metadata 刷新入口是 `pnpm feishu:refresh-metadata`
+- 当前流程以 `src/core/generated/feishu-tool-auth.json` 和 `src/core/generated/feishu-tool-scope-specs.json` 为输入快照，并自动同步其余 generated 包装文件
+- 两层链路的职责和执行顺序见 [docs/feishu-metadata-pipeline.md](/data/Workspace/openclaw-lark/docs/feishu-metadata-pipeline.md)
 - `npm version` 默认会自动创建 commit 和 tag，当前仓库建议使用 `--no-git-tag-version`
 - 版本号变更应只出现在实际发布分支，不应混入发布配置分支
 - 如果发布失败，不要复用同一个版本号重复发布
