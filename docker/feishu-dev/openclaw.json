@@ -1,0 +1,60 @@
+{
+  "gateway": {
+    "mode": "local",
+    "bind": "loopback",
+    "port": 19001,
+    "auth": {
+      "mode": "none"
+    },
+    "controlUi": {
+      "allowedOrigins": [
+        "http://127.0.0.1:19001",
+        "http://localhost:19001"
+      ]
+    }
+  },
+  "plugins": {
+    "allow": [
+      "openclaw-lark"
+    ],
+    "deny": [
+      "feishu"
+    ],
+    "load": {
+      "paths": [
+        "/workspace"
+      ]
+    },
+    "entries": {
+      "feishu": {
+        "enabled": false
+      },
+      "openclaw-lark": {
+        "enabled": true
+      }
+    }
+  },
+  "channels": {
+    "feishu": {
+      "enabled": true,
+      "domain": "${FEISHU_APP_DOMAIN}",
+      "appId": "${FEISHU_APP_ID}",
+      "appSecret": "${FEISHU_APP_SECRET}",
+      "connectionMode": "websocket",
+      "dmPolicy": "open",
+      "allowFrom": [
+        "*"
+      ],
+      "groupPolicy": "open",
+      "requireMention": false,
+      "respondToMentionAll": true
+    }
+  },
+  "agents": {
+    "defaults": {
+      "model": {
+        "primary": "openai/gpt-5.4"
+      }
+    }
+  }
+}

@@ -34,9 +34,10 @@ function printManualNextSteps() {
   console.log('');
   console.log('Automated verification passed.');
   console.log('Manual Feishu verification:');
-  console.log('1. Run `pnpm dev:feishu`.');
-  console.log('2. In Feishu, send `/feishu start` and confirm the plugin responds.');
-  console.log('3. Exercise the changed Feishu flow manually before pushing.');
+  console.log('1. Ensure `.env.local` contains FEISHU_APP_* and any model credentials you want to test.');
+  console.log('2. Run `pnpm dev:feishu`.');
+  console.log('3. In Feishu, send `/feishu start` and confirm the plugin responds.');
+  console.log('4. Exercise the changed Feishu flow manually before pushing.');
 }
 
 async function main() {
