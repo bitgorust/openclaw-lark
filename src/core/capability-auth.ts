@@ -24,24 +24,6 @@ export interface CapabilityAuthPolicy {
 }
 
 const MANUAL_AUTH_MODE_OVERRIDES: Partial<Record<ToolActionKey, CanonicalAuthMode[]>> = {
-  'feishu_approval_instance.list': ['tenant-only'],
-  'feishu_approval_instance.get': ['tenant-only'],
-  'feishu_approval_task.approve': ['tenant-only'],
-  'feishu_approval_task.reject': ['tenant-only'],
-  'feishu_approval_task.transfer': ['tenant-only'],
-  'feishu_approval_task.rollback': ['tenant-only'],
-  'feishu_approval_task.add_sign': ['tenant-only'],
-  'feishu_approval_task.resubmit': ['tenant-only'],
-  'feishu_approval_task_search.search': ['tenant-only'],
-  'feishu_approval_task_search.query': ['dual-mode'],
-  'feishu_approval_cc.search': ['tenant-only'],
-  'feishu_approval_comment.create': ['tenant-only'],
-  'feishu_approval_comment.list': ['tenant-only'],
-  'feishu_approval_comment.delete': ['tenant-only'],
-  'feishu_approval_comment.remove': ['tenant-only'],
-  'feishu_attendance_group.get': ['tenant-only'],
-  'feishu_attendance_group.list_users': ['dual-mode'],
-  'feishu_attendance_shift.query': ['tenant-only'],
 };
 
 const GENERATED_AUTH_MODE_MAP = GENERATED_TOOL_AUTH_MODES as Partial<Record<ToolActionKey, readonly string[]>>;

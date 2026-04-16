@@ -1,0 +1,631 @@
+{
+  "feishu_approval_cc.search": [
+    "approval:approval.list:readonly"
+  ],
+  "feishu_approval_comment.create": [
+    "approval:approval",
+    "approval:instance.comment"
+  ],
+  "feishu_approval_comment.delete": [
+    "approval:approval",
+    "approval:instance.comment"
+  ],
+  "feishu_approval_comment.list": [
+    "approval:approval",
+    "approval:approval:readonly",
+    "approval:instance.comment"
+  ],
+  "feishu_approval_comment.remove": [
+    "approval:approval",
+    "approval:instance.comment"
+  ],
+  "feishu_approval_instance.get": [
+    "approval:approval",
+    "approval:approval:readonly",
+    "approval:instance"
+  ],
+  "feishu_approval_instance.list": [
+    "approval:approval",
+    "approval:approval:readonly",
+    "approval:instance"
+  ],
+  "feishu_approval_task_search.download_attachment": [
+    "approval:approval",
+    "approval:approval.list:readonly",
+    "approval:approval:readonly",
+    "approval:instance"
+  ],
+  "feishu_approval_task_search.get_detail": [
+    "approval:approval",
+    "approval:approval:readonly",
+    "approval:instance"
+  ],
+  "feishu_approval_task_search.parse_attachment": [
+    "approval:approval",
+    "approval:approval.list:readonly",
+    "approval:approval:readonly",
+    "approval:instance"
+  ],
+  "feishu_approval_task_search.query": [
+    "approval:approval:readonly"
+  ],
+  "feishu_approval_task_search.search": [
+    "approval:approval.list:readonly",
+    "approval:approval:readonly"
+  ],
+  "feishu_approval_task.add_sign": [
+    "approval:approval:readonly"
+  ],
+  "feishu_approval_task.approve": [
+    "approval:approval",
+    "approval:approval:readonly",
+    "approval:task"
+  ],
+  "feishu_approval_task.reject": [
+    "approval:approval",
+    "approval:approval:readonly",
+    "approval:task"
+  ],
+  "feishu_approval_task.resubmit": [
+    "approval:approval",
+    "approval:approval:readonly",
+    "approval:task"
+  ],
+  "feishu_approval_task.rollback": [
+    "approval:approval",
+    "approval:approval:readonly",
+    "approval:task"
+  ],
+  "feishu_approval_task.transfer": [
+    "approval:approval",
+    "approval:approval:readonly",
+    "approval:task"
+  ],
+  "feishu_attendance_group.get": [
+    "attendance:rule",
+    "attendance:rule:readonly"
+  ],
+  "feishu_attendance_group.list_users": [
+    "attendance:rule",
+    "attendance:rule:readonly"
+  ],
+  "feishu_attendance_shift.query": [
+    "attendance:task:readonly"
+  ],
+  "feishu_bitable_app_table_field.create": [
+    "base:field:create",
+    "bitable:app"
+  ],
+  "feishu_bitable_app_table_field.delete": [
+    "base:field:delete",
+    "bitable:app"
+  ],
+  "feishu_bitable_app_table_field.list": [
+    "base:field:read",
+    "bitable:app",
+    "bitable:app:readonly"
+  ],
+  "feishu_bitable_app_table_field.update": [
+    "base:field:read",
+    "base:field:update",
+    "bitable:app",
+    "bitable:app:readonly"
+  ],
+  "feishu_bitable_app_table_record.batch_create": [
+    "base:record:create",
+    "bitable:app"
+  ],
+  "feishu_bitable_app_table_record.batch_delete": [
+    "base:record:delete",
+    "bitable:app"
+  ],
+  "feishu_bitable_app_table_record.batch_update": [
+    "base:record:update",
+    "bitable:app"
+  ],
+  "feishu_bitable_app_table_record.create": [
+    "base:record:create",
+    "bitable:app"
+  ],
+  "feishu_bitable_app_table_record.delete": [
+    "base:record:delete",
+    "bitable:app"
+  ],
+  "feishu_bitable_app_table_record.list": [
+    "base:record:retrieve",
+    "bitable:app",
+    "bitable:app:readonly"
+  ],
+  "feishu_bitable_app_table_record.update": [
+    "base:record:update",
+    "bitable:app"
+  ],
+  "feishu_bitable_app_table_view.create": [
+    "base:view:write_only",
+    "bitable:app"
+  ],
+  "feishu_bitable_app_table_view.get": [
+    "base:view:read",
+    "bitable:app",
+    "bitable:app:readonly"
+  ],
+  "feishu_bitable_app_table_view.list": [
+    "base:view:read",
+    "bitable:app",
+    "bitable:app:readonly"
+  ],
+  "feishu_bitable_app_table_view.patch": [
+    "base:view:write_only",
+    "bitable:app"
+  ],
+  "feishu_bitable_app_table.batch_create": [
+    "base:table:create",
+    "bitable:app"
+  ],
+  "feishu_bitable_app_table.create": [
+    "base:table:create",
+    "bitable:app"
+  ],
+  "feishu_bitable_app_table.list": [
+    "base:table:read",
+    "bitable:app",
+    "bitable:app:readonly"
+  ],
+  "feishu_bitable_app_table.patch": [
+    "base:table:update",
+    "bitable:app"
+  ],
+  "feishu_bitable_app.copy": [
+    "base:app:copy",
+    "bitable:app"
+  ],
+  "feishu_bitable_app.create": [
+    "base:app:create",
+    "bitable:app"
+  ],
+  "feishu_bitable_app.get": [
+    "base:app:read",
+    "bitable:app",
+    "bitable:app:readonly"
+  ],
+  "feishu_bitable_app.list": [
+    "drive:drive",
+    "drive:drive:readonly",
+    "space:document:retrieve"
+  ],
+  "feishu_bitable_app.patch": [
+    "base:app:update",
+    "bitable:app"
+  ],
+  "feishu_calendar_calendar.get": [
+    "calendar:calendar",
+    "calendar:calendar:read",
+    "calendar:calendar:readonly"
+  ],
+  "feishu_calendar_calendar.list": [
+    "calendar:calendar",
+    "calendar:calendar:read",
+    "calendar:calendar:readonly"
+  ],
+  "feishu_calendar_calendar.primary": [
+    "calendar:calendar:read",
+    "calendar:calendar:readonly"
+  ],
+  "feishu_calendar_event_attendee.create": [
+    "calendar:calendar",
+    "calendar:calendar.event:update"
+  ],
+  "feishu_calendar_event_attendee.list": [
+    "calendar:calendar",
+    "calendar:calendar.event:read",
+    "calendar:calendar:readonly"
+  ],
+  "feishu_calendar_event.create": [
+    "calendar:calendar",
+    "calendar:calendar.event:create",
+    "calendar:calendar.event:update"
+  ],
+  "feishu_calendar_event.delete": [
+    "calendar:calendar",
+    "calendar:calendar.event:delete"
+  ],
+  "feishu_calendar_event.get": [
+    "calendar:calendar",
+    "calendar:calendar.event:read",
+    "calendar:calendar:readonly"
+  ],
+  "feishu_calendar_event.instance_view": [
+    "calendar:calendar",
+    "calendar:calendar.event:read",
+    "calendar:calendar:readonly"
+  ],
+  "feishu_calendar_event.instances": [
+    "calendar:calendar",
+    "calendar:calendar.event:read",
+    "calendar:calendar:readonly"
+  ],
+  "feishu_calendar_event.list": [
+    "calendar:calendar",
+    "calendar:calendar.event:read",
+    "calendar:calendar:readonly"
+  ],
+  "feishu_calendar_event.patch": [
+    "calendar:calendar",
+    "calendar:calendar.event:update"
+  ],
+  "feishu_calendar_event.reply": [
+    "calendar:calendar",
+    "calendar:calendar.event:reply"
+  ],
+  "feishu_calendar_event.search": [
+    "calendar:calendar",
+    "calendar:calendar.event:read",
+    "calendar:calendar:readonly"
+  ],
+  "feishu_calendar_freebusy.list": [
+    "calendar:calendar",
+    "calendar:calendar.free_busy:read",
+    "calendar:calendar:readonly"
+  ],
+  "feishu_chat_members.default": [
+    "im:chat",
+    "im:chat.group_info:readonly",
+    "im:chat.members:read",
+    "im:chat:readonly"
+  ],
+  "feishu_chat_members.list_members": [
+    "im:chat",
+    "im:chat.group_info:readonly",
+    "im:chat.members:read",
+    "im:chat:readonly"
+  ],
+  "feishu_chat.get": [
+    "im:chat",
+    "im:chat:read",
+    "im:chat:readonly"
+  ],
+  "feishu_chat.search": [
+    "im:chat",
+    "im:chat.group_info:readonly",
+    "im:chat:read",
+    "im:chat:readonly"
+  ],
+  "feishu_doc_comments.create": [
+    "docs:doc",
+    "docs:doc:readonly",
+    "docs:document.comment:create",
+    "docs:document.comment:write_only",
+    "drive:drive",
+    "drive:drive:readonly",
+    "sheets:spreadsheet",
+    "sheets:spreadsheet:readonly"
+  ],
+  "feishu_doc_comments.list": [
+    "docs:doc",
+    "docs:doc:readonly",
+    "docs:document.comment:read",
+    "drive:drive",
+    "drive:drive:readonly",
+    "sheets:spreadsheet",
+    "sheets:spreadsheet:readonly"
+  ],
+  "feishu_doc_comments.patch": [
+    "docs:doc",
+    "docs:doc:readonly",
+    "docs:document.comment:update",
+    "docs:document.comment:write_only",
+    "drive:drive",
+    "drive:drive:readonly",
+    "sheets:spreadsheet",
+    "sheets:spreadsheet:readonly"
+  ],
+  "feishu_doc_media.download": [
+    "bitable:app",
+    "bitable:app:readonly",
+    "board:whiteboard:node:read",
+    "docs:doc",
+    "docs:doc:readonly",
+    "docs:document.media:download",
+    "drive:drive",
+    "drive:drive:readonly",
+    "sheets:spreadsheet",
+    "sheets:spreadsheet:readonly"
+  ],
+  "feishu_doc_media.insert": [
+    "docx:document"
+  ],
+  "feishu_drive_file.copy": [
+    "docs:document:copy",
+    "drive:drive"
+  ],
+  "feishu_drive_file.delete": [
+    "drive:drive",
+    "space:document:delete"
+  ],
+  "feishu_drive_file.download": [
+    "drive:drive",
+    "drive:drive:readonly",
+    "drive:file",
+    "drive:file:download",
+    "drive:file:readonly"
+  ],
+  "feishu_drive_file.get_meta": [
+    "drive:drive",
+    "drive:drive.metadata:readonly"
+  ],
+  "feishu_drive_file.list": [
+    "drive:drive",
+    "drive:drive:readonly",
+    "space:document:retrieve"
+  ],
+  "feishu_drive_file.move": [
+    "drive:drive",
+    "space:document:move"
+  ],
+  "feishu_drive_file.upload": [
+    "drive:drive",
+    "drive:file",
+    "drive:file:upload"
+  ],
+  "feishu_get_user.default": [
+    "contact:contact.base:readonly",
+    "contact:contact:access_as_app",
+    "contact:contact:readonly",
+    "contact:contact:readonly_as_app"
+  ],
+  "feishu_get_user.get": [
+    "contact:contact.base:readonly",
+    "contact:contact:access_as_app",
+    "contact:contact:readonly",
+    "contact:contact:readonly_as_app"
+  ],
+  "feishu_im_bot_image.download_resource": [
+    "im:message",
+    "im:message.history:readonly",
+    "im:message:readonly"
+  ],
+  "feishu_im_user_fetch_resource.default": [
+    "im:message",
+    "im:message.history:readonly",
+    "im:message:readonly"
+  ],
+  "feishu_im_user_fetch_resource.download_resource": [
+    "im:message",
+    "im:message.history:readonly",
+    "im:message:readonly"
+  ],
+  "feishu_im_user_get_thread_messages.list_thread_messages": [
+    "im:message",
+    "im:message.history:readonly",
+    "im:message:readonly"
+  ],
+  "feishu_im_user_message.reply": [
+    "im:message",
+    "im:message:send",
+    "im:message:send_as_bot"
+  ],
+  "feishu_im_user_message.send": [
+    "im:message",
+    "im:message:send",
+    "im:message:send_as_bot"
+  ],
+  "feishu_mail_message.attachment_download_url": [
+    "mail:user_mailbox.message.body:read"
+  ],
+  "feishu_mail_message.get": [
+    "mail:user_mailbox.message:readonly"
+  ],
+  "feishu_mail_message.list": [
+    "mail:user_mailbox.message:readonly"
+  ],
+  "feishu_mail_message.send": [
+    "mail:user_mailbox.message:send"
+  ],
+  "feishu_meeting_reserve.apply": [
+    "vc:reserve"
+  ],
+  "feishu_meeting_reserve.delete": [
+    "vc:reserve"
+  ],
+  "feishu_meeting_reserve.get": [
+    "vc:reserve:readonly"
+  ],
+  "feishu_meeting_reserve.get_active_meeting": [
+    "vc:reserve:readonly"
+  ],
+  "feishu_meeting_reserve.update": [
+    "vc:reserve"
+  ],
+  "feishu_meeting.end": [
+    "vc:meeting"
+  ],
+  "feishu_meeting.get": [
+    "vc:meeting.meetingevent:read",
+    "vc:meeting:readonly"
+  ],
+  "feishu_meeting.get_note": [
+    "vc:note:read"
+  ],
+  "feishu_meeting.search": [
+    "vc:meeting.search:read"
+  ],
+  "feishu_minutes.artifacts": [
+    "minutes:minutes.artifacts:read"
+  ],
+  "feishu_minutes.get": [
+    "minutes:minutes",
+    "minutes:minutes.basic:read",
+    "minutes:minutes:readonly"
+  ],
+  "feishu_minutes.media": [
+    "minutes:minutes.media:export"
+  ],
+  "feishu_minutes.statistics": [
+    "minutes:minutes",
+    "minutes:minutes.statistics:read",
+    "minutes:minutes:readonly"
+  ],
+  "feishu_minutes.transcript": [
+    "minutes:minutes.transcript:export"
+  ],
+  "feishu_search_doc_wiki.search": [
+    "search:docs:read"
+  ],
+  "feishu_search_user.default": [
+    "contact:user:search"
+  ],
+  "feishu_search_user.search": [
+    "contact:user:search"
+  ],
+  "feishu_sheet.append": [
+    "drive:drive",
+    "drive:drive:readonly",
+    "sheets:spreadsheet",
+    "sheets:spreadsheet:readonly",
+    "wiki:node:read",
+    "wiki:wiki",
+    "wiki:wiki:readonly"
+  ],
+  "feishu_sheet.create": [
+    "drive:drive",
+    "drive:drive:readonly",
+    "sheets:spreadsheet",
+    "sheets:spreadsheet:create",
+    "sheets:spreadsheet:readonly"
+  ],
+  "feishu_sheet.export": [
+    "docs:document:export",
+    "drive:export:readonly",
+    "wiki:node:read",
+    "wiki:wiki",
+    "wiki:wiki:readonly"
+  ],
+  "feishu_sheet.find": [
+    "drive:drive",
+    "drive:drive:readonly",
+    "sheets:spreadsheet",
+    "sheets:spreadsheet:readonly",
+    "wiki:node:read",
+    "wiki:wiki",
+    "wiki:wiki:readonly"
+  ],
+  "feishu_sheet.info": [
+    "drive:drive",
+    "drive:drive:readonly",
+    "sheets:spreadsheet",
+    "sheets:spreadsheet:readonly",
+    "wiki:node:read",
+    "wiki:wiki",
+    "wiki:wiki:readonly"
+  ],
+  "feishu_sheet.read": [
+    "drive:drive",
+    "drive:drive:readonly",
+    "sheets:spreadsheet",
+    "sheets:spreadsheet:readonly",
+    "wiki:node:read",
+    "wiki:wiki",
+    "wiki:wiki:readonly"
+  ],
+  "feishu_sheet.write": [
+    "drive:drive",
+    "drive:drive:readonly",
+    "sheets:spreadsheet",
+    "sheets:spreadsheet:readonly",
+    "wiki:node:read",
+    "wiki:wiki",
+    "wiki:wiki:readonly"
+  ],
+  "feishu_task_comment.create": [
+    "task:comment:write"
+  ],
+  "feishu_task_comment.get": [
+    "task:comment:read",
+    "task:comment:write"
+  ],
+  "feishu_task_comment.list": [
+    "task:comment:read",
+    "task:comment:write"
+  ],
+  "feishu_task_subtask.create": [
+    "task:task:write"
+  ],
+  "feishu_task_subtask.list": [
+    "task:task:read",
+    "task:task:write"
+  ],
+  "feishu_task_task.create": [
+    "task:task:write",
+    "task:task:writeonly"
+  ],
+  "feishu_task_task.get": [
+    "task:task:read",
+    "task:task:write"
+  ],
+  "feishu_task_task.list": [
+    "task:task:read",
+    "task:task:write"
+  ],
+  "feishu_task_task.patch": [
+    "task:task:write",
+    "task:task:writeonly"
+  ],
+  "feishu_task_tasklist.add_members": [
+    "task:tasklist:write"
+  ],
+  "feishu_task_tasklist.create": [
+    "task:tasklist:write"
+  ],
+  "feishu_task_tasklist.get": [
+    "task:tasklist:read",
+    "task:tasklist:write"
+  ],
+  "feishu_task_tasklist.list": [
+    "task:tasklist:read",
+    "task:tasklist:write"
+  ],
+  "feishu_task_tasklist.patch": [
+    "task:tasklist:write"
+  ],
+  "feishu_task_tasklist.tasks": [
+    "task:tasklist:read",
+    "task:tasklist:write"
+  ],
+  "feishu_wiki_space_node.copy": [
+    "wiki:node:copy",
+    "wiki:wiki"
+  ],
+  "feishu_wiki_space_node.create": [
+    "wiki:node:create",
+    "wiki:wiki"
+  ],
+  "feishu_wiki_space_node.get": [
+    "wiki:node:read",
+    "wiki:wiki",
+    "wiki:wiki:readonly"
+  ],
+  "feishu_wiki_space_node.list": [
+    "wiki:node:retrieve",
+    "wiki:wiki",
+    "wiki:wiki:readonly"
+  ],
+  "feishu_wiki_space_node.move": [
+    "wiki:node:move",
+    "wiki:wiki",
+    "wiki:wiki:readonly"
+  ],
+  "feishu_wiki_space.create": [
+    "wiki:space:write_only",
+    "wiki:wiki"
+  ],
+  "feishu_wiki_space.get": [
+    "wiki:space:read",
+    "wiki:wiki",
+    "wiki:wiki:readonly"
+  ],
+  "feishu_wiki_space.list": [
+    "wiki:space:retrieve",
+    "wiki:wiki",
+    "wiki:wiki:readonly"
+  ]
+}

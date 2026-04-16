@@ -59,6 +59,11 @@ async function main() {
       run: !argv['skip-verify'],
     },
     {
+      label: 'feishu-official-security-metadata',
+      command: 'pnpm feishu:official-security-metadata:check',
+      run: !argv['skip-verify'],
+    },
+    {
       label: 'feishu-canonical-metadata',
       command: 'pnpm feishu:canonical-metadata:check',
       run: !argv['skip-verify'],
@@ -66,6 +71,16 @@ async function main() {
     {
       label: 'feishu-skill-coverage',
       command: 'pnpm feishu:skill-coverage:check',
+      run: !argv['skip-verify'],
+    },
+    {
+      label: 'feishu-scope-list',
+      command: 'pnpm feishu:scope-list:check',
+      run: !argv['skip-verify'],
+    },
+    {
+      label: 'feishu-runtime-metadata',
+      command: 'pnpm feishu:refresh-metadata:check',
       run: !argv['skip-verify'],
     },
     {
@@ -195,7 +210,7 @@ async function main() {
 function printUsage() {
   console.log(`Usage:
   pnpm release -- --version 2026.4.1-laipic.1 [--upstream-base 2026.4.1]
-  NODE_SDK_ROOT=/path/to/larksuite-node-sdk pnpm release:prepare
+  pnpm release:prepare
 
 Options:
   --version         Target release version. Defaults to package.json version.
@@ -208,8 +223,6 @@ Options:
   --allow-dirty     Allow a dirty git working tree.
   --help            Show this message.
 
-Environment:
-  NODE_SDK_ROOT     Required for Feishu canonical metadata verification in release checks.
 `);
 }
 

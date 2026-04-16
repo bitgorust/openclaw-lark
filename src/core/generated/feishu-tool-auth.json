@@ -1,0 +1,446 @@
+{
+  "feishu_approval_cc.search": [
+    "tenant-only"
+  ],
+  "feishu_approval_comment.create": [
+    "user-only"
+  ],
+  "feishu_approval_comment.delete": [
+    "user-only"
+  ],
+  "feishu_approval_comment.list": [
+    "user-only"
+  ],
+  "feishu_approval_comment.remove": [
+    "user-only"
+  ],
+  "feishu_approval_instance.get": [
+    "user-only"
+  ],
+  "feishu_approval_instance.list": [
+    "user-only"
+  ],
+  "feishu_approval_task_search.download_attachment": [
+    "user-only"
+  ],
+  "feishu_approval_task_search.get_detail": [
+    "user-only"
+  ],
+  "feishu_approval_task_search.parse_attachment": [
+    "user-only"
+  ],
+  "feishu_approval_task_search.query": [
+    "dual-mode"
+  ],
+  "feishu_approval_task_search.search": [
+    "tenant-only"
+  ],
+  "feishu_approval_task.add_sign": [
+    "tenant-only"
+  ],
+  "feishu_approval_task.approve": [
+    "tenant-only"
+  ],
+  "feishu_approval_task.reject": [
+    "tenant-only"
+  ],
+  "feishu_approval_task.resubmit": [
+    "tenant-only"
+  ],
+  "feishu_approval_task.rollback": [
+    "tenant-only"
+  ],
+  "feishu_approval_task.transfer": [
+    "tenant-only"
+  ],
+  "feishu_ask_user_question.ask": [
+    "user-only"
+  ],
+  "feishu_attendance_group.get": [
+    "tenant-only"
+  ],
+  "feishu_attendance_group.list_users": [
+    "dual-mode"
+  ],
+  "feishu_attendance_shift.query": [
+    "tenant-only"
+  ],
+  "feishu_bitable_app_table_field.create": [
+    "user-only"
+  ],
+  "feishu_bitable_app_table_field.delete": [
+    "user-only"
+  ],
+  "feishu_bitable_app_table_field.list": [
+    "user-only"
+  ],
+  "feishu_bitable_app_table_field.update": [
+    "user-only"
+  ],
+  "feishu_bitable_app_table_record.batch_create": [
+    "user-only"
+  ],
+  "feishu_bitable_app_table_record.batch_delete": [
+    "user-only"
+  ],
+  "feishu_bitable_app_table_record.batch_update": [
+    "user-only"
+  ],
+  "feishu_bitable_app_table_record.create": [
+    "user-only"
+  ],
+  "feishu_bitable_app_table_record.delete": [
+    "user-only"
+  ],
+  "feishu_bitable_app_table_record.list": [
+    "user-only"
+  ],
+  "feishu_bitable_app_table_record.update": [
+    "user-only"
+  ],
+  "feishu_bitable_app_table_view.create": [
+    "user-only"
+  ],
+  "feishu_bitable_app_table_view.get": [
+    "user-only"
+  ],
+  "feishu_bitable_app_table_view.list": [
+    "user-only"
+  ],
+  "feishu_bitable_app_table_view.patch": [
+    "user-only"
+  ],
+  "feishu_bitable_app_table.batch_create": [
+    "user-only"
+  ],
+  "feishu_bitable_app_table.create": [
+    "user-only"
+  ],
+  "feishu_bitable_app_table.list": [
+    "user-only"
+  ],
+  "feishu_bitable_app_table.patch": [
+    "user-only"
+  ],
+  "feishu_bitable_app.copy": [
+    "user-only"
+  ],
+  "feishu_bitable_app.create": [
+    "user-only"
+  ],
+  "feishu_bitable_app.get": [
+    "user-only"
+  ],
+  "feishu_bitable_app.list": [
+    "user-only"
+  ],
+  "feishu_bitable_app.patch": [
+    "user-only"
+  ],
+  "feishu_calendar_calendar.get": [
+    "user-only"
+  ],
+  "feishu_calendar_calendar.list": [
+    "user-only"
+  ],
+  "feishu_calendar_calendar.primary": [
+    "user-only"
+  ],
+  "feishu_calendar_event_attendee.create": [
+    "user-only"
+  ],
+  "feishu_calendar_event_attendee.list": [
+    "user-only"
+  ],
+  "feishu_calendar_event.create": [
+    "user-only"
+  ],
+  "feishu_calendar_event.delete": [
+    "user-only"
+  ],
+  "feishu_calendar_event.get": [
+    "user-only"
+  ],
+  "feishu_calendar_event.instance_view": [
+    "user-only"
+  ],
+  "feishu_calendar_event.instances": [
+    "user-only"
+  ],
+  "feishu_calendar_event.list": [
+    "user-only"
+  ],
+  "feishu_calendar_event.patch": [
+    "user-only"
+  ],
+  "feishu_calendar_event.reply": [
+    "user-only"
+  ],
+  "feishu_calendar_event.search": [
+    "user-only"
+  ],
+  "feishu_calendar_freebusy.list": [
+    "user-only"
+  ],
+  "feishu_chat_members.default": [
+    "user-only"
+  ],
+  "feishu_chat_members.list_members": [
+    "user-only"
+  ],
+  "feishu_chat.get": [
+    "user-only"
+  ],
+  "feishu_chat.search": [
+    "user-only"
+  ],
+  "feishu_create_doc.create-doc": [
+    "user-only"
+  ],
+  "feishu_create_doc.default": [
+    "user-only"
+  ],
+  "feishu_doc_comments.create": [
+    "user-only"
+  ],
+  "feishu_doc_comments.list": [
+    "user-only"
+  ],
+  "feishu_doc_comments.patch": [
+    "user-only"
+  ],
+  "feishu_doc_media.download": [
+    "user-only"
+  ],
+  "feishu_doc_media.insert": [
+    "user-only"
+  ],
+  "feishu_drive_file.copy": [
+    "user-only"
+  ],
+  "feishu_drive_file.delete": [
+    "user-only"
+  ],
+  "feishu_drive_file.download": [
+    "user-only"
+  ],
+  "feishu_drive_file.get_meta": [
+    "user-only"
+  ],
+  "feishu_drive_file.list": [
+    "user-only"
+  ],
+  "feishu_drive_file.move": [
+    "user-only"
+  ],
+  "feishu_drive_file.upload": [
+    "user-only"
+  ],
+  "feishu_fetch_doc.default": [
+    "user-only"
+  ],
+  "feishu_fetch_doc.fetch-doc": [
+    "user-only"
+  ],
+  "feishu_get_user.default": [
+    "user-only"
+  ],
+  "feishu_get_user.get": [
+    "user-only"
+  ],
+  "feishu_im_bot_image.download_resource": [
+    "tenant-only"
+  ],
+  "feishu_im_user_fetch_resource.default": [
+    "tenant-only"
+  ],
+  "feishu_im_user_fetch_resource.download_resource": [
+    "tenant-only"
+  ],
+  "feishu_im_user_get_messages.default": [
+    "user-only"
+  ],
+  "feishu_im_user_get_messages.list_messages": [
+    "user-only"
+  ],
+  "feishu_im_user_get_thread_messages.list_thread_messages": [
+    "user-only"
+  ],
+  "feishu_im_user_message.reply": [
+    "tenant-only"
+  ],
+  "feishu_im_user_message.send": [
+    "tenant-only"
+  ],
+  "feishu_im_user_search_messages.default": [
+    "user-only"
+  ],
+  "feishu_im_user_search_messages.search_messages": [
+    "user-only"
+  ],
+  "feishu_mail_message.attachment_download_url": [
+    "dual-mode"
+  ],
+  "feishu_mail_message.get": [
+    "dual-mode"
+  ],
+  "feishu_mail_message.list": [
+    "dual-mode"
+  ],
+  "feishu_mail_message.send": [
+    "user-only"
+  ],
+  "feishu_meeting_reserve.apply": [
+    "dual-mode"
+  ],
+  "feishu_meeting_reserve.delete": [
+    "dual-mode"
+  ],
+  "feishu_meeting_reserve.get": [
+    "dual-mode"
+  ],
+  "feishu_meeting_reserve.get_active_meeting": [
+    "dual-mode"
+  ],
+  "feishu_meeting_reserve.update": [
+    "dual-mode"
+  ],
+  "feishu_meeting.end": [
+    "user-only"
+  ],
+  "feishu_meeting.get": [
+    "dual-mode"
+  ],
+  "feishu_meeting.get_note": [
+    "user-only"
+  ],
+  "feishu_meeting.search": [
+    "user-only"
+  ],
+  "feishu_minutes.artifacts": [
+    "dual-mode"
+  ],
+  "feishu_minutes.get": [
+    "dual-mode"
+  ],
+  "feishu_minutes.media": [
+    "dual-mode"
+  ],
+  "feishu_minutes.statistics": [
+    "dual-mode"
+  ],
+  "feishu_minutes.transcript": [
+    "dual-mode"
+  ],
+  "feishu_oauth_batch_auth.authorize_all": [
+    "tenant-only"
+  ],
+  "feishu_oauth.revoke": [
+    "user-only"
+  ],
+  "feishu_search_doc_wiki.search": [
+    "user-only"
+  ],
+  "feishu_search_user.default": [
+    "user-only"
+  ],
+  "feishu_search_user.search": [
+    "user-only"
+  ],
+  "feishu_sheet.append": [
+    "user-only"
+  ],
+  "feishu_sheet.create": [
+    "user-only"
+  ],
+  "feishu_sheet.export": [
+    "user-only"
+  ],
+  "feishu_sheet.find": [
+    "user-only"
+  ],
+  "feishu_sheet.info": [
+    "user-only"
+  ],
+  "feishu_sheet.read": [
+    "user-only"
+  ],
+  "feishu_sheet.write": [
+    "user-only"
+  ],
+  "feishu_task_comment.create": [
+    "user-only"
+  ],
+  "feishu_task_comment.get": [
+    "user-only"
+  ],
+  "feishu_task_comment.list": [
+    "user-only"
+  ],
+  "feishu_task_subtask.create": [
+    "user-only"
+  ],
+  "feishu_task_subtask.list": [
+    "user-only"
+  ],
+  "feishu_task_task.create": [
+    "user-only"
+  ],
+  "feishu_task_task.get": [
+    "user-only"
+  ],
+  "feishu_task_task.list": [
+    "user-only"
+  ],
+  "feishu_task_task.patch": [
+    "user-only"
+  ],
+  "feishu_task_tasklist.add_members": [
+    "user-only"
+  ],
+  "feishu_task_tasklist.create": [
+    "user-only"
+  ],
+  "feishu_task_tasklist.get": [
+    "user-only"
+  ],
+  "feishu_task_tasklist.list": [
+    "user-only"
+  ],
+  "feishu_task_tasklist.patch": [
+    "user-only"
+  ],
+  "feishu_task_tasklist.tasks": [
+    "user-only"
+  ],
+  "feishu_update_doc.default": [
+    "user-only"
+  ],
+  "feishu_update_doc.update-doc": [
+    "user-only"
+  ],
+  "feishu_wiki_space_node.copy": [
+    "user-only"
+  ],
+  "feishu_wiki_space_node.create": [
+    "user-only"
+  ],
+  "feishu_wiki_space_node.get": [
+    "user-only"
+  ],
+  "feishu_wiki_space_node.list": [
+    "user-only"
+  ],
+  "feishu_wiki_space_node.move": [
+    "user-only"
+  ],
+  "feishu_wiki_space.create": [
+    "user-only"
+  ],
+  "feishu_wiki_space.get": [
+    "user-only"
+  ],
+  "feishu_wiki_space.list": [
+    "user-only"
+  ]
+}

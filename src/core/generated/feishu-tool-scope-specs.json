@@ -1,0 +1,1171 @@
+{
+  "feishu_approval_cc.search": {
+    "requiredScopes": [
+      "approval:approval.list:readonly"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_approval_comment.create": {
+    "requiredScopes": [
+      "approval:approval",
+      "approval:instance.comment"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_approval_comment.delete": {
+    "requiredScopes": [
+      "approval:approval",
+      "approval:instance.comment"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_approval_comment.list": {
+    "requiredScopes": [
+      "approval:approval",
+      "approval:approval:readonly",
+      "approval:instance.comment"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_approval_comment.remove": {
+    "requiredScopes": [
+      "approval:approval",
+      "approval:instance.comment"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_approval_instance.get": {
+    "requiredScopes": [
+      "approval:approval",
+      "approval:approval:readonly",
+      "approval:instance"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_approval_instance.list": {
+    "requiredScopes": [
+      "approval:approval",
+      "approval:approval:readonly",
+      "approval:instance"
+    ],
+    "scopeNeedType": "all",
+    "source": "official"
+  },
+  "feishu_approval_task_search.download_attachment": {
+    "requiredScopes": [
+      "approval:approval",
+      "approval:approval.list:readonly",
+      "approval:approval:readonly",
+      "approval:instance"
+    ],
+    "scopeNeedType": "all",
+    "source": "official"
+  },
+  "feishu_approval_task_search.get_detail": {
+    "requiredScopes": [
+      "approval:approval",
+      "approval:approval:readonly",
+      "approval:instance"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_approval_task_search.parse_attachment": {
+    "requiredScopes": [
+      "approval:approval",
+      "approval:approval.list:readonly",
+      "approval:approval:readonly",
+      "approval:instance"
+    ],
+    "scopeNeedType": "all",
+    "source": "official"
+  },
+  "feishu_approval_task_search.query": {
+    "requiredScopes": [
+      "approval:approval:readonly"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_approval_task_search.search": {
+    "requiredScopes": [
+      "approval:approval.list:readonly",
+      "approval:approval:readonly"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_approval_task.add_sign": {
+    "requiredScopes": [
+      "approval:approval:readonly"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_approval_task.approve": {
+    "requiredScopes": [
+      "approval:approval",
+      "approval:approval:readonly",
+      "approval:task"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_approval_task.reject": {
+    "requiredScopes": [
+      "approval:approval",
+      "approval:approval:readonly",
+      "approval:task"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_approval_task.resubmit": {
+    "requiredScopes": [
+      "approval:approval",
+      "approval:approval:readonly",
+      "approval:task"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_approval_task.rollback": {
+    "requiredScopes": [
+      "approval:approval",
+      "approval:approval:readonly",
+      "approval:task"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_approval_task.transfer": {
+    "requiredScopes": [
+      "approval:approval",
+      "approval:approval:readonly",
+      "approval:task"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_attendance_group.get": {
+    "requiredScopes": [
+      "attendance:rule",
+      "attendance:rule:readonly"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_attendance_group.list_users": {
+    "requiredScopes": [
+      "attendance:rule",
+      "attendance:rule:readonly"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_attendance_shift.query": {
+    "requiredScopes": [
+      "attendance:task:readonly"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_bitable_app_table_field.create": {
+    "requiredScopes": [
+      "base:field:create",
+      "bitable:app"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_bitable_app_table_field.delete": {
+    "requiredScopes": [
+      "base:field:delete",
+      "bitable:app"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_bitable_app_table_field.list": {
+    "requiredScopes": [
+      "base:field:read",
+      "bitable:app",
+      "bitable:app:readonly"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_bitable_app_table_field.update": {
+    "requiredScopes": [
+      "base:field:read",
+      "base:field:update",
+      "bitable:app",
+      "bitable:app:readonly"
+    ],
+    "scopeNeedType": "all",
+    "source": "official"
+  },
+  "feishu_bitable_app_table_record.batch_create": {
+    "requiredScopes": [
+      "base:record:create",
+      "bitable:app"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_bitable_app_table_record.batch_delete": {
+    "requiredScopes": [
+      "base:record:delete",
+      "bitable:app"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_bitable_app_table_record.batch_update": {
+    "requiredScopes": [
+      "base:record:update",
+      "bitable:app"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_bitable_app_table_record.create": {
+    "requiredScopes": [
+      "base:record:create",
+      "bitable:app"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_bitable_app_table_record.delete": {
+    "requiredScopes": [
+      "base:record:delete",
+      "bitable:app"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_bitable_app_table_record.list": {
+    "requiredScopes": [
+      "base:record:retrieve",
+      "bitable:app",
+      "bitable:app:readonly"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_bitable_app_table_record.update": {
+    "requiredScopes": [
+      "base:record:update",
+      "bitable:app"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_bitable_app_table_view.create": {
+    "requiredScopes": [
+      "base:view:write_only",
+      "bitable:app"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_bitable_app_table_view.get": {
+    "requiredScopes": [
+      "base:view:read",
+      "bitable:app",
+      "bitable:app:readonly"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_bitable_app_table_view.list": {
+    "requiredScopes": [
+      "base:view:read",
+      "bitable:app",
+      "bitable:app:readonly"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_bitable_app_table_view.patch": {
+    "requiredScopes": [
+      "base:view:write_only",
+      "bitable:app"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_bitable_app_table.batch_create": {
+    "requiredScopes": [
+      "base:table:create",
+      "bitable:app"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_bitable_app_table.create": {
+    "requiredScopes": [
+      "base:table:create",
+      "bitable:app"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_bitable_app_table.list": {
+    "requiredScopes": [
+      "base:table:read",
+      "bitable:app",
+      "bitable:app:readonly"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_bitable_app_table.patch": {
+    "requiredScopes": [
+      "base:table:update",
+      "bitable:app"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_bitable_app.copy": {
+    "requiredScopes": [
+      "base:app:copy",
+      "bitable:app"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_bitable_app.create": {
+    "requiredScopes": [
+      "base:app:create",
+      "bitable:app"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_bitable_app.get": {
+    "requiredScopes": [
+      "base:app:read",
+      "bitable:app",
+      "bitable:app:readonly"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_bitable_app.list": {
+    "requiredScopes": [
+      "drive:drive",
+      "drive:drive:readonly",
+      "space:document:retrieve"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_bitable_app.patch": {
+    "requiredScopes": [
+      "base:app:update",
+      "bitable:app"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_calendar_calendar.get": {
+    "requiredScopes": [
+      "calendar:calendar",
+      "calendar:calendar:read",
+      "calendar:calendar:readonly"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_calendar_calendar.list": {
+    "requiredScopes": [
+      "calendar:calendar",
+      "calendar:calendar:read",
+      "calendar:calendar:readonly"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_calendar_calendar.primary": {
+    "requiredScopes": [
+      "calendar:calendar:read",
+      "calendar:calendar:readonly"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_calendar_event_attendee.create": {
+    "requiredScopes": [
+      "calendar:calendar",
+      "calendar:calendar.event:update"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_calendar_event_attendee.list": {
+    "requiredScopes": [
+      "calendar:calendar",
+      "calendar:calendar.event:read",
+      "calendar:calendar:readonly"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_calendar_event.create": {
+    "requiredScopes": [
+      "calendar:calendar",
+      "calendar:calendar.event:create",
+      "calendar:calendar.event:update"
+    ],
+    "scopeNeedType": "all",
+    "source": "official"
+  },
+  "feishu_calendar_event.delete": {
+    "requiredScopes": [
+      "calendar:calendar",
+      "calendar:calendar.event:delete"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_calendar_event.get": {
+    "requiredScopes": [
+      "calendar:calendar",
+      "calendar:calendar.event:read",
+      "calendar:calendar:readonly"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_calendar_event.instance_view": {
+    "requiredScopes": [
+      "calendar:calendar",
+      "calendar:calendar.event:read",
+      "calendar:calendar:readonly"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_calendar_event.instances": {
+    "requiredScopes": [
+      "calendar:calendar",
+      "calendar:calendar.event:read",
+      "calendar:calendar:readonly"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_calendar_event.list": {
+    "requiredScopes": [
+      "calendar:calendar",
+      "calendar:calendar.event:read",
+      "calendar:calendar:readonly"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_calendar_event.patch": {
+    "requiredScopes": [
+      "calendar:calendar",
+      "calendar:calendar.event:update"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_calendar_event.reply": {
+    "requiredScopes": [
+      "calendar:calendar",
+      "calendar:calendar.event:reply"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_calendar_event.search": {
+    "requiredScopes": [
+      "calendar:calendar",
+      "calendar:calendar.event:read",
+      "calendar:calendar:readonly"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_calendar_freebusy.list": {
+    "requiredScopes": [
+      "calendar:calendar",
+      "calendar:calendar.free_busy:read",
+      "calendar:calendar:readonly"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_chat_members.default": {
+    "requiredScopes": [
+      "im:chat",
+      "im:chat.group_info:readonly",
+      "im:chat.members:read",
+      "im:chat:readonly"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_chat_members.list_members": {
+    "requiredScopes": [
+      "im:chat",
+      "im:chat.group_info:readonly",
+      "im:chat.members:read",
+      "im:chat:readonly"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_chat.get": {
+    "requiredScopes": [
+      "im:chat",
+      "im:chat:read",
+      "im:chat:readonly"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_chat.search": {
+    "requiredScopes": [
+      "im:chat",
+      "im:chat.group_info:readonly",
+      "im:chat:read",
+      "im:chat:readonly"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_doc_comments.create": {
+    "requiredScopes": [
+      "docs:doc",
+      "docs:doc:readonly",
+      "docs:document.comment:create",
+      "docs:document.comment:write_only",
+      "drive:drive",
+      "drive:drive:readonly",
+      "sheets:spreadsheet",
+      "sheets:spreadsheet:readonly"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_doc_comments.list": {
+    "requiredScopes": [
+      "docs:doc",
+      "docs:doc:readonly",
+      "docs:document.comment:read",
+      "drive:drive",
+      "drive:drive:readonly",
+      "sheets:spreadsheet",
+      "sheets:spreadsheet:readonly"
+    ],
+    "scopeNeedType": "all",
+    "source": "official"
+  },
+  "feishu_doc_comments.patch": {
+    "requiredScopes": [
+      "docs:doc",
+      "docs:doc:readonly",
+      "docs:document.comment:update",
+      "docs:document.comment:write_only",
+      "drive:drive",
+      "drive:drive:readonly",
+      "sheets:spreadsheet",
+      "sheets:spreadsheet:readonly"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_doc_media.download": {
+    "requiredScopes": [
+      "bitable:app",
+      "bitable:app:readonly",
+      "board:whiteboard:node:read",
+      "docs:doc",
+      "docs:doc:readonly",
+      "docs:document.media:download",
+      "drive:drive",
+      "drive:drive:readonly",
+      "sheets:spreadsheet",
+      "sheets:spreadsheet:readonly"
+    ],
+    "scopeNeedType": "all",
+    "source": "official"
+  },
+  "feishu_doc_media.insert": {
+    "requiredScopes": [
+      "docx:document"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_drive_file.copy": {
+    "requiredScopes": [
+      "docs:document:copy",
+      "drive:drive"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_drive_file.delete": {
+    "requiredScopes": [
+      "drive:drive",
+      "space:document:delete"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_drive_file.download": {
+    "requiredScopes": [
+      "drive:drive",
+      "drive:drive:readonly",
+      "drive:file",
+      "drive:file:download",
+      "drive:file:readonly"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_drive_file.get_meta": {
+    "requiredScopes": [
+      "drive:drive",
+      "drive:drive.metadata:readonly"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_drive_file.list": {
+    "requiredScopes": [
+      "drive:drive",
+      "drive:drive:readonly",
+      "space:document:retrieve"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_drive_file.move": {
+    "requiredScopes": [
+      "drive:drive",
+      "space:document:move"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_drive_file.upload": {
+    "requiredScopes": [
+      "drive:drive",
+      "drive:file",
+      "drive:file:upload"
+    ],
+    "scopeNeedType": "all",
+    "source": "official"
+  },
+  "feishu_get_user.default": {
+    "requiredScopes": [
+      "contact:contact.base:readonly",
+      "contact:contact:access_as_app",
+      "contact:contact:readonly",
+      "contact:contact:readonly_as_app"
+    ],
+    "scopeNeedType": "all",
+    "source": "official"
+  },
+  "feishu_get_user.get": {
+    "requiredScopes": [
+      "contact:contact.base:readonly",
+      "contact:contact:access_as_app",
+      "contact:contact:readonly",
+      "contact:contact:readonly_as_app"
+    ],
+    "scopeNeedType": "all",
+    "source": "official"
+  },
+  "feishu_im_bot_image.download_resource": {
+    "requiredScopes": [
+      "im:message",
+      "im:message.history:readonly",
+      "im:message:readonly"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_im_user_fetch_resource.default": {
+    "requiredScopes": [
+      "im:message",
+      "im:message.history:readonly",
+      "im:message:readonly"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_im_user_fetch_resource.download_resource": {
+    "requiredScopes": [
+      "im:message",
+      "im:message.history:readonly",
+      "im:message:readonly"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_im_user_get_thread_messages.list_thread_messages": {
+    "requiredScopes": [
+      "im:message",
+      "im:message.history:readonly",
+      "im:message:readonly"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_im_user_message.reply": {
+    "requiredScopes": [
+      "im:message",
+      "im:message:send",
+      "im:message:send_as_bot"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_im_user_message.send": {
+    "requiredScopes": [
+      "im:message",
+      "im:message:send",
+      "im:message:send_as_bot"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_mail_message.attachment_download_url": {
+    "requiredScopes": [
+      "mail:user_mailbox.message.body:read"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_mail_message.get": {
+    "requiredScopes": [
+      "mail:user_mailbox.message:readonly"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_mail_message.list": {
+    "requiredScopes": [
+      "mail:user_mailbox.message:readonly"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_mail_message.send": {
+    "requiredScopes": [
+      "mail:user_mailbox.message:send"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_meeting_reserve.apply": {
+    "requiredScopes": [
+      "vc:reserve"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_meeting_reserve.delete": {
+    "requiredScopes": [
+      "vc:reserve"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_meeting_reserve.get": {
+    "requiredScopes": [
+      "vc:reserve:readonly"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_meeting_reserve.get_active_meeting": {
+    "requiredScopes": [
+      "vc:reserve:readonly"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_meeting_reserve.update": {
+    "requiredScopes": [
+      "vc:reserve"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_meeting.end": {
+    "requiredScopes": [
+      "vc:meeting"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_meeting.get": {
+    "requiredScopes": [
+      "vc:meeting.meetingevent:read",
+      "vc:meeting:readonly"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_meeting.get_note": {
+    "requiredScopes": [
+      "vc:note:read"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_meeting.search": {
+    "requiredScopes": [
+      "vc:meeting.search:read"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_minutes.artifacts": {
+    "requiredScopes": [
+      "minutes:minutes.artifacts:read"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_minutes.get": {
+    "requiredScopes": [
+      "minutes:minutes",
+      "minutes:minutes.basic:read",
+      "minutes:minutes:readonly"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_minutes.media": {
+    "requiredScopes": [
+      "minutes:minutes.media:export"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_minutes.statistics": {
+    "requiredScopes": [
+      "minutes:minutes",
+      "minutes:minutes.statistics:read",
+      "minutes:minutes:readonly"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_minutes.transcript": {
+    "requiredScopes": [
+      "minutes:minutes.transcript:export"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_search_doc_wiki.search": {
+    "requiredScopes": [
+      "search:docs:read"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_search_user.default": {
+    "requiredScopes": [
+      "contact:user:search"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_search_user.search": {
+    "requiredScopes": [
+      "contact:user:search"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_sheet.append": {
+    "requiredScopes": [
+      "drive:drive",
+      "drive:drive:readonly",
+      "sheets:spreadsheet",
+      "sheets:spreadsheet:readonly",
+      "wiki:node:read",
+      "wiki:wiki",
+      "wiki:wiki:readonly"
+    ],
+    "scopeNeedType": "all",
+    "source": "official"
+  },
+  "feishu_sheet.create": {
+    "requiredScopes": [
+      "drive:drive",
+      "drive:drive:readonly",
+      "sheets:spreadsheet",
+      "sheets:spreadsheet:create",
+      "sheets:spreadsheet:readonly"
+    ],
+    "scopeNeedType": "all",
+    "source": "official"
+  },
+  "feishu_sheet.export": {
+    "requiredScopes": [
+      "docs:document:export",
+      "drive:export:readonly",
+      "wiki:node:read",
+      "wiki:wiki",
+      "wiki:wiki:readonly"
+    ],
+    "scopeNeedType": "all",
+    "source": "official"
+  },
+  "feishu_sheet.find": {
+    "requiredScopes": [
+      "drive:drive",
+      "drive:drive:readonly",
+      "sheets:spreadsheet",
+      "sheets:spreadsheet:readonly",
+      "wiki:node:read",
+      "wiki:wiki",
+      "wiki:wiki:readonly"
+    ],
+    "scopeNeedType": "all",
+    "source": "official"
+  },
+  "feishu_sheet.info": {
+    "requiredScopes": [
+      "drive:drive",
+      "drive:drive:readonly",
+      "sheets:spreadsheet",
+      "sheets:spreadsheet:readonly",
+      "wiki:node:read",
+      "wiki:wiki",
+      "wiki:wiki:readonly"
+    ],
+    "scopeNeedType": "all",
+    "source": "official"
+  },
+  "feishu_sheet.read": {
+    "requiredScopes": [
+      "drive:drive",
+      "drive:drive:readonly",
+      "sheets:spreadsheet",
+      "sheets:spreadsheet:readonly",
+      "wiki:node:read",
+      "wiki:wiki",
+      "wiki:wiki:readonly"
+    ],
+    "scopeNeedType": "all",
+    "source": "official"
+  },
+  "feishu_sheet.write": {
+    "requiredScopes": [
+      "drive:drive",
+      "drive:drive:readonly",
+      "sheets:spreadsheet",
+      "sheets:spreadsheet:readonly",
+      "wiki:node:read",
+      "wiki:wiki",
+      "wiki:wiki:readonly"
+    ],
+    "scopeNeedType": "all",
+    "source": "official"
+  },
+  "feishu_task_comment.create": {
+    "requiredScopes": [
+      "task:comment:write"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_task_comment.get": {
+    "requiredScopes": [
+      "task:comment:read",
+      "task:comment:write"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_task_comment.list": {
+    "requiredScopes": [
+      "task:comment:read",
+      "task:comment:write"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_task_subtask.create": {
+    "requiredScopes": [
+      "task:task:write"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_task_subtask.list": {
+    "requiredScopes": [
+      "task:task:read",
+      "task:task:write"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_task_task.create": {
+    "requiredScopes": [
+      "task:task:write",
+      "task:task:writeonly"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_task_task.get": {
+    "requiredScopes": [
+      "task:task:read",
+      "task:task:write"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_task_task.list": {
+    "requiredScopes": [
+      "task:task:read",
+      "task:task:write"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_task_task.patch": {
+    "requiredScopes": [
+      "task:task:write",
+      "task:task:writeonly"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_task_tasklist.add_members": {
+    "requiredScopes": [
+      "task:tasklist:write"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_task_tasklist.create": {
+    "requiredScopes": [
+      "task:tasklist:write"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_task_tasklist.get": {
+    "requiredScopes": [
+      "task:tasklist:read",
+      "task:tasklist:write"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_task_tasklist.list": {
+    "requiredScopes": [
+      "task:tasklist:read",
+      "task:tasklist:write"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_task_tasklist.patch": {
+    "requiredScopes": [
+      "task:tasklist:write"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_task_tasklist.tasks": {
+    "requiredScopes": [
+      "task:tasklist:read",
+      "task:tasklist:write"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_wiki_space_node.copy": {
+    "requiredScopes": [
+      "wiki:node:copy",
+      "wiki:wiki"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_wiki_space_node.create": {
+    "requiredScopes": [
+      "wiki:node:create",
+      "wiki:wiki"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_wiki_space_node.get": {
+    "requiredScopes": [
+      "wiki:node:read",
+      "wiki:wiki",
+      "wiki:wiki:readonly"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_wiki_space_node.list": {
+    "requiredScopes": [
+      "wiki:node:retrieve",
+      "wiki:wiki",
+      "wiki:wiki:readonly"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_wiki_space_node.move": {
+    "requiredScopes": [
+      "wiki:node:move",
+      "wiki:wiki",
+      "wiki:wiki:readonly"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_wiki_space.create": {
+    "requiredScopes": [
+      "wiki:space:write_only",
+      "wiki:wiki"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_wiki_space.get": {
+    "requiredScopes": [
+      "wiki:space:read",
+      "wiki:wiki",
+      "wiki:wiki:readonly"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  },
+  "feishu_wiki_space.list": {
+    "requiredScopes": [
+      "wiki:space:retrieve",
+      "wiki:wiki",
+      "wiki:wiki:readonly"
+    ],
+    "scopeNeedType": "one",
+    "source": "official"
+  }
+}

@@ -40,11 +40,19 @@
  */
 
 import { TOOL_SCOPES, type ToolActionKey, type ToolScopeMapping } from './tool-scopes';
+import { getOfficialScopeFallbackException } from './official-scope-exceptions';
+import { GENERATED_TOOL_SCOPE_SPECS } from './generated/feishu-tool-scope-specs.js';
 
 // ===== 导出类型和数据 =====
 
 export type { ToolActionKey, ToolScopeMapping };
 export { TOOL_SCOPES };
+
+export interface RequiredScopeSpec {
+  requiredScopes: string[];
+  scopeNeedType: 'one' | 'all';
+  source: 'official' | 'manual';
+}
 
 // ===== 函数：Required Scopes（API 需要的权限）=====
 
@@ -61,7 +69,32 @@ export { TOOL_SCOPES };
  * ```
  */
 export function getRequiredScopes(toolAction: ToolActionKey): string[] {
-  return TOOL_SCOPES[toolAction] ?? [];
+  return getRequiredScopeSpec(toolAction).requiredScopes;
+}
+
+export function getRequiredScopeSpec(toolAction: ToolActionKey): RequiredScopeSpec {
+  const official = GENERATED_TOOL_SCOPE_SPECS[toolAction];
+  if (official) {
+    return {
+      requiredScopes: [...official.requiredScopes],
+      scopeNeedType: official.scopeNeedType,
+      source: 'official',
+    };
+  }
+
+  const exception = getOfficialScopeFallbackException(toolAction);
+  if (!exception) {
+    throw new Error(
+      `Manual scope fallback is not allowed for ${toolAction}. ` +
+        'Add generated official scope metadata or declare an explicit transitional exception.',
+    );
+  }
+
+  return {
+    requiredScopes: TOOL_SCOPES[toolAction] ?? [],
+    scopeNeedType: 'all',
+    source: 'manual',
+  };
 }
 
 /**
@@ -121,9 +154,10 @@ export function hasRequiredScopes(toolAction: ToolActionKey): boolean {
 export function getActionsForScope(scope: string): ToolActionKey[] {
   const actions: ToolActionKey[] = [];
 
-  for (const [action, scopes] of Object.entries(TOOL_SCOPES)) {
+  for (const action of Object.keys(TOOL_SCOPES) as ToolActionKey[]) {
+    const scopes = getRequiredScopes(action);
     if (scopes.includes(scope)) {
-      actions.push(action as ToolActionKey);
+      actions.push(action);
     }
   }
 
@@ -152,7 +186,7 @@ export function getActionsForScope(scope: string): ToolActionKey[] {
  * ```
  */
 export function checkAppScopes(toolAction: ToolActionKey, appGrantedScopes: Set<string> | string[]): boolean {
-  const requiredScopes = getRequiredScopes(toolAction);
+  const { requiredScopes, scopeNeedType } = getRequiredScopeSpec(toolAction);
 
   // 如果不需要任何 scope，则总是满足要求
   if (requiredScopes.length === 0) {
@@ -161,6 +195,9 @@ export function checkAppScopes(toolAction: ToolActionKey, appGrantedScopes: Set<
 
   const grantedSet = Array.isArray(appGrantedScopes) ? new Set(appGrantedScopes) : appGrantedScopes;
 
+  if (scopeNeedType === 'one') {
+    return requiredScopes.some((scope) => grantedSet.has(scope));
+  }
   return requiredScopes.every((scope) => grantedSet.has(scope));
 }
 
@@ -179,9 +216,12 @@ export function checkAppScopes(toolAction: ToolActionKey, appGrantedScopes: Set<
  * ```
  */
 export function getMissingAppScopes(toolAction: ToolActionKey, appGrantedScopes: Set<string> | string[]): string[] {
-  const requiredScopes = getRequiredScopes(toolAction);
+  const { requiredScopes, scopeNeedType } = getRequiredScopeSpec(toolAction);
   const grantedSet = Array.isArray(appGrantedScopes) ? new Set(appGrantedScopes) : appGrantedScopes;
 
+  if (scopeNeedType === 'one' && requiredScopes.some((scope) => grantedSet.has(scope))) {
+    return [];
+  }
   return requiredScopes.filter((scope) => !grantedSet.has(scope));
 }
 
@@ -207,7 +247,7 @@ export function getMissingAppScopes(toolAction: ToolActionKey, appGrantedScopes:
  * ```
  */
 export function checkUserScopes(toolAction: ToolActionKey, userGrantedScopes: Set<string> | string[]): boolean {
-  const requiredScopes = getRequiredScopes(toolAction);
+  const { requiredScopes, scopeNeedType } = getRequiredScopeSpec(toolAction);
 
   // 如果不需要任何 scope，则总是满足要求
   if (requiredScopes.length === 0) {
@@ -216,6 +256,9 @@ export function checkUserScopes(toolAction: ToolActionKey, userGrantedScopes: Se
 
   const grantedSet = Array.isArray(userGrantedScopes) ? new Set(userGrantedScopes) : userGrantedScopes;
 
+  if (scopeNeedType === 'one') {
+    return requiredScopes.some((scope) => grantedSet.has(scope));
+  }
   return requiredScopes.every((scope) => grantedSet.has(scope));
 }
 
@@ -234,8 +277,11 @@ export function checkUserScopes(toolAction: ToolActionKey, userGrantedScopes: Se
  * ```
  */
 export function getMissingUserScopes(toolAction: ToolActionKey, userGrantedScopes: Set<string> | string[]): string[] {
-  const requiredScopes = getRequiredScopes(toolAction);
+  const { requiredScopes, scopeNeedType } = getRequiredScopeSpec(toolAction);
   const grantedSet = Array.isArray(userGrantedScopes) ? new Set(userGrantedScopes) : userGrantedScopes;
 
+  if (scopeNeedType === 'one' && requiredScopes.some((scope) => grantedSet.has(scope))) {
+    return [];
+  }
   return requiredScopes.filter((scope) => !grantedSet.has(scope));
 }
