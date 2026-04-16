@@ -17,7 +17,6 @@ import type { ToolClient } from '../helpers';
 import { StringEnum, assertLarkOk, createToolContext, getFirstAccount, handleInvokeErrorWithAutoAuth, json, registerTool } from '../helpers';
 import { dateTimeToSecondsString, parseTimeRangeToSeconds } from './time-utils';
 import { type FormattedMessage, formatMessageList } from './format-messages';
-import { batchResolveUserNamesAsUser, getUATUserName } from './user-name-uat';
 
 // ===========================================================================
 // Shared helpers
@@ -41,6 +40,7 @@ async function resolveP2PChatId(
     method: 'POST',
     body: { chatter_ids: [openId] },
     query: { user_id_type: 'open_id' },
+    as: 'user',
   });
 
   const chats = res.data?.p2p_chats;
@@ -268,7 +268,7 @@ function registerGetThreadMessages(api: OpenClawPluginApi): boolean {
           );
 
           const res = await client.invoke(
-            'feishu_im_user_get_messages.default',
+            'feishu_im_user_get_thread_messages.list_thread_messages',
             (sdk, opts) =>
               sdk.im.v1.message.list(
                 {
@@ -367,7 +367,6 @@ interface SearchMessagesParams {
 interface ChatContext {
   name: string;
   chat_mode: string;
-  p2p_target_id?: string;
 }
 
 function buildSearchData(p: SearchMessagesParams, time: { start: string; end: string }): Record<string, unknown> {
@@ -395,7 +394,7 @@ async function fetchChatContexts(
   if (chatIds.length === 0) return map;
 
   try {
-    logInfo(`batch_query: requesting ${chatIds.length} chat_ids: ${chatIds.join(', ')}`);
+    logInfo(`batch_query chats: requesting ${chatIds.length} chat_ids`);
     const res = await client.invokeByPath<{
       code?: number;
       msg?: string;
@@ -404,7 +403,6 @@ async function fetchChatContexts(
           chat_id?: string;
           name?: string;
           chat_mode?: string;
-          p2p_target_id?: string;
         }>;
       };
     }>('feishu_im_user_search_messages.default', '/open-apis/im/v1/chats/batch_query', {
@@ -413,57 +411,29 @@ async function fetchChatContexts(
       query: { user_id_type: 'open_id' },
       as: 'user',
     });
-    logInfo(`batch_query: response code=${res.code}, msg=${res.msg}, items=${res.data?.items?.length ?? 0}`);
-    if (res.code !== 0) {
-      logWarn(`batch_query: API returned error code=${res.code}, msg=${res.msg}`);
-    }
+    assertLarkOk(res);
     for (const c of res.data?.items ?? []) {
-      if (c.chat_id) {
-        map.set(c.chat_id, {
-          name: c.name ?? '',
-          chat_mode: c.chat_mode ?? '',
-          p2p_target_id: c.p2p_target_id,
-        });
-      }
+      if (!c.chat_id) continue;
+      map.set(c.chat_id, {
+        name: c.name ?? '',
+        chat_mode: c.chat_mode ?? '',
+      });
     }
   } catch (err) {
-    logInfo(`batch_query chats failed, skipping: ${err}`);
+    logWarn(`batch_query chats failed: ${err instanceof Error ? err.message : String(err)}`);
   }
   return map;
-}
-
-async function resolveP2PTargetNames(
-  chatMap: Map<string, ChatContext>,
-  client: ToolClient,
-  logFn: (...args: unknown[]) => void,
-): Promise<void> {
-  const ids = [...new Set([...chatMap.values()].map((c) => c.p2p_target_id).filter((id): id is string => !!id))];
-  if (ids.length > 0) {
-    await batchResolveUserNamesAsUser({ client, openIds: ids, log: logFn });
-  }
 }
 
 function enrichMessages(
   messages: FormattedMessage[],
   items: any[],
   chatMap: Map<string, ChatContext>,
-  nameResolver: (openId: string) => string | undefined,
 ) {
   return messages.map((msg, idx) => {
     const chatId: string | undefined = items[idx]?.chat_id;
     const ctx = chatId ? chatMap.get(chatId) : undefined;
     if (!chatId || !ctx) return { ...msg, chat_id: chatId };
-
-    if (ctx.chat_mode === 'p2p' && ctx.p2p_target_id) {
-      const name = nameResolver(ctx.p2p_target_id);
-      return {
-        ...msg,
-        chat_id: chatId,
-        chat_type: 'p2p' as const,
-        chat_name: name || undefined,
-        chat_partner: { open_id: ctx.p2p_target_id, name: name || undefined },
-      };
-    }
 
     return {
       ...msg,
@@ -497,8 +467,7 @@ function registerSearchMessages(api: OpenClawPluginApi): boolean {
         '\n- relative_time 和 start_time/end_time 不能同时使用' +
         '\n- page_size 范围 1-50，默认 50' +
         '\n\n返回消息列表，每条消息包含 message_id、msg_type、content、sender、create_time 等字段。' +
-        '\n每条消息还包含 chat_id、chat_type（p2p/group）、chat_name（群名或单聊对方名字）。' +
-        '\n单聊消息额外包含 chat_partner（对方 open_id 和名字）。' +
+        '\n每条消息还包含 chat_id、chat_type（p2p/group）、chat_name（群名或会话名）。' +
         '\n搜索结果中的 chat_id 和 thread_id 可配合 feishu_im_user_get_messages / feishu_im_user_get_thread_messages 查看上下文。',
       parameters: SearchMessagesSchema,
 
@@ -575,12 +544,8 @@ function registerSearchMessages(api: OpenClawPluginApi): boolean {
           // 4. 格式化消息（填充 sender 名字缓存，使用 UAT）
           const messages = await formatMessageList(items, account, logFn, client);
 
-          // 5. 解析 p2p 对方用户名（使用 UAT）
-          await resolveP2PTargetNames(chatMap, client, logFn);
-
-          // 6. 拼装返回
-          const uatNameResolver = (id: string) => getUATUserName(account.accountId, id);
-          const result = enrichMessages(messages, items, chatMap, uatNameResolver);
+          // 5. 拼装返回
+          const result = enrichMessages(messages, items, chatMap);
           log.info(`result: ${result.length} messages, has_more=${hasMore}`);
 
           return json({ messages: result, has_more: hasMore, page_token: pageToken });

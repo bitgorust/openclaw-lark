@@ -16,6 +16,7 @@ import {
   handleInvokeErrorWithAutoAuth,
   isInvokeError,
   json,
+  normalizeRawInvokeError,
   registerTool,
   unixTimestampToISO8601,
 } from '../helpers';
@@ -173,15 +174,16 @@ function shouldFallbackApprovalCommentListToTenant(err: unknown): boolean {
 async function invokeApprovalCommentListWithFallback<T>(params: {
   invoke: (as: 'user' | 'tenant') => Promise<T>;
   preferredMode: 'user' | 'tenant';
+  allowTenantFallback: boolean;
 }): Promise<{
   result: T;
   auth_mode: 'user' | 'tenant';
   auth_fallback: boolean;
 }> {
-  if (params.preferredMode === 'tenant') {
+  if (params.preferredMode === 'tenant' || !params.allowTenantFallback) {
     return {
-      result: await params.invoke('tenant'),
-      auth_mode: 'tenant',
+      result: await params.invoke(params.preferredMode),
+      auth_mode: params.preferredMode,
       auth_fallback: false,
     };
   }
@@ -216,12 +218,13 @@ export function registerFeishuApprovalCommentTool(api: OpenClawPluginApi): void 
       name: 'feishu_approval_comment',
       label: 'Feishu Approval Comment',
       description:
-        '飞书审批评论工具。Actions: create（创建或回复评论）, list（获取实例评论列表）, delete（删除单条评论）, remove（清空实例评论）。按当前 canonical contract，评论相关端点以应用身份执行。',
+        '飞书审批评论工具。Actions: create（创建或回复评论）, list（获取实例评论列表）, delete（删除单条评论）, remove（清空实例评论）。按当前 canonical contract，评论相关端点以用户身份执行。',
       parameters: FeishuApprovalCommentSchema,
       async execute(_toolCallId: string, params: unknown) {
         const p = params as FeishuApprovalCommentParams;
+        let lastClient: ReturnType<typeof toolClient> | undefined;
         try {
-          const client = toolClient();
+          const client = (lastClient = toolClient());
           const senderOpenId = client.senderOpenId;
 
           switch (p.action) {
@@ -268,6 +271,7 @@ export function registerFeishuApprovalCommentTool(api: OpenClawPluginApi): void 
 
               const listCall = await invokeApprovalCommentListWithFallback({
                 preferredMode: authPolicy.currentExecutionMode,
+                allowTenantFallback: authPolicy.allowTenantFallback,
                 invoke: (as) =>
                   client.invokeByPath<{
                     code?: number;
@@ -367,8 +371,15 @@ export function registerFeishuApprovalCommentTool(api: OpenClawPluginApi): void 
             }
           }
         } catch (err) {
-          if (isInvokeError(err)) {
-            return await handleInvokeErrorWithAutoAuth(err, cfg);
+          const invokeErr = normalizeRawInvokeError({
+            toolAction: `feishu_approval_comment.${p.action}`,
+            err,
+            userOpenId: lastClient?.senderOpenId,
+            appId: lastClient?.account.appId,
+          });
+
+          if (isInvokeError(invokeErr)) {
+            return await handleInvokeErrorWithAutoAuth(invokeErr, cfg);
           }
 
           return json({

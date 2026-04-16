@@ -17,6 +17,7 @@ import {
   handleInvokeErrorWithAutoAuth,
   isInvokeError,
   json,
+  normalizeRawInvokeError,
   parseTimeToTimestampMs,
   registerTool,
   unixTimestampToISO8601,
@@ -129,6 +130,17 @@ export interface ApprovalTaskSummary {
   end_time: string | null;
 }
 
+export interface ApprovalFormFieldSummary {
+  id: string | null;
+  name: string | null;
+  type: string | null;
+  value: unknown;
+  text: string | null;
+  attachment_urls?: string[];
+  file_name?: string | null;
+  raw: unknown;
+}
+
 export interface ApprovalInstanceSummary {
   instance_id: string | null;
   approval_code: string | null;
@@ -153,6 +165,10 @@ export interface ApprovalInstanceSummary {
   finish_time: string | null;
   pending: boolean;
   tasks: ApprovalTaskSummary[];
+  form: {
+    fields: ApprovalFormFieldSummary[];
+    text: string | null;
+  } | null;
   raw: Record<string, any>;
 }
 
@@ -185,7 +201,7 @@ function normalizeString(value: unknown): string | null {
 
 function normalizeTask(rawTask: Record<string, any>): ApprovalTaskSummary {
   return {
-    task_id: normalizeString(rawTask.task_id),
+    task_id: normalizeString(rawTask.task_id ?? rawTask.id),
     node_id: normalizeString(rawTask.node_id ?? rawTask.task_def_key),
     node_name: normalizeString(rawTask.node_name),
     status: normalizeString(rawTask.status),
@@ -194,6 +210,133 @@ function normalizeTask(rawTask: Record<string, any>): ApprovalTaskSummary {
     user_name: normalizeString(rawTask.user_name ?? rawTask.name),
     start_time: unixTimestampToISO8601(rawTask.start_time),
     end_time: unixTimestampToISO8601(rawTask.end_time),
+  };
+}
+
+function tryParseJsonString<T = unknown>(value: string): T | null {
+  try {
+    return JSON.parse(value) as T;
+  } catch {
+    return null;
+  }
+}
+
+function normalizeUnknownText(value: unknown): string | null {
+  if (typeof value === 'string') {
+    const trimmed = value.trim();
+    return trimmed.length > 0 ? trimmed : null;
+  }
+
+  if (typeof value === 'number' || typeof value === 'boolean') {
+    return String(value);
+  }
+
+  if (Array.isArray(value)) {
+    const parts = value.map((item) => normalizeUnknownText(item)).filter((item): item is string => Boolean(item));
+    return parts.length > 0 ? parts.join(', ') : null;
+  }
+
+  if (value && typeof value === 'object') {
+    const record = value as Record<string, unknown>;
+    const direct =
+      normalizeUnknownText(record.text) ??
+      normalizeUnknownText(record.name) ??
+      normalizeUnknownText(record.label) ??
+      normalizeUnknownText(record.title) ??
+      normalizeUnknownText(record.value) ??
+      normalizeUnknownText(record.option) ??
+      normalizeUnknownText(record.display_value);
+    if (direct) return direct;
+  }
+
+  return null;
+}
+
+function normalizeAttachmentUrls(value: unknown): string[] {
+  if (!Array.isArray(value)) return [];
+  return value.filter((item): item is string => typeof item === 'string' && item.trim().length > 0);
+}
+
+function normalizeApprovalFormField(rawField: Record<string, any>): ApprovalFormFieldSummary {
+  const rawValue = rawField.value ?? rawField.field_value ?? rawField.input ?? rawField.option ?? rawField.options ?? null;
+  const parsedValue =
+    typeof rawValue === 'string' && /^[[{]/.test(rawValue.trim()) ? (tryParseJsonString(rawValue) ?? rawValue) : rawValue;
+  const text =
+    normalizeUnknownText(rawField.display_value) ??
+    normalizeUnknownText(rawField.text) ??
+    normalizeUnknownText(parsedValue) ??
+    normalizeUnknownText(rawField);
+
+  const type = normalizeString(rawField.type ?? rawField.widget_type ?? rawField.field_type);
+  const attachmentUrls = type === 'attachmentV2' ? normalizeAttachmentUrls(parsedValue) : [];
+
+  return {
+    id: normalizeString(rawField.id ?? rawField.widget_id ?? rawField.field_id),
+    name:
+      normalizeString(rawField.name) ??
+      normalizeString(rawField.custom_name) ??
+      normalizeString(rawField.label) ??
+      normalizeString(rawField.title) ??
+      normalizeString(rawField.widget_name),
+    type,
+    value: parsedValue,
+    text,
+    ...(attachmentUrls.length > 0 ? { attachment_urls: attachmentUrls } : {}),
+    ...(type === 'attachmentV2' ? { file_name: normalizeString(rawField.ext ?? rawField.file_name) } : {}),
+    raw: rawField,
+  };
+}
+
+function coerceApprovalFormSource(value: unknown): unknown {
+  if (typeof value !== 'string') return value;
+  const trimmed = value.trim();
+  if (!trimmed) return null;
+  if (!/^[[{]/.test(trimmed)) return value;
+  return tryParseJsonString(trimmed) ?? value;
+}
+
+function normalizeApprovalForm(raw: Record<string, any>): ApprovalInstanceSummary['form'] {
+  const source = coerceApprovalFormSource(
+    raw.form ??
+      raw.form_content ??
+      raw.form_detail ??
+      raw.form_list ??
+      raw.widgets ??
+      raw.widget_list ??
+      raw.field_list ??
+      null,
+  );
+
+  let fieldsSource: unknown[] = [];
+
+  if (Array.isArray(source)) {
+    fieldsSource = source;
+  } else if (source && typeof source === 'object') {
+    const record = source as Record<string, unknown>;
+    if (Array.isArray(record.fields)) fieldsSource = record.fields;
+    else if (Array.isArray(record.widgets)) fieldsSource = record.widgets;
+    else if (Array.isArray(record.widget_list)) fieldsSource = record.widget_list;
+    else if (Array.isArray(record.form)) fieldsSource = record.form;
+  }
+
+  const fields = fieldsSource
+    .filter((item): item is Record<string, any> => Boolean(item) && typeof item === 'object')
+    .map(normalizeApprovalFormField)
+    .filter((item) => item.name || item.text || item.id);
+
+  if (fields.length === 0) return null;
+
+  const text = fields
+    .map((field) => {
+      if (field.name && field.text) return `${field.name}: ${field.text}`;
+      return field.name ?? field.text;
+    })
+    .filter((item): item is string => Boolean(item))
+    .join('\n');
+
+  return {
+    fields,
+    text: text.length > 0 ? text : null,
   };
 }
 
@@ -232,6 +375,7 @@ export function normalizeApprovalInstance(raw: Record<string, any> | undefined):
     finish_time: unixTimestampToISO8601(raw.end_time ?? raw.finish_time),
     pending: status === 'PENDING',
     tasks,
+    form: normalizeApprovalForm(raw),
     raw,
   };
 }
@@ -355,15 +499,16 @@ function shouldFallbackApprovalInstanceToTenant(err: unknown): boolean {
 async function invokeApprovalInstanceWithFallback<T>(params: {
   invoke: (as: 'user' | 'tenant') => Promise<T>;
   preferredMode: 'user' | 'tenant';
+  allowTenantFallback: boolean;
 }): Promise<{
   result: T;
   auth_mode: 'user' | 'tenant';
   auth_fallback: boolean;
 }> {
-  if (params.preferredMode === 'tenant') {
+  if (params.preferredMode === 'tenant' || !params.allowTenantFallback) {
     return {
-      result: await params.invoke('tenant'),
-      auth_mode: 'tenant',
+      result: await params.invoke(params.preferredMode),
+      auth_mode: params.preferredMode,
       auth_fallback: false,
     };
   }
@@ -399,12 +544,13 @@ export function registerFeishuApprovalInstanceTool(api: OpenClawPluginApi): void
       name: 'feishu_approval_instance',
       label: 'Feishu Approval Instance',
       description:
-        '飞书审批实例工具。用于按审批定义和时间窗口列出审批实例、获取单个审批实例详情。Actions: list（列出实例 ID，可选自动展开详情）, get（查看实例详情）。时间参数支持 ISO 8601 / RFC 3339 或 Unix 毫秒时间戳字符串。按当前 canonical contract，实例查询主端点以应用身份执行。',
+        '飞书审批实例工具。用于按审批定义和时间窗口列出审批实例、获取单个审批实例详情。Actions: list（列出实例 ID，可选自动展开详情）, get（查看实例详情）。时间参数支持 ISO 8601 / RFC 3339 或 Unix 毫秒时间戳字符串。按当前 canonical contract，实例查询主端点以用户身份执行。',
       parameters: FeishuApprovalInstanceSchema,
       async execute(_toolCallId: string, params: unknown) {
         const p = params as FeishuApprovalInstanceParams;
+        let lastClient: ReturnType<typeof toolClient> | undefined;
         try {
-          const client = toolClient();
+          const client = (lastClient = toolClient());
           const defaultUserId = client.senderOpenId;
 
           switch (p.action) {
@@ -425,6 +571,7 @@ export function registerFeishuApprovalInstanceTool(api: OpenClawPluginApi): void
 
               const listCall = await invokeApprovalInstanceWithFallback({
                 preferredMode: authPolicy.currentExecutionMode,
+                allowTenantFallback: authPolicy.allowTenantFallback,
                 invoke: (as) =>
                   client.invokeByPath<{
                     code?: number;
@@ -512,6 +659,7 @@ export function registerFeishuApprovalInstanceTool(api: OpenClawPluginApi): void
 
               const getCall = await invokeApprovalInstanceWithFallback({
                 preferredMode: authPolicy.currentExecutionMode,
+                allowTenantFallback: authPolicy.allowTenantFallback,
                 invoke: (as) =>
                   client.invokeByPath<{
                     code?: number;
@@ -537,8 +685,15 @@ export function registerFeishuApprovalInstanceTool(api: OpenClawPluginApi): void
             }
           }
         } catch (err) {
-          if (isInvokeError(err)) {
-            return await handleInvokeErrorWithAutoAuth(err, cfg);
+          const invokeErr = normalizeRawInvokeError({
+            toolAction: `feishu_approval_instance.${p.action}`,
+            err,
+            userOpenId: lastClient?.senderOpenId,
+            appId: lastClient?.account.appId,
+          });
+
+          if (isInvokeError(invokeErr)) {
+            return await handleInvokeErrorWithAutoAuth(invokeErr, cfg);
           }
 
           return json({

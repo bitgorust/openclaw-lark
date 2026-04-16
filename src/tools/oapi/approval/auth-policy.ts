@@ -4,10 +4,13 @@
  *
  * Approval auth policy.
  *
- * This file now mirrors the canonical token contract calibrated from
- * `node-sdk` approval coverage. It remains as a narrow compatibility shim for
- * approval tools that still ask for family/action level policy objects.
+ * Compatibility shim for approval tools that still ask for family/action level
+ * policy objects. The actual auth contract comes from generated canonical
+ * metadata via capability-auth.
  */
+
+import { getCapabilityAuthPolicy } from '../../../core/capability-auth';
+import type { ToolActionKey } from '../../../core/tool-scopes';
 
 export type ApprovalToolFamily = 'instance' | 'task' | 'task-search' | 'cc' | 'comment';
 
@@ -15,7 +18,7 @@ export type ApprovalInstanceAction = 'list' | 'get';
 
 export type ApprovalTaskAction = 'approve' | 'reject' | 'transfer' | 'rollback' | 'add_sign' | 'resubmit';
 
-export type ApprovalTaskSearchAction = 'search' | 'query';
+export type ApprovalTaskSearchAction = 'search' | 'query' | 'get_detail';
 
 export type ApprovalCcAction = 'search';
 
@@ -33,66 +36,63 @@ export type ApprovalAuthMode = 'app-only' | 'user-required' | 'dual-mode';
 export interface ApprovalAuthPolicy {
   targetAuthMode: ApprovalAuthMode;
   currentExecutionMode: 'tenant' | 'user';
+  allowTenantFallback: boolean;
   rationale: string;
+}
+
+function toToolAction(family: ApprovalToolFamily, action: ApprovalAction): ToolActionKey {
+  switch (family) {
+    case 'instance':
+      return `feishu_approval_instance.${action}` as ToolActionKey;
+    case 'task':
+      return `feishu_approval_task.${action}` as ToolActionKey;
+    case 'task-search':
+      return `feishu_approval_task_search.${action}` as ToolActionKey;
+    case 'cc':
+      return 'feishu_approval_cc.search';
+    case 'comment':
+      return `feishu_approval_comment.${action}` as ToolActionKey;
+  }
 }
 
 export function getApprovalAuthPolicy(
   family: ApprovalToolFamily,
   action: ApprovalAction,
 ): ApprovalAuthPolicy {
-  if (family === 'instance') {
+  const toolAction = toToolAction(family, action);
+  const capabilityPolicy = getCapabilityAuthPolicy(toolAction);
+
+  if (capabilityPolicy.canonicalAuthModes.includes('tenant-only')) {
     return {
       targetAuthMode: 'app-only',
-      currentExecutionMode: 'tenant',
-      rationale: 'approval instance list/get endpoints are tenant-only in the canonical contract',
+      currentExecutionMode: capabilityPolicy.preferredMode,
+      allowTenantFallback: false,
+      rationale: capabilityPolicy.rationale,
     };
   }
 
-  if (family === 'task-search') {
-    if (action === 'query') {
-      return {
-        targetAuthMode: 'dual-mode',
-        currentExecutionMode: 'user',
-        rationale: 'approval task query is dual-mode canonically, so user remains the preferred execution mode',
-      };
-    }
-
+  if (capabilityPolicy.canonicalAuthModes.includes('user-only')) {
     return {
-      targetAuthMode: 'app-only',
-      currentExecutionMode: 'tenant',
-      rationale: 'approval task search is tenant-only in the canonical contract',
+      targetAuthMode: 'user-required',
+      currentExecutionMode: capabilityPolicy.preferredMode,
+      allowTenantFallback: false,
+      rationale: capabilityPolicy.rationale,
     };
   }
 
-  if (family === 'cc') {
+  if (capabilityPolicy.canonicalAuthModes.includes('dual-mode')) {
     return {
-      targetAuthMode: 'app-only',
-      currentExecutionMode: 'tenant',
-      rationale: 'approval CC search is tenant-only in the canonical contract',
+      targetAuthMode: 'dual-mode',
+      currentExecutionMode: capabilityPolicy.preferredMode,
+      allowTenantFallback: capabilityPolicy.fallbackMode === 'tenant',
+      rationale: capabilityPolicy.rationale,
     };
   }
 
-  if (family === 'comment') {
-    return {
-      targetAuthMode: 'app-only',
-      currentExecutionMode: 'tenant',
-      rationale: 'approval comment endpoints are tenant-only in the canonical contract',
-    };
-  }
-
-  switch (action) {
-    case 'approve':
-    case 'reject':
-    case 'transfer':
-    case 'rollback':
-    case 'add_sign':
-    case 'resubmit':
-      return {
-        targetAuthMode: 'app-only',
-        currentExecutionMode: 'tenant',
-        rationale: 'approval task action endpoints are tenant-only in the canonical contract',
-      };
-  }
-
-  throw new Error(`Unsupported approval auth policy lookup: family=${family}, action=${action}`);
+  return {
+    targetAuthMode: capabilityPolicy.preferredMode === 'tenant' ? 'app-only' : 'user-required',
+    currentExecutionMode: capabilityPolicy.preferredMode,
+    allowTenantFallback: capabilityPolicy.fallbackMode === 'tenant',
+    rationale: capabilityPolicy.rationale,
+  };
 }

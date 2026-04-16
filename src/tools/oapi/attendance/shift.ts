@@ -15,6 +15,7 @@ import {
   handleInvokeErrorWithAutoAuth,
   isInvokeError,
   json,
+  normalizeRawInvokeError,
   registerTool,
 } from '../helpers';
 
@@ -213,9 +214,10 @@ export function registerFeishuAttendanceShiftTool(api: OpenClawPluginApi): void 
       parameters: FeishuAttendanceShiftSchema,
       async execute(_toolCallId: string, params: unknown) {
         const p = params as FeishuAttendanceShiftParams;
+        let lastClient: ReturnType<typeof toolClient> | undefined;
 
         try {
-          const client = toolClient();
+          const client = (lastClient = toolClient());
           const request = buildAttendanceShiftQueryRequest(p);
 
           log.info(
@@ -245,8 +247,16 @@ export function registerFeishuAttendanceShiftTool(api: OpenClawPluginApi): void 
             raw: normalized.raw,
           });
         } catch (err) {
-          if (isInvokeError(err)) {
-            return await handleInvokeErrorWithAutoAuth(err, cfg);
+          const invokeErr = normalizeRawInvokeError({
+            toolAction: 'feishu_attendance_shift.query',
+            err,
+            userOpenId: lastClient?.senderOpenId,
+            appId: lastClient?.account.appId,
+            tokenType: 'tenant',
+          });
+
+          if (isInvokeError(invokeErr)) {
+            return await handleInvokeErrorWithAutoAuth(invokeErr, cfg);
           }
 
           return json({

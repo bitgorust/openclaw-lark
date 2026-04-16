@@ -14,6 +14,7 @@ import {
   handleInvokeErrorWithAutoAuth,
   isInvokeError,
   json,
+  normalizeRawInvokeError,
   registerTool,
 } from '../helpers';
 import { shapeAttendanceError } from './shift';
@@ -218,9 +219,10 @@ export function registerFeishuAttendanceGroupTool(api: OpenClawPluginApi): void 
       parameters: FeishuAttendanceGroupSchema,
       async execute(_toolCallId: string, params: unknown) {
         const p = params as FeishuAttendanceGroupParams;
+        let lastClient: ReturnType<typeof toolClient> | undefined;
 
         try {
-          const client = toolClient();
+          const client = (lastClient = toolClient());
 
           switch (p.action) {
             case 'get': {
@@ -271,8 +273,15 @@ export function registerFeishuAttendanceGroupTool(api: OpenClawPluginApi): void 
             }
           }
         } catch (err) {
-          if (isInvokeError(err)) {
-            return await handleInvokeErrorWithAutoAuth(err, cfg);
+          const invokeErr = normalizeRawInvokeError({
+            toolAction: `feishu_attendance_group.${p.action}`,
+            err,
+            userOpenId: lastClient?.senderOpenId,
+            appId: lastClient?.account.appId,
+          });
+
+          if (isInvokeError(invokeErr)) {
+            return await handleInvokeErrorWithAutoAuth(invokeErr, cfg);
           }
 
           return json({

@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { AppScopeMissingError, UserAuthRequiredError } from '../src/core/tool-client';
 
 const mockInvokeByPath = vi.fn();
 const mockHandleInvokeErrorWithAutoAuth = vi.fn();
@@ -15,6 +16,7 @@ vi.mock('../src/tools/oapi/helpers', async () => {
     createToolContext: () => ({
       getClient: vi.fn(),
       toolClient: () => ({
+        account: { appId: 'cli_test' },
         senderOpenId: undefined,
         invokeByPath: mockInvokeByPath,
       }),
@@ -223,5 +225,51 @@ describe('attendance tool execute path', () => {
       ],
       raw: expect.any(Object),
     });
+  });
+
+  it('auto-auths attendance group list_users when raw access-token failure is returned', async () => {
+    const { api, registeredTools } = createMockApi();
+    registerFeishuAttendanceGroupTool(api as any);
+
+    mockHandleInvokeErrorWithAutoAuth.mockResolvedValueOnce({
+      content: [{ text: JSON.stringify({ auth: 'started' }) }],
+    });
+    mockInvokeByPath.mockResolvedValueOnce({
+      code: 999,
+      msg: 'Missing access token for authorization',
+    });
+
+    const result = await registeredTools.feishu_attendance_group.execute('call-4', {
+      action: 'list_users',
+      group_id: 'group_1',
+    });
+
+    expect(mockHandleInvokeErrorWithAutoAuth).toHaveBeenCalledTimes(1);
+    expect(mockHandleInvokeErrorWithAutoAuth.mock.calls[0]?.[0]).toBeInstanceOf(UserAuthRequiredError);
+    expect(parseToolResult(result)).toEqual({ auth: 'started' });
+  });
+
+  it('auto-auths attendance shift query when raw app-scope failure is returned', async () => {
+    const { api, registeredTools } = createMockApi();
+    registerFeishuAttendanceShiftTool(api as any);
+
+    mockHandleInvokeErrorWithAutoAuth.mockResolvedValueOnce({
+      content: [{ text: JSON.stringify({ auth: 'started' }) }],
+    });
+    mockInvokeByPath.mockResolvedValueOnce({
+      code: 99991672,
+      msg: 'app scope missing',
+    });
+
+    const result = await registeredTools.feishu_attendance_shift.execute('call-5', {
+      action: 'query',
+      user_ids: ['ou_1'],
+      check_date_from: '2026-04-01',
+      check_date_to: '2026-04-30',
+    });
+
+    expect(mockHandleInvokeErrorWithAutoAuth).toHaveBeenCalledTimes(1);
+    expect(mockHandleInvokeErrorWithAutoAuth.mock.calls[0]?.[0]).toBeInstanceOf(AppScopeMissingError);
+    expect(parseToolResult(result)).toEqual({ auth: 'started' });
   });
 });

@@ -14,6 +14,7 @@ import {
   handleInvokeErrorWithAutoAuth,
   isInvokeError,
   json,
+  normalizeRawInvokeError,
   registerTool,
 } from '../helpers';
 import { getApprovalAuthPolicy } from './auth-policy';
@@ -274,8 +275,9 @@ export function registerFeishuApprovalTaskTool(api: OpenClawPluginApi): void {
       parameters: FeishuApprovalTaskSchema,
       async execute(_toolCallId: string, params: unknown) {
         const p = params as FeishuApprovalTaskParams;
+        let lastClient: ReturnType<typeof toolClient> | undefined;
         try {
-          const client = toolClient();
+          const client = (lastClient = toolClient());
           const fallbackUserId = client.senderOpenId;
           const authPolicy = getApprovalAuthPolicy('task', p.action);
 
@@ -316,8 +318,17 @@ export function registerFeishuApprovalTaskTool(api: OpenClawPluginApi): void {
             raw: res.data ?? null,
           });
         } catch (err) {
-          if (isInvokeError(err)) {
-            return await handleInvokeErrorWithAutoAuth(err, cfg);
+          const toolAction = p.action === 'rollback' ? 'feishu_approval_task.rollback' : `feishu_approval_task.${p.action}`;
+          const invokeErr = normalizeRawInvokeError({
+            toolAction,
+            err,
+            userOpenId: lastClient?.senderOpenId,
+            appId: lastClient?.account.appId,
+            tokenType: 'tenant',
+          });
+
+          if (isInvokeError(invokeErr)) {
+            return await handleInvokeErrorWithAutoAuth(invokeErr, cfg);
           }
 
           return json({

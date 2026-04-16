@@ -2,12 +2,12 @@
  * Copyright (c) 2026 ByteDance Ltd. and/or its affiliates
  * SPDX-License-Identifier: MIT
  *
- * feishu_im_user_fetch_resource tool -- 以用户身份下载 IM 消息中的文件/图片资源
+ * feishu_im_user_fetch_resource tool -- 以应用身份下载 IM 消息中的文件/图片资源
  *
  * 使用飞书 API:
  *   - im.v1.messageResource.get: GET /open-apis/im/v1/messages/:message_id/resources/:file_key
  *
- * 全部以用户身份（user_access_token）调用，scope 来自 real-scope.json。
+ * 官方接口仅支持 tenant_access_token。
  */
 
 import * as fs from 'node:fs/promises';
@@ -99,9 +99,9 @@ export function registerFeishuImUserFetchResourceTool(api: OpenClawPluginApi): b
       name: 'feishu_im_user_fetch_resource',
       label: 'Feishu: IM Fetch Resource',
       description:
-        '【以用户身份】下载飞书 IM 消息中的文件或图片资源到本地文件。需要用户 OAuth 授权。' +
+        '【以应用身份】下载飞书 IM 消息中的文件或图片资源到本地文件。需要应用具备机器人能力并与消息处于同一会话。' +
         '\n\n适用场景：当你以用户身份调用了消息列表/搜索等 API 获取到 message_id 和 file_key 时，' +
-        '应使用本工具以同样的用户身份下载资源。' +
+        '可使用本工具由应用身份下载资源。' +
         '\n注意：如果 message_id 来自当前对话上下文（用户发给机器人的消息、引用的消息），' +
         '请使用 feishu_im_bot_image 工具以机器人身份下载，无需用户授权。' +
         '\n\n参数说明：' +
@@ -129,9 +129,7 @@ export function registerFeishuImUserFetchResourceTool(api: OpenClawPluginApi): b
                 },
                 opts,
               ),
-            {
-              as: 'user',
-            },
+            {},
           );
 
           // 响应是二进制流，使用 getReadableStream() 读取

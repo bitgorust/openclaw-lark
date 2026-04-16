@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   buildApprovalInstanceGetQuery,
   buildApprovalInstanceListQuery,
+  normalizeApprovalInstance,
   shapeApprovalError,
 } from '../src/tools/oapi/approval/instance';
 import { getApprovalAuthPolicy } from '../src/tools/oapi/approval/auth-policy';
@@ -11,10 +12,10 @@ import {
 } from '../src/tools/oapi/approval/cc-search';
 import { normalizeApprovalComment } from '../src/tools/oapi/approval/comment';
 import {
-  normalizeApprovalInstance,
-} from '../src/tools/oapi/approval/instance';
-import { buildApprovalRollbackRequest, buildApprovalTaskRequest } from '../src/tools/oapi/approval/task';
+  buildApprovalRollbackRequest, buildApprovalTaskRequest } from '../src/tools/oapi/approval/task';
 import { buildApprovalTaskQueryRequest } from '../src/tools/oapi/approval/task-search';
+import { checkAppScopes, getRequiredScopeSpec, getRequiredScopes } from '../src/core/scope-manager';
+import { GENERATED_TOOL_SCOPE_SPECS } from '../src/core/generated/feishu-tool-scope-specs.js';
 
 describe('approval instance helpers', () => {
   it('converts list time filters into millisecond query params', () => {
@@ -82,6 +83,20 @@ describe('approval instance helpers', () => {
       department_name: 'R&D',
       start_time: '1775005200000',
       end_time: '1775125800000',
+      form: JSON.stringify([
+        {
+          id: 'widget_reason',
+          name: '加班事由',
+          type: 'textarea',
+          value: '线上故障处理',
+        },
+        {
+          id: 'widget_hours',
+          name: '加班时长',
+          type: 'number',
+          value: '3',
+        },
+      ]),
       task_list: [
         {
           task_id: 'task_1',
@@ -134,7 +149,83 @@ describe('approval instance helpers', () => {
           end_time: null,
         },
       ],
+      form: {
+        fields: [
+          {
+            id: 'widget_reason',
+            name: '加班事由',
+            type: 'textarea',
+            value: '线上故障处理',
+            text: '线上故障处理',
+            raw: expect.any(Object),
+          },
+          {
+            id: 'widget_hours',
+            name: '加班时长',
+            type: 'number',
+            value: '3',
+            text: '3',
+            raw: expect.any(Object),
+          },
+        ],
+        text: '加班事由: 线上故障处理\n加班时长: 3',
+      },
       raw: expect.any(Object),
+    });
+  });
+
+  it('normalizes approval task ids from task_list.id and extracts attachment field hints', () => {
+    const normalized = normalizeApprovalInstance({
+      instance_code: 'inst_attach_1',
+      approval_code: 'approval_attach_1',
+      approval_name: '加班',
+      status: 'PENDING',
+      form: JSON.stringify([
+        {
+          id: 'widget_attachment',
+          name: '凭证',
+          type: 'attachmentV2',
+          ext: 'IMG_2598.jpeg',
+          value: [
+            'https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=abc',
+          ],
+        },
+      ]),
+      task_list: [
+        {
+          id: 'task_attach_1',
+          node_id: 'NODE_1',
+          node_name: '审批',
+          status: 'PENDING',
+          open_id: 'ou_approver',
+          user_id: 'u_approver',
+        },
+      ],
+    });
+
+    expect(normalized).toMatchObject({
+      tasks: [
+        {
+          task_id: 'task_attach_1',
+          node_id: 'NODE_1',
+        },
+      ],
+      approvers: [
+        {
+          task_id: 'task_attach_1',
+        },
+      ],
+      form: {
+        fields: [
+          {
+            id: 'widget_attachment',
+            name: '凭证',
+            type: 'attachmentV2',
+            attachment_urls: ['https://internal-api-drive-stream.feishu.cn/space/api/box/stream/download/authcode/?code=abc'],
+            file_name: 'IMG_2598.jpeg',
+          },
+        ],
+      },
     });
   });
 });
@@ -313,39 +404,53 @@ describe('approval error shaping', () => {
 describe('approval auth policy', () => {
   it('tracks target auth mode separately from current execution mode', () => {
     expect(getApprovalAuthPolicy('instance', 'list')).toEqual({
-      targetAuthMode: 'app-only',
-      currentExecutionMode: 'tenant',
-      rationale: 'approval instance list/get endpoints are tenant-only in the canonical contract',
+      targetAuthMode: 'user-required',
+      currentExecutionMode: 'user',
+      allowTenantFallback: false,
+      rationale: 'canonical contract is user-only',
     });
     expect(getApprovalAuthPolicy('task', 'approve')).toEqual({
       targetAuthMode: 'app-only',
       currentExecutionMode: 'tenant',
-      rationale: 'approval task action endpoints are tenant-only in the canonical contract',
+      allowTenantFallback: false,
+      rationale: 'canonical contract is tenant-only',
     });
     expect(getApprovalAuthPolicy('task', 'add_sign')).toEqual({
       targetAuthMode: 'app-only',
       currentExecutionMode: 'tenant',
-      rationale: 'approval task action endpoints are tenant-only in the canonical contract',
+      allowTenantFallback: false,
+      rationale: 'canonical contract is tenant-only',
     });
     expect(getApprovalAuthPolicy('task-search', 'query')).toEqual({
       targetAuthMode: 'dual-mode',
       currentExecutionMode: 'user',
-      rationale: 'approval task query is dual-mode canonically, so user remains the preferred execution mode',
+      allowTenantFallback: true,
+      rationale:
+        'canonical contract is dual-mode; prefer user context and fall back to tenant when user auth is unavailable',
     });
     expect(getApprovalAuthPolicy('task-search', 'search')).toEqual({
       targetAuthMode: 'app-only',
       currentExecutionMode: 'tenant',
-      rationale: 'approval task search is tenant-only in the canonical contract',
+      allowTenantFallback: false,
+      rationale: 'canonical contract is tenant-only',
+    });
+    expect(getApprovalAuthPolicy('task-search', 'get_detail')).toEqual({
+      targetAuthMode: 'user-required',
+      currentExecutionMode: 'user',
+      allowTenantFallback: false,
+      rationale: 'canonical contract is user-only',
     });
     expect(getApprovalAuthPolicy('cc', 'search')).toEqual({
       targetAuthMode: 'app-only',
       currentExecutionMode: 'tenant',
-      rationale: 'approval CC search is tenant-only in the canonical contract',
+      allowTenantFallback: false,
+      rationale: 'canonical contract is tenant-only',
     });
     expect(getApprovalAuthPolicy('comment', 'list')).toEqual({
-      targetAuthMode: 'app-only',
-      currentExecutionMode: 'tenant',
-      rationale: 'approval comment endpoints are tenant-only in the canonical contract',
+      targetAuthMode: 'user-required',
+      currentExecutionMode: 'user',
+      allowTenantFallback: false,
+      rationale: 'canonical contract is user-only',
     });
   });
 });
@@ -367,6 +472,59 @@ describe('approval task search helpers', () => {
       topic: '1',
       page_size: '20',
     });
+  });
+
+  it('uses the real app-configurable scope set for personal task query', () => {
+    expect(getRequiredScopes('feishu_approval_task_search.query')).toEqual(['approval:approval:readonly']);
+  });
+
+  it('uses official required scopes for approval task search', () => {
+    expect(getRequiredScopes('feishu_approval_task_search.search')).toEqual([
+      'approval:approval.list:readonly',
+      'approval:approval:readonly',
+    ]);
+  });
+
+  it('uses official required scopes for approval task detail lookup', () => {
+    expect(getRequiredScopes('feishu_approval_task_search.get_detail')).toEqual([
+      'approval:approval',
+      'approval:approval:readonly',
+      'approval:instance',
+    ]);
+  });
+
+  it('treats approval task search official scopes as any-of for app checks', () => {
+    expect(checkAppScopes('feishu_approval_task_search.search', ['approval:approval:readonly'])).toBe(true);
+    expect(checkAppScopes('feishu_approval_task_search.search', ['approval:approval.list:readonly'])).toBe(true);
+    expect(checkAppScopes('feishu_approval_task_search.search', ['approval:approval'])).toBe(false);
+  });
+
+  it('uses official required scopes for approval comment create', () => {
+    expect(getRequiredScopes('feishu_approval_comment.create')).toEqual([
+      'approval:approval',
+      'approval:instance.comment',
+    ]);
+  });
+
+  it('reads generated official scope metadata instead of legacy manual fallback', () => {
+    expect(getRequiredScopeSpec('feishu_approval_comment.create')).toMatchObject({
+      source: 'official',
+      scopeNeedType: 'one',
+    });
+  });
+
+  it('fails fast when an action loses its generated official scope metadata', () => {
+    const toolAction = 'feishu_approval_task.approve';
+    const previous = GENERATED_TOOL_SCOPE_SPECS[toolAction];
+
+    delete GENERATED_TOOL_SCOPE_SPECS[toolAction];
+    try {
+      expect(() => getRequiredScopeSpec(toolAction)).toThrow(
+        /Manual scope fallback is not allowed for feishu_approval_task\.approve/,
+      );
+    } finally {
+      GENERATED_TOOL_SCOPE_SPECS[toolAction] = previous;
+    }
   });
 });
 

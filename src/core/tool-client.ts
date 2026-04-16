@@ -37,7 +37,7 @@ import { getTicket } from './lark-ticket';
 import { callWithUAT } from './uat-client';
 import { getStoredToken } from './token-store';
 import { getAppGrantedScopes, invalidateAppScopeCache, missingScopes } from './app-scope-checker';
-import { type ToolActionKey, getRequiredScopes } from './scope-manager';
+import { type ToolActionKey, getRequiredScopeSpec } from './scope-manager';
 import { rawLarkRequest } from './raw-request';
 import { type ExecutionAuthMode, getCapabilityAuthPolicy, isAuthModeAllowed } from './capability-auth';
 import {
@@ -81,10 +81,10 @@ export type ApiFn<T> = (sdk: Lark.Client, opts: LarkRequestOptions) => Promise<T
 /**
  * invoke() 的回调签名。
  *
- * - UAT 模式：`opts` 为 `Lark.withUserAccessToken(token)`，需传给 SDK 方法；`uat` 为 User Access Token 原始字符串
- * - TAT 模式：`opts` 为 `undefined`，SDK 默认走应用身份；`uat` 也为 `undefined`
+ * - UAT 模式：`opts` 为 `Lark.withUserAccessToken(token)`，需传给 SDK 方法；`accessToken` 为 User Access Token 原始字符串
+ * - TAT 模式：`opts` 为 `undefined`，SDK 默认走应用身份；`accessToken` 为 Tenant Access Token 原始字符串
  */
-export type InvokeFn<T> = (sdk: Lark.Client, opts?: LarkRequestOptions, uat?: string) => Promise<T>;
+export type InvokeFn<T> = (sdk: Lark.Client, opts?: LarkRequestOptions, accessToken?: string) => Promise<T>;
 
 /** invoke() 的选项。 */
 export interface InvokeOptions {
@@ -182,22 +182,34 @@ export class ToolClient {
     tokenType: ExecutionAuthMode,
     options: InvokeOptions | undefined,
     requiredScopes: string[],
+    scopeNeedType: 'one' | 'all',
+    requireTenantAccessToken: boolean,
   ): Promise<T> {
     // ---- App Granted Scopes 检查（应用已开通的权限）----
-    // UAT 调用额外检查 offline_access（OAuth Device Flow 的前提权限），
-    // 但不加入 requiredScopes（避免阻断业务 scope 进入用户授权流程）。
-    const appCheckScopes = tokenType === 'user' ? [...new Set([...requiredScopes, 'offline_access'])] : requiredScopes;
+    // UAT 调用额外要求 offline_access（OAuth Device Flow 的前提权限），
+    // 但它不能参与业务 scope 的 "one-of" 命中判断。
+    const requiresOfflineAccess = tokenType === 'user';
 
     let appScopeVerified = true;
-    if (appCheckScopes.length > 0) {
+    if (requiredScopes.length > 0 || requiresOfflineAccess) {
       const appGrantedScopes = await getAppGrantedScopes(this.sdk, this.account.appId, tokenType);
 
       if (appGrantedScopes.length > 0) {
-        const missingAppScopes = missingScopes(appGrantedScopes, appCheckScopes);
-        if (missingAppScopes.length > 0) {
+        const hasRequiredBusinessScopes =
+          requiredScopes.length === 0 ||
+          scopeNeedType === 'one'
+            ? requiredScopes.some((scope) => appGrantedScopes.includes(scope))
+            : missingScopes(appGrantedScopes, requiredScopes).length === 0;
+        const hasOfflineAccess = !requiresOfflineAccess || appGrantedScopes.includes('offline_access');
+
+        if (!hasRequiredBusinessScopes || !hasOfflineAccess) {
+          const missingAppScopes = [
+            ...missingScopes(appGrantedScopes, requiredScopes),
+            ...(!hasOfflineAccess ? ['offline_access'] : []),
+          ];
           throw new AppScopeMissingError(
             { apiName: toolAction, scopes: missingAppScopes, appId: this.account.appId },
-            'all',
+            scopeNeedType,
             tokenType,
             requiredScopes,
           );
@@ -209,7 +221,7 @@ export class ToolClient {
     }
 
     if (tokenType === 'tenant') {
-      return this.invokeAsTenant(toolAction, fn, requiredScopes);
+      return this.invokeAsTenant(toolAction, fn, requiredScopes, requireTenantAccessToken);
     }
 
     const userOpenId = options?.userOpenId ?? this.senderOpenId;
@@ -219,7 +231,12 @@ export class ToolClient {
   /**
    * 内部 invoke 实现，只支持 ToolActionKey（严格类型检查）
    */
-  private async _invokeInternal<T>(toolAction: ToolActionKey, fn: InvokeFn<T>, options?: InvokeOptions): Promise<T> {
+  private async _invokeInternal<T>(
+    toolAction: ToolActionKey,
+    fn: InvokeFn<T>,
+    options?: InvokeOptions,
+    requireTenantAccessToken = false,
+  ): Promise<T> {
     // 检查旧版插件是否已禁用 (error)
     const feishuEntry = this.config.plugins?.entries?.feishu;
     if (feishuEntry && feishuEntry.enabled !== false) {
@@ -233,7 +250,7 @@ export class ToolClient {
       );
     }
 
-    const requiredScopes = getRequiredScopes(toolAction);
+    const { requiredScopes, scopeNeedType } = getRequiredScopeSpec(toolAction);
     const authPolicy = getCapabilityAuthPolicy(toolAction);
     const tokenType: ExecutionAuthMode = options?.as ?? authPolicy.preferredMode;
 
@@ -256,7 +273,15 @@ export class ToolClient {
     }
 
     try {
-      return await this.invokeWithMode(toolAction, fn, tokenType, options, requiredScopes);
+      return await this.invokeWithMode(
+        toolAction,
+        fn,
+        tokenType,
+        options,
+        requiredScopes,
+        scopeNeedType,
+        requireTenantAccessToken,
+      );
     } catch (err) {
       if (
         !options?.as &&
@@ -265,7 +290,7 @@ export class ToolClient {
           err instanceof UserAuthRequiredError ||
           err instanceof UserScopeInsufficientError)
       ) {
-        return this.invokeWithMode(toolAction, fn, 'tenant', options, requiredScopes);
+        return this.invokeWithMode(toolAction, fn, 'tenant', options, requiredScopes, scopeNeedType, requireTenantAccessToken);
       }
       throw err;
     }
@@ -306,25 +331,31 @@ export class ToolClient {
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async invokeByPath<T = any>(toolAction: ToolActionKey, path: string, options?: InvokeByPathOptions): Promise<T> {
-    const fn: InvokeFn<T> = async (_sdk, _opts, uat) => {
+    const fn: InvokeFn<T> = async (_sdk, _opts, accessToken) => {
       return this.rawRequest<T>(path, {
         method: options?.method,
         body: options?.body,
         query: options?.query,
         headers: options?.headers,
-        accessToken: uat,
+        accessToken,
       });
     };
-    return this._invokeInternal(toolAction, fn, options);
+    return this._invokeInternal(toolAction, fn, options, true);
   }
 
   // -------------------------------------------------------------------------
   // Private: TAT path
   // -------------------------------------------------------------------------
 
-  private async invokeAsTenant<T>(toolAction: ToolActionKey, fn: InvokeFn<T>, requiredScopes: string[]): Promise<T> {
+  private async invokeAsTenant<T>(
+    toolAction: ToolActionKey,
+    fn: InvokeFn<T>,
+    requiredScopes: string[],
+    requireTenantAccessToken: boolean,
+  ): Promise<T> {
     try {
-      return await fn(this.sdk);
+      const accessToken = requireTenantAccessToken ? await this.getTenantAccessToken() : undefined;
+      return await fn(this.sdk, undefined, accessToken);
     } catch (err) {
       this.rethrowStructuredError(err, toolAction, requiredScopes, undefined, 'tenant');
       throw err;
@@ -372,7 +403,11 @@ export class ToolClient {
     if (appScopeVerified && stored.scope && requiredScopes.length > 0) {
       // 检查用户是否授权了所有 Required Scopes
       const userGrantedScopes = new Set(stored.scope.split(/\s+/).filter(Boolean));
-      const missingUserScopes = requiredScopes.filter((s) => !userGrantedScopes.has(s));
+      const { scopeNeedType } = getRequiredScopeSpec(toolAction);
+      const missingUserScopes =
+        scopeNeedType === 'one' && requiredScopes.some((scope) => userGrantedScopes.has(scope))
+          ? []
+          : requiredScopes.filter((s) => !userGrantedScopes.has(s));
       if (missingUserScopes.length > 0) {
         throw new UserAuthRequiredError(userOpenId, {
           apiName: toolAction,
@@ -429,6 +464,27 @@ export class ToolClient {
       path,
       ...options,
     });
+  }
+
+  private async getTenantAccessToken(): Promise<string> {
+    const tokenResponse = await rawLarkRequest<{
+      tenant_access_token?: string;
+      access_token?: string;
+    }>({
+      brand: this.account.brand,
+      path: '/open-apis/auth/v3/tenant_access_token/internal',
+      method: 'POST',
+      body: {
+        app_id: this.account.appId,
+        app_secret: this.account.appSecret,
+      },
+    });
+
+    const accessToken = tokenResponse.tenant_access_token ?? tokenResponse.access_token;
+    if (!accessToken) {
+      throw new Error('Failed to obtain tenant access token for raw Feishu API request');
+    }
+    return accessToken;
   }
 
   // -------------------------------------------------------------------------

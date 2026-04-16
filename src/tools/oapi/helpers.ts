@@ -58,6 +58,8 @@ import { Type } from '@sinclair/typebox';
 import type { SchemaOptions, TUnsafe } from '@sinclair/typebox';
 import type { ToolResult } from '../helpers';
 import { createClientGetter, formatToolResult } from '../helpers';
+import { getCanonicalAuthModes } from '../../core/capability-auth';
+import { type ToolActionKey, getRequiredScopeSpec } from '../../core/scope-manager';
 
 /**
  * 从配置直接创建飞书客户端（OAPI 工具常用模式）
@@ -428,6 +430,89 @@ export function isInvokeError(err: unknown): boolean {
     err instanceof AppScopeMissingError ||
     err instanceof UserScopeInsufficientError
   );
+}
+
+function extractRawInvokeErrorCode(err: unknown): number | undefined {
+  if (!err || typeof err !== 'object') return undefined;
+
+  const maybeCode =
+    (err as { code?: unknown }).code ??
+    (err as { data?: { code?: unknown } }).data?.code ??
+    (err as { response?: { data?: { code?: unknown } } }).response?.data?.code;
+
+  if (typeof maybeCode === 'number') return maybeCode;
+  if (typeof maybeCode === 'string' && /^\d+$/.test(maybeCode)) return Number(maybeCode);
+  return undefined;
+}
+
+function extractRawInvokeErrorMessage(err: unknown): string {
+  if (err && typeof err === 'object') {
+    const message =
+      (err as { msg?: unknown }).msg ??
+      (err as { message?: unknown }).message ??
+      (err as { response?: { data?: { msg?: unknown; message?: unknown } } }).response?.data?.msg ??
+      (err as { response?: { data?: { msg?: unknown; message?: unknown } } }).response?.data?.message;
+    if (typeof message === 'string' && message.trim().length > 0) {
+      return message;
+    }
+  }
+
+  return '';
+}
+
+export function normalizeRawInvokeError(params: {
+  toolAction: string;
+  err: unknown;
+  userOpenId?: string;
+  appId?: string;
+  tokenType?: 'user' | 'tenant';
+}): unknown {
+  if (isInvokeError(params.err)) return params.err;
+
+  const code = extractRawInvokeErrorCode(params.err);
+  const message = extractRawInvokeErrorMessage(params.err);
+  const toolAction = params.toolAction as ToolActionKey;
+  let requiredScopes: string[] = [];
+  let scopeNeedType: 'one' | 'all' = 'all';
+  try {
+    ({ requiredScopes, scopeNeedType } = getRequiredScopeSpec(toolAction));
+  } catch {
+    // Some actions still have auth metadata before full official scope coverage.
+    // Keep raw error normalization working even when scope metadata is absent.
+  }
+  const canonicalAuthModes = getCanonicalAuthModes(toolAction);
+  const supportsUserAuth = canonicalAuthModes.includes('dual-mode') || canonicalAuthModes.includes('user-only');
+
+  if (supportsUserAuth && /Missing access token for authorization/i.test(message)) {
+    return new UserAuthRequiredError(params.userOpenId ?? 'unknown', {
+      apiName: toolAction,
+      scopes: requiredScopes,
+      appId: params.appId,
+      appScopeVerified: true,
+    });
+  }
+
+  if (code === 99991679) {
+    return new UserScopeInsufficientError(params.userOpenId ?? 'unknown', {
+      apiName: toolAction,
+      scopes: requiredScopes,
+      appId: params.appId,
+    });
+  }
+
+  if (code === 99991672) {
+    return new AppScopeMissingError(
+      {
+        apiName: toolAction,
+        scopes: requiredScopes,
+        appId: params.appId,
+      },
+      scopeNeedType,
+      params.tokenType,
+    );
+  }
+
+  return params.err;
 }
 
 // ---------------------------------------------------------------------------

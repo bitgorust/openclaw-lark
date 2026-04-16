@@ -14,6 +14,7 @@ import {
   handleInvokeErrorWithAutoAuth,
   isInvokeError,
   json,
+  normalizeRawInvokeError,
   registerTool,
   unixTimestampToISO8601,
 } from '../helpers';
@@ -266,8 +267,9 @@ export function registerFeishuApprovalCcTool(api: OpenClawPluginApi): void {
       parameters: FeishuApprovalCcSchema,
       async execute(_toolCallId: string, params: unknown) {
         const p = params as FeishuApprovalCcParams;
+        let lastClient: ReturnType<typeof toolClient> | undefined;
         try {
-          const client = toolClient();
+          const client = (lastClient = toolClient());
           const authPolicy = getApprovalAuthPolicy('cc', 'search');
           const request = buildApprovalCcSearchRequest(p, client.senderOpenId);
 
@@ -306,8 +308,16 @@ export function registerFeishuApprovalCcTool(api: OpenClawPluginApi): void {
             raw: res.data ?? null,
           });
         } catch (err) {
-          if (isInvokeError(err)) {
-            return await handleInvokeErrorWithAutoAuth(err, cfg);
+          const invokeErr = normalizeRawInvokeError({
+            toolAction: 'feishu_approval_cc.search',
+            err,
+            userOpenId: lastClient?.senderOpenId,
+            appId: lastClient?.account.appId,
+            tokenType: 'tenant',
+          });
+
+          if (isInvokeError(invokeErr)) {
+            return await handleInvokeErrorWithAutoAuth(invokeErr, cfg);
           }
 
           return json({
