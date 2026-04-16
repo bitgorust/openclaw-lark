@@ -7,6 +7,10 @@ release/
 src/tools/docs/
 
 *.log
+.artifacts/
+.env.local
+.openclaw-dev.feishu.json
+.codex
 
 # IDE / AI config
 .idea/
@@ -22,6 +26,8 @@ src/tools/docs/
 !/docs/references/
 /docs/references/*
 !/docs/references/feishu-server-api-list.json
+!/docs/references/feishu-scope-list.json
+!/docs/references/feishu-official-security.json
 !/docs/references/feishu-mcp-remote-server.md
 !/docs/references/feishu-supported-operations.json
 !/docs/references/feishu-supported-operations.md
@@ -32,5 +38,4 @@ src/tools/docs/
 /**/.DS_Store
 
 .eslintcache
-.codex/
 __pycache__/
