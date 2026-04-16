@@ -30,6 +30,7 @@
   },
   "scripts": {
     "build": "tsdown",
+    "dev:feishu": "pnpm build && node scripts/run-feishu-dev.mjs",
     "feishu:supported-operations": "node scripts/export_feishu_supported_operations.mjs",
     "feishu:supported-operations:check": "node scripts/export_feishu_supported_operations.mjs --check",
     "feishu:canonical-metadata": "node scripts/generate_feishu_canonical_metadata.mjs",
@@ -51,6 +52,7 @@
     "lint": "eslint src/ index.ts",
     "lint:fix": "eslint src/ index.ts --fix",
     "typecheck": "tsc --noEmit",
+    "verify:feishu": "node scripts/verify-feishu.mjs",
     "format": "prettier --write src/**/*.ts",
     "format:check": "prettier --check src/**/*.ts"
   },

@@ -1,0 +1,11 @@
+services:
+  openclaw-gateway:
+    image: ${OPENCLAW_IMAGE}
+    user: "${OPENCLAW_UID}:${OPENCLAW_GID}"
+    working_dir: /workspace
+    environment:
+      HOME: /home/node
+    volumes:
+      - ${OPENCLAW_HOME_DIR}:/home/node
+      - ${OPENCLAW_WORKSPACE_DIR}:/workspace
+    command: ["/bin/sh", "/workspace/docker/feishu-dev/entrypoint.sh"]
