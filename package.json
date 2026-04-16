@@ -30,7 +30,7 @@
   },
   "scripts": {
     "build": "tsdown",
-    "dev:feishu": "pnpm build && pnpm exec openclaw --dev plugins install ./ --link --force && pnpm exec openclaw --dev gateway run --dev",
+    "dev:feishu": "pnpm build && pnpm exec openclaw --dev plugins install ./ --link && pnpm exec openclaw --dev gateway run --dev",
     "feishu:supported-operations": "node scripts/export_feishu_supported_operations.mjs",
     "feishu:supported-operations:check": "node scripts/export_feishu_supported_operations.mjs --check",
     "feishu:canonical-metadata": "node scripts/generate_feishu_canonical_metadata.mjs",
