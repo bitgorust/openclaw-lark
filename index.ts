@@ -8,7 +8,7 @@
  * doc, wiki, drive, perm, bitable, task, calendar.
  */
 
-import { defineChannelPluginEntry, emptyPluginConfigSchema } from 'openclaw/plugin-sdk/core';
+import { defineChannelPluginEntry } from 'openclaw/plugin-sdk/core';
 import { feishuPlugin } from './src/channel/plugin';
 import { LarkClient } from './src/core/lark-client';
 import { registerOapiTools } from './src/tools/oapi/index';
@@ -102,7 +102,6 @@ const plugin = defineChannelPluginEntry({
   id: 'openclaw-lark',
   name: 'Feishu',
   description: 'Lark/Feishu channel plugin with im/doc/wiki/drive/task/calendar tools',
-  configSchema: emptyPluginConfigSchema(),
   plugin: feishuPlugin,
   setRuntime: (runtime) => {
     LarkClient.setRuntime(runtime);
