@@ -10,7 +10,7 @@
  *   - send:  POST /open-apis/im/v1/messages?receive_id_type=...
  *   - reply: POST /open-apis/im/v1/messages/:message_id/reply
  *
- * 根据 canonical contract，发送/回复主端点当前按应用身份执行。
+ * 根据 canonical contract，发送/回复主端点当前按用户身份执行。
  */
 
 import type { ClawdbotConfig, OpenClawPluginApi } from 'openclaw/plugin-sdk';

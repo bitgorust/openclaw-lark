@@ -214,7 +214,7 @@ export function registerFeishuAttendanceGroupTool(api: OpenClawPluginApi): void 
       label: 'Feishu Attendance Group',
       description:
         '飞书考勤组工具。用于获取单个考勤组详情，或分页列出考勤组成员。' +
-        '其中 get 按 canonical contract 为应用身份，list_users 支持 user/tenant 双模式并由共享认证策略自动选择。' +
+        '其中 get 按 canonical contract 为应用身份，list_users 按 canonical contract 为用户身份。' +
         ' Actions: get, list_users。',
       parameters: FeishuAttendanceGroupSchema,
       async execute(_toolCallId: string, params: unknown) {

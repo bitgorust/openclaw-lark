@@ -3,34 +3,34 @@
     "tenant-only"
   ],
   "feishu_approval_comment.create": [
-    "user-only"
+    "tenant-only"
   ],
   "feishu_approval_comment.delete": [
-    "user-only"
+    "tenant-only"
   ],
   "feishu_approval_comment.list": [
-    "user-only"
+    "tenant-only"
   ],
   "feishu_approval_comment.remove": [
-    "user-only"
+    "tenant-only"
   ],
   "feishu_approval_instance.get": [
-    "user-only"
+    "tenant-only"
   ],
   "feishu_approval_instance.list": [
-    "user-only"
+    "tenant-only"
   ],
   "feishu_approval_task_search.download_attachment": [
-    "user-only"
+    "tenant-only"
   ],
   "feishu_approval_task_search.get_detail": [
-    "user-only"
+    "tenant-only"
   ],
   "feishu_approval_task_search.parse_attachment": [
-    "user-only"
+    "tenant-only"
   ],
   "feishu_approval_task_search.query": [
-    "dual-mode"
+    "user-only"
   ],
   "feishu_approval_task_search.search": [
     "tenant-only"
@@ -60,7 +60,7 @@
     "tenant-only"
   ],
   "feishu_attendance_group.list_users": [
-    "dual-mode"
+    "user-only"
   ],
   "feishu_attendance_shift.query": [
     "tenant-only"
@@ -267,10 +267,10 @@
     "user-only"
   ],
   "feishu_im_user_message.reply": [
-    "tenant-only"
+    "user-only"
   ],
   "feishu_im_user_message.send": [
-    "tenant-only"
+    "user-only"
   ],
   "feishu_im_user_search_messages.default": [
     "user-only"
@@ -279,37 +279,37 @@
     "user-only"
   ],
   "feishu_mail_message.attachment_download_url": [
-    "dual-mode"
+    "user-only"
   ],
   "feishu_mail_message.get": [
-    "dual-mode"
+    "user-only"
   ],
   "feishu_mail_message.list": [
-    "dual-mode"
+    "user-only"
   ],
   "feishu_mail_message.send": [
     "user-only"
   ],
   "feishu_meeting_reserve.apply": [
-    "dual-mode"
+    "user-only"
   ],
   "feishu_meeting_reserve.delete": [
-    "dual-mode"
+    "user-only"
   ],
   "feishu_meeting_reserve.get": [
-    "dual-mode"
+    "user-only"
   ],
   "feishu_meeting_reserve.get_active_meeting": [
-    "dual-mode"
+    "user-only"
   ],
   "feishu_meeting_reserve.update": [
-    "dual-mode"
+    "user-only"
   ],
   "feishu_meeting.end": [
     "user-only"
   ],
   "feishu_meeting.get": [
-    "dual-mode"
+    "user-only"
   ],
   "feishu_meeting.get_note": [
     "user-only"
@@ -318,22 +318,22 @@
     "user-only"
   ],
   "feishu_minutes.artifacts": [
-    "dual-mode"
+    "user-only"
   ],
   "feishu_minutes.get": [
-    "dual-mode"
+    "user-only"
   ],
   "feishu_minutes.media": [
-    "dual-mode"
+    "user-only"
   ],
   "feishu_minutes.statistics": [
-    "dual-mode"
+    "user-only"
   ],
   "feishu_minutes.transcript": [
-    "dual-mode"
+    "user-only"
   ],
   "feishu_oauth_batch_auth.authorize_all": [
-    "tenant-only"
+    "user-only"
   ],
   "feishu_oauth.revoke": [
     "user-only"

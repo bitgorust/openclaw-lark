@@ -202,10 +202,15 @@ function buildMetadata({ supportedOpsDoc, officialSecurityDoc }) {
           authSource = 'declared+official';
           authReason = 'declared action auth intersected with official endpoint token modes';
           authFromOfficialIntersectionCount += 1;
+        } else if (allBackendsOfficialCovered) {
+          generatedAuthModes = officialAuthModes;
+          authSource = 'official';
+          authReason = 'declared action auth conflicts with official endpoint token modes; all declared backends are officially covered, so official endpoint auth wins';
+          authFromOfficialIntersectionCount += 1;
         } else {
           generatedAuthModes = executionModesToCanonicalAuthModes(declaredModes);
           authSource = 'declared-conflict-fallback';
-          authReason = 'declared action auth conflicts with official endpoint token modes; keeping declared action auth';
+          authReason = 'declared action auth conflicts with official endpoint token modes, but official coverage is incomplete; keeping declared action auth';
           authConflictFallbackCount += 1;
         }
       } else if (declaredModes.size > 0) {

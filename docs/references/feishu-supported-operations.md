@@ -2,10 +2,15 @@
 
 This file enumerates the Feishu-facing tool and command surface currently exposed by this repository.
 
+Auth values in this file are code-derived declared modes, not the final official auth contract.
+Use canonical/runtime metadata for official auth and scope decisions.
+
 ## Scope
 
 - Included: Registered Feishu-facing tools and chat commands exposed by the plugin entrypoint.
 - Excluded: Internal helper functions and lower-level channel/outbound APIs not directly registered as tools or commands.
+- Auth semantics: Code-derived declared execution mode observed from repository source; not the final official auth contract.
+- Coverage semantics: Whether the declared backend can be linked to an official Feishu API/MCP reference.
 
 ## Totals
 
@@ -19,13 +24,13 @@ This file enumerates the Feishu-facing tool and command surface currently expose
 
 | Tool | Category | Transport | Auth | Operations | Source |
 |---|---|---|---|---:|---|
-| `feishu_approval_cc` | approval | oapi | tenant | 1 | `src/tools/oapi/approval/cc-search.ts` |
+| `feishu_approval_cc` | approval | oapi | user | 1 | `src/tools/oapi/approval/cc-search.ts` |
 | `feishu_approval_comment` | approval | oapi | user | 4 | `src/tools/oapi/approval/comment.ts` |
 | `feishu_approval_instance` | approval | oapi | user | 2 | `src/tools/oapi/approval/instance.ts` |
-| `feishu_approval_task` | approval | oapi | tenant | 6 | `src/tools/oapi/approval/task.ts` |
-| `feishu_approval_task_search` | approval | oapi | dual (mixed by operation) | 5 | `src/tools/oapi/approval/task-search.ts` |
+| `feishu_approval_task` | approval | oapi | user | 6 | `src/tools/oapi/approval/task.ts` |
+| `feishu_approval_task_search` | approval | oapi | user | 5 | `src/tools/oapi/approval/task-search.ts` |
 | `feishu_ask_user_question` | interaction | plugin | user | 1 | `src/tools/ask-user-question.ts` |
-| `feishu_attendance_group` | attendance | oapi | dual (mixed by operation) | 2 | `src/tools/oapi/attendance/group.ts` |
+| `feishu_attendance_group` | attendance | oapi | user | 2 | `src/tools/oapi/attendance/group.ts` |
 | `feishu_attendance_shift` | attendance | oapi | tenant | 1 | `src/tools/oapi/attendance/shift.ts` |
 | `feishu_bitable_app` | bitable | oapi | user | 5 | `src/tools/oapi/bitable/app.ts` |
 | `feishu_bitable_app_table` | bitable | oapi | user | 4 | `src/tools/oapi/bitable/app-table.ts` |
@@ -43,19 +48,19 @@ This file enumerates the Feishu-facing tool and command surface currently expose
 | `feishu_doc_media` | doc | oapi | user | 2 | `src/tools/oapi/drive/doc-media.ts` |
 | `feishu_drive_file` | drive | oapi | user | 7 | `src/tools/oapi/drive/file.ts` |
 | `feishu_fetch_doc` | mcp-doc | mcp | user | 1 | `src/tools/mcp/doc/fetch.ts` |
-| `feishu_get_user` | common | oapi | dual | 1 | `src/tools/oapi/common/get-user.ts` |
+| `feishu_get_user` | common | oapi | user | 1 | `src/tools/oapi/common/get-user.ts` |
 | `feishu_im_bot_image` | im | oapi | tenant | 1 | `src/tools/tat/im/resource.ts` |
 | `feishu_im_user_fetch_resource` | im | oapi | tenant | 1 | `src/tools/oapi/im/resource.ts` |
 | `feishu_im_user_get_messages` | im | oapi | user | 1 | `src/tools/oapi/im/message-read.ts` |
 | `feishu_im_user_get_thread_messages` | im | oapi | user | 1 | `src/tools/oapi/im/message-read.ts` |
-| `feishu_im_user_message` | im | oapi | tenant | 2 | `src/tools/oapi/im/message.ts` |
+| `feishu_im_user_message` | im | oapi | user | 2 | `src/tools/oapi/im/message.ts` |
 | `feishu_im_user_search_messages` | im | oapi | user | 1 | `src/tools/oapi/im/message-read.ts` |
-| `feishu_mail_message` | mail | oapi | dual (mixed by operation) | 4 | `src/tools/oapi/mail/message.ts` |
-| `feishu_meeting` | meeting | oapi | dual (mixed by operation) | 4 | `src/tools/oapi/meeting/meeting.ts` |
-| `feishu_meeting_reserve` | meeting | oapi | dual | 5 | `src/tools/oapi/meeting/reserve.ts` |
-| `feishu_minutes` | meeting | oapi | dual | 5 | `src/tools/oapi/meeting/minutes.ts` |
+| `feishu_mail_message` | mail | oapi | user | 4 | `src/tools/oapi/mail/message.ts` |
+| `feishu_meeting` | meeting | oapi | user | 4 | `src/tools/oapi/meeting/meeting.ts` |
+| `feishu_meeting_reserve` | meeting | oapi | user | 5 | `src/tools/oapi/meeting/reserve.ts` |
+| `feishu_minutes` | meeting | oapi | user | 5 | `src/tools/oapi/meeting/minutes.ts` |
 | `feishu_oauth` | auth | plugin | user | 1 | `src/tools/oauth.ts` |
-| `feishu_oauth_batch_auth` | auth | plugin | tenant | 1 | `src/tools/oauth-batch-auth.ts` |
+| `feishu_oauth_batch_auth` | auth | plugin | user | 1 | `src/tools/oauth-batch-auth.ts` |
 | `feishu_search_doc_wiki` | search | oapi | user | 1 | `src/tools/oapi/search/doc-search.ts` |
 | `feishu_search_user` | common | oapi | user | 1 | `src/tools/oapi/common/search-user.ts` |
 | `feishu_sheet` | sheets | oapi | user | 7 | `src/tools/oapi/sheets/sheet.ts` |
@@ -71,12 +76,12 @@ This file enumerates the Feishu-facing tool and command surface currently expose
 
 - Category: `approval`
 - Transport: `oapi`
-- Auth: `tenant`
+- Auth: `user`
 - Source: `src/tools/oapi/approval/cc-search.ts`
 
 | Operation | Auth | Backend Kind | Coverage | Summary | Backend | Official Docs |
 |---|---|---|---|---|---|---|
-| `search` | `tenant` | `oapi` | `official` | 飞书审批抄送查询工具. | `POST:/open-apis/approval/v4/instances/search_cc` | [查询抄送列表](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/approval-v4/instance/search_cc) |
+| `search` | `user` | `oapi` | `official` | 飞书审批抄送查询工具. | `POST:/open-apis/approval/v4/instances/search_cc` | [查询抄送列表](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/approval-v4/instance/search_cc) |
 
 ### `feishu_approval_comment`
 
@@ -108,30 +113,29 @@ This file enumerates the Feishu-facing tool and command surface currently expose
 
 - Category: `approval`
 - Transport: `oapi`
-- Auth: `tenant`
+- Auth: `user`
 - Source: `src/tools/oapi/approval/task.ts`
 
 | Operation | Auth | Backend Kind | Coverage | Summary | Backend | Official Docs |
 |---|---|---|---|---|---|---|
-| `approve` | `tenant` | `oapi` | `official` | 飞书审批任务工具. | `POST:/open-apis/approval/v4/tasks/approve` | [同意审批任务](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/approval-v4/task/approve) |
-| `reject` | `tenant` | `oapi` | `official` | 飞书审批任务工具. | `POST:/open-apis/approval/v4/tasks/reject` | [拒绝审批任务](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/approval-v4/task/reject) |
-| `transfer` | `tenant` | `oapi` | `official` | 飞书审批任务工具. | `POST:/open-apis/approval/v4/tasks/transfer` | [转交审批任务](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/approval-v4/task/transfer) |
-| `add_sign` | `tenant` | `oapi` | `official` | 飞书审批任务工具. | `POST:/open-apis/approval/v4/instances/add_sign` | [审批任务加签](https://open.feishu.cn/document/ukTMukTMukTM/ukTM5UjL5ETO14SOxkTN/approval-task-addsign) |
-| `resubmit` | `tenant` | `oapi` | `official` | 飞书审批任务工具. | `POST:/open-apis/approval/v4/tasks/resubmit` | [重新提交审批任务](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/approval-v4/task/resubmit) |
-| `rollback` | `tenant` | `oapi` | `official` | 飞书审批任务工具. | `POST:/open-apis/approval/v4/instances/specified_rollback` | [退回审批任务](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/approval-v4/instance/specified_rollback) |
+| `approve` | `user` | `oapi` | `official` | 飞书审批任务工具. | `POST:/open-apis/approval/v4/tasks/approve` | [同意审批任务](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/approval-v4/task/approve) |
+| `reject` | `user` | `oapi` | `official` | 飞书审批任务工具. | `POST:/open-apis/approval/v4/tasks/reject` | [拒绝审批任务](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/approval-v4/task/reject) |
+| `transfer` | `user` | `oapi` | `official` | 飞书审批任务工具. | `POST:/open-apis/approval/v4/tasks/transfer` | [转交审批任务](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/approval-v4/task/transfer) |
+| `add_sign` | `user` | `oapi` | `official` | 飞书审批任务工具. | `POST:/open-apis/approval/v4/instances/add_sign` | [审批任务加签](https://open.feishu.cn/document/ukTMukTMukTM/ukTM5UjL5ETO14SOxkTN/approval-task-addsign) |
+| `resubmit` | `user` | `oapi` | `official` | 飞书审批任务工具. | `POST:/open-apis/approval/v4/tasks/resubmit` | [重新提交审批任务](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/approval-v4/task/resubmit) |
+| `rollback` | `user` | `oapi` | `official` | 飞书审批任务工具. | `POST:/open-apis/approval/v4/instances/specified_rollback` | [退回审批任务](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/approval-v4/instance/specified_rollback) |
 
 ### `feishu_approval_task_search`
 
 - Category: `approval`
 - Transport: `oapi`
-- Auth: `dual`
-- Operation auth modes: `dual`, `tenant`, `user`
+- Auth: `user`
 - Source: `src/tools/oapi/approval/task-search.ts`
 
 | Operation | Auth | Backend Kind | Coverage | Summary | Backend | Official Docs |
 |---|---|---|---|---|---|---|
-| `query` | `dual` | `oapi` | `official` | 飞书审批任务查询工具. | `GET:/open-apis/approval/v4/tasks/query` | [查询用户的任务列表](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/approval-v4/task/query) |
-| `search` | `tenant` | `oapi` | `official` | 飞书审批任务查询工具. | `POST:/open-apis/approval/v4/tasks/search` | [查询任务列表](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/approval-v4/task/search) |
+| `query` | `user` | `oapi` | `official` | 飞书审批任务查询工具. | `GET:/open-apis/approval/v4/tasks/query` | [查询用户的任务列表](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/approval-v4/task/query) |
+| `search` | `user` | `oapi` | `official` | 飞书审批任务查询工具. | `POST:/open-apis/approval/v4/tasks/search` | [查询任务列表](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/approval-v4/task/search) |
 | `get_detail` | `user` | `oapi` | `official` | 飞书审批任务查询工具. | `GET:/open-apis/approval/v4/instances/:instance_id` | [获取单个审批实例详情](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/approval-v4/instance/get) |
 | `download_attachment` | `user` | `oapi` | `official` | 飞书审批任务查询工具. | `GET:/open-apis/approval/v4/tasks/query<br>POST:/open-apis/approval/v4/tasks/search<br>GET:/open-apis/approval/v4/instances/:instance_id` | [查询用户的任务列表](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/approval-v4/task/query)<br>[查询任务列表](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/approval-v4/task/search)<br>[获取单个审批实例详情](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/approval-v4/instance/get) |
 | `parse_attachment` | `user` | `oapi` | `official` | 飞书审批任务查询工具. | `GET:/open-apis/approval/v4/tasks/query<br>POST:/open-apis/approval/v4/tasks/search<br>GET:/open-apis/approval/v4/instances/:instance_id` | [查询用户的任务列表](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/approval-v4/task/query)<br>[查询任务列表](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/approval-v4/task/search)<br>[获取单个审批实例详情](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/approval-v4/instance/get) |
@@ -151,14 +155,13 @@ This file enumerates the Feishu-facing tool and command surface currently expose
 
 - Category: `attendance`
 - Transport: `oapi`
-- Auth: `dual`
-- Operation auth modes: `dual`, `tenant`
+- Auth: `user`
 - Source: `src/tools/oapi/attendance/group.ts`
 
 | Operation | Auth | Backend Kind | Coverage | Summary | Backend | Official Docs |
 |---|---|---|---|---|---|---|
-| `get` | `tenant` | `oapi` | `official` | Action `get` exposed by `feishu_attendance_group`. | `GET:/open-apis/attendance/v1/groups/:group_id` | [按 ID 查询考勤组](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/attendance-v1/group/get) |
-| `list_users` | `dual` | `oapi` | `official` | Action `list_users` exposed by `feishu_attendance_group`. | `GET:/open-apis/attendance/v1/groups/:group_id/list_user` | [查询考勤组下所有成员](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/attendance-v1/group/list_user) |
+| `get` | `user` | `oapi` | `official` | Action `get` exposed by `feishu_attendance_group`. | `GET:/open-apis/attendance/v1/groups/:group_id` | [按 ID 查询考勤组](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/attendance-v1/group/get) |
+| `list_users` | `user` | `oapi` | `official` | Action `list_users` exposed by `feishu_attendance_group`. | `GET:/open-apis/attendance/v1/groups/:group_id/list_user` | [查询考勤组下所有成员](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/attendance-v1/group/list_user) |
 
 ### `feishu_attendance_shift`
 
@@ -391,12 +394,12 @@ This file enumerates the Feishu-facing tool and command surface currently expose
 
 - Category: `common`
 - Transport: `oapi`
-- Auth: `dual`
+- Auth: `user`
 - Source: `src/tools/oapi/common/get-user.ts`
 
 | Operation | Auth | Backend Kind | Coverage | Summary | Backend | Official Docs |
 |---|---|---|---|---|---|---|
-| `get` | `dual` | `oapi` | `official` | Action `get` exposed by `feishu_get_user`. | `GET:/open-apis/authen/v1/user_info<br>GET:/open-apis/contact/v3/users/:user_id` | [获取用户信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/authen-v1/user_info/get)<br>[获取单个用户信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/contact-v3/user/get) |
+| `get` | `user` | `oapi` | `official` | Action `get` exposed by `feishu_get_user`. | `GET:/open-apis/authen/v1/user_info<br>GET:/open-apis/contact/v3/users/:user_id` | [获取用户信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/authen-v1/user_info/get)<br>[获取单个用户信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/contact-v3/user/get) |
 
 ### `feishu_im_bot_image`
 
@@ -446,13 +449,13 @@ This file enumerates the Feishu-facing tool and command surface currently expose
 
 - Category: `im`
 - Transport: `oapi`
-- Auth: `tenant`
+- Auth: `user`
 - Source: `src/tools/oapi/im/message.ts`
 
 | Operation | Auth | Backend Kind | Coverage | Summary | Backend | Official Docs |
 |---|---|---|---|---|---|---|
-| `send` | `tenant` | `oapi` | `official` | Action `send` exposed by `feishu_im_user_message`. | `POST:/open-apis/im/v1/messages` | [发送消息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/im-v1/message/create) |
-| `reply` | `tenant` | `oapi` | `official` | Action `reply` exposed by `feishu_im_user_message`. | `POST:/open-apis/im/v1/messages/:message_id/reply` | [回复消息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/im-v1/message/reply) |
+| `send` | `user` | `oapi` | `official` | Action `send` exposed by `feishu_im_user_message`. | `POST:/open-apis/im/v1/messages` | [发送消息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/im-v1/message/create) |
+| `reply` | `user` | `oapi` | `official` | Action `reply` exposed by `feishu_im_user_message`. | `POST:/open-apis/im/v1/messages/:message_id/reply` | [回复消息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/im-v1/message/reply) |
 
 ### `feishu_im_user_search_messages`
 
@@ -469,29 +472,27 @@ This file enumerates the Feishu-facing tool and command surface currently expose
 
 - Category: `mail`
 - Transport: `oapi`
-- Auth: `dual`
-- Operation auth modes: `dual`, `user`
+- Auth: `user`
 - Source: `src/tools/oapi/mail/message.ts`
 
 | Operation | Auth | Backend Kind | Coverage | Summary | Backend | Official Docs |
 |---|---|---|---|---|---|---|
-| `list` | `dual` | `oapi` | `official` | Action `list` exposed by `feishu_mail_message`. | `GET:/open-apis/mail/v1/user_mailboxes/:user_mailbox_id/messages` | [列出邮件](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/mail-v1/user_mailbox-message/list) |
-| `get` | `dual` | `oapi` | `official` | Action `get` exposed by `feishu_mail_message`. | `GET:/open-apis/mail/v1/user_mailboxes/:user_mailbox_id/messages/:message_id` | [获取邮件详情](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/mail-v1/user_mailbox-message/get) |
+| `list` | `user` | `oapi` | `official` | Action `list` exposed by `feishu_mail_message`. | `GET:/open-apis/mail/v1/user_mailboxes/:user_mailbox_id/messages` | [列出邮件](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/mail-v1/user_mailbox-message/list) |
+| `get` | `user` | `oapi` | `official` | Action `get` exposed by `feishu_mail_message`. | `GET:/open-apis/mail/v1/user_mailboxes/:user_mailbox_id/messages/:message_id` | [获取邮件详情](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/mail-v1/user_mailbox-message/get) |
 | `send` | `user` | `oapi` | `official` | Action `send` exposed by `feishu_mail_message`. | `POST:/open-apis/mail/v1/user_mailboxes/:user_mailbox_id/messages/send` | [发送邮件](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/mail-v1/user_mailbox-message/send) |
-| `attachment_download_url` | `dual` | `oapi` | `official` | Action `attachment_download_url` exposed by `feishu_mail_message`. | `GET:/open-apis/mail/v1/user_mailboxes/:user_mailbox_id/messages/:message_id/attachments/download_url` | [获取附件下载链接](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/mail-v1/user_mailbox-message-attachment/download_url) |
+| `attachment_download_url` | `user` | `oapi` | `official` | Action `attachment_download_url` exposed by `feishu_mail_message`. | `GET:/open-apis/mail/v1/user_mailboxes/:user_mailbox_id/messages/:message_id/attachments/download_url` | [获取附件下载链接](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/mail-v1/user_mailbox-message-attachment/download_url) |
 
 ### `feishu_meeting`
 
 - Category: `meeting`
 - Transport: `oapi`
-- Auth: `dual`
-- Operation auth modes: `dual`, `user`
+- Auth: `user`
 - Source: `src/tools/oapi/meeting/meeting.ts`
 
 | Operation | Auth | Backend Kind | Coverage | Summary | Backend | Official Docs |
 |---|---|---|---|---|---|---|
 | `search` | `user` | `oapi` | `official` | 飞书视频会议工具. | `POST:/open-apis/vc/v1/meetings/search` | [搜索会议记录](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/vc-v1/meeting/search) |
-| `get` | `dual` | `oapi` | `official` | 飞书视频会议工具. | `GET:/open-apis/vc/v1/meetings/:meeting_id` | [获取会议详情](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/vc-v1/meeting/get) |
+| `get` | `user` | `oapi` | `official` | 飞书视频会议工具. | `GET:/open-apis/vc/v1/meetings/:meeting_id` | [获取会议详情](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/vc-v1/meeting/get) |
 | `end` | `user` | `oapi` | `official` | 飞书视频会议工具. | `PATCH:/open-apis/vc/v1/meetings/:meeting_id/end` | [结束会议](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/vc-v1/meeting/end) |
 | `get_note` | `user` | `oapi` | `official` | 飞书视频会议工具. | `GET:/open-apis/vc/v1/notes/:note_id` | [获取纪要详情](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/vc-v1/note/get) |
 
@@ -499,31 +500,31 @@ This file enumerates the Feishu-facing tool and command surface currently expose
 
 - Category: `meeting`
 - Transport: `oapi`
-- Auth: `dual`
+- Auth: `user`
 - Source: `src/tools/oapi/meeting/reserve.ts`
 
 | Operation | Auth | Backend Kind | Coverage | Summary | Backend | Official Docs |
 |---|---|---|---|---|---|---|
-| `apply` | `dual` | `oapi` | `official` | Action `apply` exposed by `feishu_meeting_reserve`. | `POST:/open-apis/vc/v1/reserves/apply` | [预约会议](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/vc-v1/reserve/apply) |
-| `get` | `dual` | `oapi` | `official` | Action `get` exposed by `feishu_meeting_reserve`. | `GET:/open-apis/vc/v1/reserves/:reserve_id` | [获取预约](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/vc-v1/reserve/get) |
-| `update` | `dual` | `oapi` | `official` | Action `update` exposed by `feishu_meeting_reserve`. | `PUT:/open-apis/vc/v1/reserves/:reserve_id` | [更新预约](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/vc-v1/reserve/update) |
-| `delete` | `dual` | `oapi` | `official` | Action `delete` exposed by `feishu_meeting_reserve`. | `DELETE:/open-apis/vc/v1/reserves/:reserve_id` | [删除预约](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/vc-v1/reserve/delete) |
-| `get_active_meeting` | `dual` | `oapi` | `official` | Action `get_active_meeting` exposed by `feishu_meeting_reserve`. | `GET:/open-apis/vc/v1/reserves/:reserve_id/get_active_meeting` | [获取活跃会议](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/vc-v1/reserve/get_active_meeting) |
+| `apply` | `user` | `oapi` | `official` | Action `apply` exposed by `feishu_meeting_reserve`. | `POST:/open-apis/vc/v1/reserves/apply` | [预约会议](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/vc-v1/reserve/apply) |
+| `get` | `user` | `oapi` | `official` | Action `get` exposed by `feishu_meeting_reserve`. | `GET:/open-apis/vc/v1/reserves/:reserve_id` | [获取预约](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/vc-v1/reserve/get) |
+| `update` | `user` | `oapi` | `official` | Action `update` exposed by `feishu_meeting_reserve`. | `PUT:/open-apis/vc/v1/reserves/:reserve_id` | [更新预约](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/vc-v1/reserve/update) |
+| `delete` | `user` | `oapi` | `official` | Action `delete` exposed by `feishu_meeting_reserve`. | `DELETE:/open-apis/vc/v1/reserves/:reserve_id` | [删除预约](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/vc-v1/reserve/delete) |
+| `get_active_meeting` | `user` | `oapi` | `official` | Action `get_active_meeting` exposed by `feishu_meeting_reserve`. | `GET:/open-apis/vc/v1/reserves/:reserve_id/get_active_meeting` | [获取活跃会议](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/vc-v1/reserve/get_active_meeting) |
 
 ### `feishu_minutes`
 
 - Category: `meeting`
 - Transport: `oapi`
-- Auth: `dual`
+- Auth: `user`
 - Source: `src/tools/oapi/meeting/minutes.ts`
 
 | Operation | Auth | Backend Kind | Coverage | Summary | Backend | Official Docs |
 |---|---|---|---|---|---|---|
-| `get` | `dual` | `oapi` | `official` | 飞书妙记工具. | `GET:/open-apis/minutes/v1/minutes/${safeToken}` | [获取妙记信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/minutes-v1/minute/get) |
-| `transcript` | `dual` | `oapi` | `official` | 飞书妙记工具. | `GET:/open-apis/minutes/v1/minutes/${safeToken}/transcript` | [导出妙记文字记录](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/minutes-v1/minute-transcript/get) |
-| `statistics` | `dual` | `oapi` | `official` | 飞书妙记工具. | `GET:/open-apis/minutes/v1/minutes/${safeToken}/statistics` | [获取妙记统计数据](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/minutes-v1/minute-statistics/get) |
-| `artifacts` | `dual` | `oapi` | `official` | 飞书妙记工具. | `GET:/open-apis/minutes/v1/minutes/${safeToken}/artifacts` | [获取妙记AI产物](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/minutes-v1/minute/artifacts) |
-| `media` | `dual` | `oapi` | `official` | 飞书妙记工具. | `GET:/open-apis/minutes/v1/minutes/${safeToken}/media` | [下载妙记音视频文件](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/minutes-v1/minute-media/get) |
+| `get` | `user` | `oapi` | `official` | 飞书妙记工具. | `GET:/open-apis/minutes/v1/minutes/${safeToken}` | [获取妙记信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/minutes-v1/minute/get) |
+| `transcript` | `user` | `oapi` | `official` | 飞书妙记工具. | `GET:/open-apis/minutes/v1/minutes/${safeToken}/transcript` | [导出妙记文字记录](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/minutes-v1/minute-transcript/get) |
+| `statistics` | `user` | `oapi` | `official` | 飞书妙记工具. | `GET:/open-apis/minutes/v1/minutes/${safeToken}/statistics` | [获取妙记统计数据](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/minutes-v1/minute-statistics/get) |
+| `artifacts` | `user` | `oapi` | `official` | 飞书妙记工具. | `GET:/open-apis/minutes/v1/minutes/${safeToken}/artifacts` | [获取妙记AI产物](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/minutes-v1/minute/artifacts) |
+| `media` | `user` | `oapi` | `official` | 飞书妙记工具. | `GET:/open-apis/minutes/v1/minutes/${safeToken}/media` | [下载妙记音视频文件](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/minutes-v1/minute-media/get) |
 
 ### `feishu_oauth`
 
@@ -540,12 +541,12 @@ This file enumerates the Feishu-facing tool and command surface currently expose
 
 - Category: `auth`
 - Transport: `plugin`
-- Auth: `tenant`
+- Auth: `user`
 - Source: `src/tools/oauth-batch-auth.ts`
 
 | Operation | Auth | Backend Kind | Coverage | Summary | Backend | Official Docs |
 |---|---|---|---|---|---|---|
-| `authorize_all` | `tenant` | `plugin` | `non-official` | Action `authorize_all` exposed by `feishu_oauth_batch_auth`. | `-` | - |
+| `authorize_all` | `user` | `plugin` | `non-official` | Action `authorize_all` exposed by `feishu_oauth_batch_auth`. | `-` | - |
 
 ### `feishu_search_doc_wiki`
 

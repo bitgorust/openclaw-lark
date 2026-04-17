@@ -1,0 +1,3802 @@
+{
+  "generatedAt": "2026-04-17T02:53:51.607Z",
+  "references": {
+    "supportedOperations": "docs/references/feishu-supported-operations.json",
+    "canonicalMetadata": "docs/references/feishu-canonical-metadata.json"
+  },
+  "semantics": {
+    "declaredAuth": "Code-derived auth declaration/observation from src/tools via supported-operations.",
+    "canonicalAuth": "Final auth contract derived from official truth sources in canonical metadata."
+  },
+  "summary": {
+    "totalActions": 139,
+    "alignedCount": 139,
+    "conflictCount": 0,
+    "codeNarrowerThanTruthCount": 0,
+    "codeBroaderThanTruthCount": 0,
+    "partialOverlapCount": 0,
+    "missingCodeAuthCount": 0,
+    "missingCanonicalAuthCount": 0,
+    "unknownCount": 0
+  },
+  "mismatchesByRelation": {},
+  "items": [
+    {
+      "toolAction": "feishu_approval_cc.search",
+      "tool": "feishu_approval_cc",
+      "operation": "search",
+      "source": "src/tools/oapi/approval/cc-search.ts",
+      "category": "approval",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "delegated",
+      "implementationInferenceKind": "delegated-approval-policy",
+      "implementationModes": [
+        "tenant"
+      ],
+      "canonicalAuthModes": [
+        "tenant-only"
+      ],
+      "canonicalExecutionModes": [
+        "tenant"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "official",
+      "authGenerationReason": "declared action auth conflicts with official endpoint token modes; all declared backends are officially covered, so official endpoint auth wins",
+      "backend": [
+        "POST:/open-apis/approval/v4/instances/search_cc"
+      ]
+    },
+    {
+      "toolAction": "feishu_approval_comment.create",
+      "tool": "feishu_approval_comment",
+      "operation": "create",
+      "source": "src/tools/oapi/approval/comment.ts",
+      "category": "approval",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "delegated",
+      "implementationInferenceKind": "delegated-approval-policy",
+      "implementationModes": [
+        "tenant"
+      ],
+      "canonicalAuthModes": [
+        "tenant-only"
+      ],
+      "canonicalExecutionModes": [
+        "tenant"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "official",
+      "authGenerationReason": "declared action auth conflicts with official endpoint token modes; all declared backends are officially covered, so official endpoint auth wins",
+      "backend": [
+        "POST:/open-apis/approval/v4/instances/:instance_id/comments"
+      ]
+    },
+    {
+      "toolAction": "feishu_approval_comment.delete",
+      "tool": "feishu_approval_comment",
+      "operation": "delete",
+      "source": "src/tools/oapi/approval/comment.ts",
+      "category": "approval",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "delegated",
+      "implementationInferenceKind": "delegated-approval-policy",
+      "implementationModes": [
+        "tenant"
+      ],
+      "canonicalAuthModes": [
+        "tenant-only"
+      ],
+      "canonicalExecutionModes": [
+        "tenant"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "official",
+      "authGenerationReason": "declared action auth conflicts with official endpoint token modes; all declared backends are officially covered, so official endpoint auth wins",
+      "backend": [
+        "DELETE:/open-apis/approval/v4/instances/:instance_id/comments/:comment_id"
+      ]
+    },
+    {
+      "toolAction": "feishu_approval_comment.list",
+      "tool": "feishu_approval_comment",
+      "operation": "list",
+      "source": "src/tools/oapi/approval/comment.ts",
+      "category": "approval",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "delegated",
+      "implementationInferenceKind": "delegated-approval-policy",
+      "implementationModes": [
+        "tenant"
+      ],
+      "canonicalAuthModes": [
+        "tenant-only"
+      ],
+      "canonicalExecutionModes": [
+        "tenant"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "official",
+      "authGenerationReason": "declared action auth conflicts with official endpoint token modes; all declared backends are officially covered, so official endpoint auth wins",
+      "backend": [
+        "GET:/open-apis/approval/v4/instances/:instance_id/comments"
+      ]
+    },
+    {
+      "toolAction": "feishu_approval_comment.remove",
+      "tool": "feishu_approval_comment",
+      "operation": "remove",
+      "source": "src/tools/oapi/approval/comment.ts",
+      "category": "approval",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "delegated",
+      "implementationInferenceKind": "delegated-approval-policy",
+      "implementationModes": [
+        "tenant"
+      ],
+      "canonicalAuthModes": [
+        "tenant-only"
+      ],
+      "canonicalExecutionModes": [
+        "tenant"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "official",
+      "authGenerationReason": "declared action auth conflicts with official endpoint token modes; all declared backends are officially covered, so official endpoint auth wins",
+      "backend": [
+        "POST:/open-apis/approval/v4/instances/:instance_id/comments/remove"
+      ]
+    },
+    {
+      "toolAction": "feishu_approval_instance.get",
+      "tool": "feishu_approval_instance",
+      "operation": "get",
+      "source": "src/tools/oapi/approval/instance.ts",
+      "category": "approval",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "delegated",
+      "implementationInferenceKind": "delegated-approval-policy",
+      "implementationModes": [
+        "tenant"
+      ],
+      "canonicalAuthModes": [
+        "tenant-only"
+      ],
+      "canonicalExecutionModes": [
+        "tenant"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "official",
+      "authGenerationReason": "declared action auth conflicts with official endpoint token modes; all declared backends are officially covered, so official endpoint auth wins",
+      "backend": [
+        "GET:/open-apis/approval/v4/instances/:instance_id"
+      ]
+    },
+    {
+      "toolAction": "feishu_approval_instance.list",
+      "tool": "feishu_approval_instance",
+      "operation": "list",
+      "source": "src/tools/oapi/approval/instance.ts",
+      "category": "approval",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "delegated",
+      "implementationInferenceKind": "delegated-approval-policy",
+      "implementationModes": [
+        "tenant"
+      ],
+      "canonicalAuthModes": [
+        "tenant-only"
+      ],
+      "canonicalExecutionModes": [
+        "tenant"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "official",
+      "authGenerationReason": "declared action auth conflicts with official endpoint token modes; all declared backends are officially covered, so official endpoint auth wins",
+      "backend": [
+        "GET:/open-apis/approval/v4/instances",
+        "GET:/open-apis/approval/v4/instances/:instanceId"
+      ]
+    },
+    {
+      "toolAction": "feishu_approval_task_search.download_attachment",
+      "tool": "feishu_approval_task_search",
+      "operation": "download_attachment",
+      "source": "src/tools/oapi/approval/task-search.ts",
+      "category": "approval",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "delegated",
+      "implementationInferenceKind": "local-helper-wrapper",
+      "implementationModes": [
+        "tenant"
+      ],
+      "canonicalAuthModes": [
+        "tenant-only"
+      ],
+      "canonicalExecutionModes": [
+        "tenant"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "official",
+      "authGenerationReason": "declared action auth conflicts with official endpoint token modes; all declared backends are officially covered, so official endpoint auth wins",
+      "backend": [
+        "GET:/open-apis/approval/v4/tasks/query",
+        "POST:/open-apis/approval/v4/tasks/search",
+        "GET:/open-apis/approval/v4/instances/:instance_id"
+      ]
+    },
+    {
+      "toolAction": "feishu_approval_task_search.get_detail",
+      "tool": "feishu_approval_task_search",
+      "operation": "get_detail",
+      "source": "src/tools/oapi/approval/task-search.ts",
+      "category": "approval",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "delegated",
+      "implementationInferenceKind": "delegated-approval-policy",
+      "implementationModes": [
+        "tenant"
+      ],
+      "canonicalAuthModes": [
+        "tenant-only"
+      ],
+      "canonicalExecutionModes": [
+        "tenant"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "official",
+      "authGenerationReason": "declared action auth conflicts with official endpoint token modes; all declared backends are officially covered, so official endpoint auth wins",
+      "backend": [
+        "GET:/open-apis/approval/v4/instances/:instance_id"
+      ]
+    },
+    {
+      "toolAction": "feishu_approval_task_search.parse_attachment",
+      "tool": "feishu_approval_task_search",
+      "operation": "parse_attachment",
+      "source": "src/tools/oapi/approval/task-search.ts",
+      "category": "approval",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "delegated",
+      "implementationInferenceKind": "local-helper-wrapper",
+      "implementationModes": [
+        "tenant"
+      ],
+      "canonicalAuthModes": [
+        "tenant-only"
+      ],
+      "canonicalExecutionModes": [
+        "tenant"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "official",
+      "authGenerationReason": "declared action auth conflicts with official endpoint token modes; all declared backends are officially covered, so official endpoint auth wins",
+      "backend": [
+        "GET:/open-apis/approval/v4/tasks/query",
+        "POST:/open-apis/approval/v4/tasks/search",
+        "GET:/open-apis/approval/v4/instances/:instance_id"
+      ]
+    },
+    {
+      "toolAction": "feishu_approval_task_search.query",
+      "tool": "feishu_approval_task_search",
+      "operation": "query",
+      "source": "src/tools/oapi/approval/task-search.ts",
+      "category": "approval",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "delegated",
+      "implementationInferenceKind": "delegated-tool-client-default",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "GET:/open-apis/approval/v4/tasks/query"
+      ]
+    },
+    {
+      "toolAction": "feishu_approval_task_search.search",
+      "tool": "feishu_approval_task_search",
+      "operation": "search",
+      "source": "src/tools/oapi/approval/task-search.ts",
+      "category": "approval",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "delegated",
+      "implementationInferenceKind": "delegated-approval-policy",
+      "implementationModes": [
+        "tenant"
+      ],
+      "canonicalAuthModes": [
+        "tenant-only"
+      ],
+      "canonicalExecutionModes": [
+        "tenant"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "official",
+      "authGenerationReason": "declared action auth conflicts with official endpoint token modes; all declared backends are officially covered, so official endpoint auth wins",
+      "backend": [
+        "POST:/open-apis/approval/v4/tasks/search"
+      ]
+    },
+    {
+      "toolAction": "feishu_approval_task.add_sign",
+      "tool": "feishu_approval_task",
+      "operation": "add_sign",
+      "source": "src/tools/oapi/approval/task.ts",
+      "category": "approval",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "delegated",
+      "implementationInferenceKind": "delegated-approval-policy",
+      "implementationModes": [
+        "tenant"
+      ],
+      "canonicalAuthModes": [
+        "tenant-only"
+      ],
+      "canonicalExecutionModes": [
+        "tenant"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "official",
+      "authGenerationReason": "declared action auth conflicts with official endpoint token modes; all declared backends are officially covered, so official endpoint auth wins",
+      "backend": [
+        "POST:/open-apis/approval/v4/instances/add_sign"
+      ]
+    },
+    {
+      "toolAction": "feishu_approval_task.approve",
+      "tool": "feishu_approval_task",
+      "operation": "approve",
+      "source": "src/tools/oapi/approval/task.ts",
+      "category": "approval",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "delegated",
+      "implementationInferenceKind": "delegated-approval-policy",
+      "implementationModes": [
+        "tenant"
+      ],
+      "canonicalAuthModes": [
+        "tenant-only"
+      ],
+      "canonicalExecutionModes": [
+        "tenant"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "official",
+      "authGenerationReason": "declared action auth conflicts with official endpoint token modes; all declared backends are officially covered, so official endpoint auth wins",
+      "backend": [
+        "POST:/open-apis/approval/v4/tasks/approve"
+      ]
+    },
+    {
+      "toolAction": "feishu_approval_task.reject",
+      "tool": "feishu_approval_task",
+      "operation": "reject",
+      "source": "src/tools/oapi/approval/task.ts",
+      "category": "approval",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "delegated",
+      "implementationInferenceKind": "delegated-approval-policy",
+      "implementationModes": [
+        "tenant"
+      ],
+      "canonicalAuthModes": [
+        "tenant-only"
+      ],
+      "canonicalExecutionModes": [
+        "tenant"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "official",
+      "authGenerationReason": "declared action auth conflicts with official endpoint token modes; all declared backends are officially covered, so official endpoint auth wins",
+      "backend": [
+        "POST:/open-apis/approval/v4/tasks/reject"
+      ]
+    },
+    {
+      "toolAction": "feishu_approval_task.resubmit",
+      "tool": "feishu_approval_task",
+      "operation": "resubmit",
+      "source": "src/tools/oapi/approval/task.ts",
+      "category": "approval",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "delegated",
+      "implementationInferenceKind": "delegated-approval-policy",
+      "implementationModes": [
+        "tenant"
+      ],
+      "canonicalAuthModes": [
+        "tenant-only"
+      ],
+      "canonicalExecutionModes": [
+        "tenant"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "official",
+      "authGenerationReason": "declared action auth conflicts with official endpoint token modes; all declared backends are officially covered, so official endpoint auth wins",
+      "backend": [
+        "POST:/open-apis/approval/v4/tasks/resubmit"
+      ]
+    },
+    {
+      "toolAction": "feishu_approval_task.rollback",
+      "tool": "feishu_approval_task",
+      "operation": "rollback",
+      "source": "src/tools/oapi/approval/task.ts",
+      "category": "approval",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "delegated",
+      "implementationInferenceKind": "delegated-approval-policy",
+      "implementationModes": [
+        "tenant"
+      ],
+      "canonicalAuthModes": [
+        "tenant-only"
+      ],
+      "canonicalExecutionModes": [
+        "tenant"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "official",
+      "authGenerationReason": "declared action auth conflicts with official endpoint token modes; all declared backends are officially covered, so official endpoint auth wins",
+      "backend": [
+        "POST:/open-apis/approval/v4/instances/specified_rollback"
+      ]
+    },
+    {
+      "toolAction": "feishu_approval_task.transfer",
+      "tool": "feishu_approval_task",
+      "operation": "transfer",
+      "source": "src/tools/oapi/approval/task.ts",
+      "category": "approval",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "delegated",
+      "implementationInferenceKind": "delegated-approval-policy",
+      "implementationModes": [
+        "tenant"
+      ],
+      "canonicalAuthModes": [
+        "tenant-only"
+      ],
+      "canonicalExecutionModes": [
+        "tenant"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "official",
+      "authGenerationReason": "declared action auth conflicts with official endpoint token modes; all declared backends are officially covered, so official endpoint auth wins",
+      "backend": [
+        "POST:/open-apis/approval/v4/tasks/transfer"
+      ]
+    },
+    {
+      "toolAction": "feishu_ask_user_question.ask",
+      "tool": "feishu_ask_user_question",
+      "operation": "ask",
+      "source": "src/tools/ask-user-question.ts",
+      "category": "interaction",
+      "transport": "plugin",
+      "officialCoverage": "non-official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "supported-operations-fallback",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared",
+      "authGenerationReason": "no official endpoint auth metadata for this action; keeping declared action auth",
+      "backend": []
+    },
+    {
+      "toolAction": "feishu_attendance_group.get",
+      "tool": "feishu_attendance_group",
+      "operation": "get",
+      "source": "src/tools/oapi/attendance/group.ts",
+      "category": "attendance",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "delegated",
+      "implementationInferenceKind": "delegated-tool-client-default",
+      "implementationModes": [
+        "tenant"
+      ],
+      "canonicalAuthModes": [
+        "tenant-only"
+      ],
+      "canonicalExecutionModes": [
+        "tenant"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "official",
+      "authGenerationReason": "declared action auth conflicts with official endpoint token modes; all declared backends are officially covered, so official endpoint auth wins",
+      "backend": [
+        "GET:/open-apis/attendance/v1/groups/:group_id"
+      ]
+    },
+    {
+      "toolAction": "feishu_attendance_group.list_users",
+      "tool": "feishu_attendance_group",
+      "operation": "list_users",
+      "source": "src/tools/oapi/attendance/group.ts",
+      "category": "attendance",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "delegated",
+      "implementationInferenceKind": "delegated-tool-client-default",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "GET:/open-apis/attendance/v1/groups/:group_id/list_user"
+      ]
+    },
+    {
+      "toolAction": "feishu_attendance_shift.query",
+      "tool": "feishu_attendance_shift",
+      "operation": "query",
+      "source": "src/tools/oapi/attendance/shift.ts",
+      "category": "attendance",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "tenant",
+      "implementationAuth": "tenant",
+      "implementationInferenceKind": "explicit-tenant",
+      "implementationModes": [
+        "tenant"
+      ],
+      "canonicalAuthModes": [
+        "tenant-only"
+      ],
+      "canonicalExecutionModes": [
+        "tenant"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "POST:/open-apis/attendance/v1/user_daily_shifts/query"
+      ]
+    },
+    {
+      "toolAction": "feishu_bitable_app_table_field.create",
+      "tool": "feishu_bitable_app_table_field",
+      "operation": "create",
+      "source": "src/tools/oapi/bitable/app-table-field.ts",
+      "category": "bitable",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "POST:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/fields"
+      ]
+    },
+    {
+      "toolAction": "feishu_bitable_app_table_field.delete",
+      "tool": "feishu_bitable_app_table_field",
+      "operation": "delete",
+      "source": "src/tools/oapi/bitable/app-table-field.ts",
+      "category": "bitable",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "DELETE:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/fields/:field_id"
+      ]
+    },
+    {
+      "toolAction": "feishu_bitable_app_table_field.list",
+      "tool": "feishu_bitable_app_table_field",
+      "operation": "list",
+      "source": "src/tools/oapi/bitable/app-table-field.ts",
+      "category": "bitable",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "GET:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/fields"
+      ]
+    },
+    {
+      "toolAction": "feishu_bitable_app_table_field.update",
+      "tool": "feishu_bitable_app_table_field",
+      "operation": "update",
+      "source": "src/tools/oapi/bitable/app-table-field.ts",
+      "category": "bitable",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "GET:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/fields",
+        "PUT:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/fields/:field_id"
+      ]
+    },
+    {
+      "toolAction": "feishu_bitable_app_table_record.batch_create",
+      "tool": "feishu_bitable_app_table_record",
+      "operation": "batch_create",
+      "source": "src/tools/oapi/bitable/app-table-record.ts",
+      "category": "bitable",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "POST:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/records/batch_create"
+      ]
+    },
+    {
+      "toolAction": "feishu_bitable_app_table_record.batch_delete",
+      "tool": "feishu_bitable_app_table_record",
+      "operation": "batch_delete",
+      "source": "src/tools/oapi/bitable/app-table-record.ts",
+      "category": "bitable",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "POST:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/records/batch_delete"
+      ]
+    },
+    {
+      "toolAction": "feishu_bitable_app_table_record.batch_update",
+      "tool": "feishu_bitable_app_table_record",
+      "operation": "batch_update",
+      "source": "src/tools/oapi/bitable/app-table-record.ts",
+      "category": "bitable",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "POST:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/records/batch_update"
+      ]
+    },
+    {
+      "toolAction": "feishu_bitable_app_table_record.create",
+      "tool": "feishu_bitable_app_table_record",
+      "operation": "create",
+      "source": "src/tools/oapi/bitable/app-table-record.ts",
+      "category": "bitable",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "POST:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/records"
+      ]
+    },
+    {
+      "toolAction": "feishu_bitable_app_table_record.delete",
+      "tool": "feishu_bitable_app_table_record",
+      "operation": "delete",
+      "source": "src/tools/oapi/bitable/app-table-record.ts",
+      "category": "bitable",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "DELETE:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/records/:record_id"
+      ]
+    },
+    {
+      "toolAction": "feishu_bitable_app_table_record.list",
+      "tool": "feishu_bitable_app_table_record",
+      "operation": "list",
+      "source": "src/tools/oapi/bitable/app-table-record.ts",
+      "category": "bitable",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "POST:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/records/search"
+      ]
+    },
+    {
+      "toolAction": "feishu_bitable_app_table_record.update",
+      "tool": "feishu_bitable_app_table_record",
+      "operation": "update",
+      "source": "src/tools/oapi/bitable/app-table-record.ts",
+      "category": "bitable",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "PUT:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/records/:record_id"
+      ]
+    },
+    {
+      "toolAction": "feishu_bitable_app_table_view.create",
+      "tool": "feishu_bitable_app_table_view",
+      "operation": "create",
+      "source": "src/tools/oapi/bitable/app-table-view.ts",
+      "category": "bitable",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "POST:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/views"
+      ]
+    },
+    {
+      "toolAction": "feishu_bitable_app_table_view.get",
+      "tool": "feishu_bitable_app_table_view",
+      "operation": "get",
+      "source": "src/tools/oapi/bitable/app-table-view.ts",
+      "category": "bitable",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "GET:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/views/:view_id"
+      ]
+    },
+    {
+      "toolAction": "feishu_bitable_app_table_view.list",
+      "tool": "feishu_bitable_app_table_view",
+      "operation": "list",
+      "source": "src/tools/oapi/bitable/app-table-view.ts",
+      "category": "bitable",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "GET:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/views"
+      ]
+    },
+    {
+      "toolAction": "feishu_bitable_app_table_view.patch",
+      "tool": "feishu_bitable_app_table_view",
+      "operation": "patch",
+      "source": "src/tools/oapi/bitable/app-table-view.ts",
+      "category": "bitable",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "PATCH:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/views/:view_id"
+      ]
+    },
+    {
+      "toolAction": "feishu_bitable_app_table.batch_create",
+      "tool": "feishu_bitable_app_table",
+      "operation": "batch_create",
+      "source": "src/tools/oapi/bitable/app-table.ts",
+      "category": "bitable",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "POST:/open-apis/bitable/v1/apps/:app_token/tables/batch_create"
+      ]
+    },
+    {
+      "toolAction": "feishu_bitable_app_table.create",
+      "tool": "feishu_bitable_app_table",
+      "operation": "create",
+      "source": "src/tools/oapi/bitable/app-table.ts",
+      "category": "bitable",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "POST:/open-apis/bitable/v1/apps/:app_token/tables"
+      ]
+    },
+    {
+      "toolAction": "feishu_bitable_app_table.list",
+      "tool": "feishu_bitable_app_table",
+      "operation": "list",
+      "source": "src/tools/oapi/bitable/app-table.ts",
+      "category": "bitable",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "GET:/open-apis/bitable/v1/apps/:app_token/tables"
+      ]
+    },
+    {
+      "toolAction": "feishu_bitable_app_table.patch",
+      "tool": "feishu_bitable_app_table",
+      "operation": "patch",
+      "source": "src/tools/oapi/bitable/app-table.ts",
+      "category": "bitable",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "PATCH:/open-apis/bitable/v1/apps/:app_token/tables/:table_id"
+      ]
+    },
+    {
+      "toolAction": "feishu_bitable_app.copy",
+      "tool": "feishu_bitable_app",
+      "operation": "copy",
+      "source": "src/tools/oapi/bitable/app.ts",
+      "category": "bitable",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "POST:/open-apis/bitable/v1/apps/:app_token/copy"
+      ]
+    },
+    {
+      "toolAction": "feishu_bitable_app.create",
+      "tool": "feishu_bitable_app",
+      "operation": "create",
+      "source": "src/tools/oapi/bitable/app.ts",
+      "category": "bitable",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "POST:/open-apis/bitable/v1/apps"
+      ]
+    },
+    {
+      "toolAction": "feishu_bitable_app.get",
+      "tool": "feishu_bitable_app",
+      "operation": "get",
+      "source": "src/tools/oapi/bitable/app.ts",
+      "category": "bitable",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "GET:/open-apis/bitable/v1/apps/:app_token"
+      ]
+    },
+    {
+      "toolAction": "feishu_bitable_app.list",
+      "tool": "feishu_bitable_app",
+      "operation": "list",
+      "source": "src/tools/oapi/bitable/app.ts",
+      "category": "bitable",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "GET:/open-apis/drive/v1/files"
+      ]
+    },
+    {
+      "toolAction": "feishu_bitable_app.patch",
+      "tool": "feishu_bitable_app",
+      "operation": "patch",
+      "source": "src/tools/oapi/bitable/app.ts",
+      "category": "bitable",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "PUT:/open-apis/bitable/v1/apps/:app_token"
+      ]
+    },
+    {
+      "toolAction": "feishu_calendar_calendar.get",
+      "tool": "feishu_calendar_calendar",
+      "operation": "get",
+      "source": "src/tools/oapi/calendar/calendar.ts",
+      "category": "calendar",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "GET:/open-apis/calendar/v4/calendars/:calendar_id"
+      ]
+    },
+    {
+      "toolAction": "feishu_calendar_calendar.list",
+      "tool": "feishu_calendar_calendar",
+      "operation": "list",
+      "source": "src/tools/oapi/calendar/calendar.ts",
+      "category": "calendar",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "GET:/open-apis/calendar/v4/calendars"
+      ]
+    },
+    {
+      "toolAction": "feishu_calendar_calendar.primary",
+      "tool": "feishu_calendar_calendar",
+      "operation": "primary",
+      "source": "src/tools/oapi/calendar/calendar.ts",
+      "category": "calendar",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "POST:/open-apis/calendar/v4/calendars/primary"
+      ]
+    },
+    {
+      "toolAction": "feishu_calendar_event_attendee.create",
+      "tool": "feishu_calendar_event_attendee",
+      "operation": "create",
+      "source": "src/tools/oapi/calendar/event-attendee.ts",
+      "category": "calendar",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "POST:/open-apis/calendar/v4/calendars/:calendar_id/events/:event_id/attendees"
+      ]
+    },
+    {
+      "toolAction": "feishu_calendar_event_attendee.list",
+      "tool": "feishu_calendar_event_attendee",
+      "operation": "list",
+      "source": "src/tools/oapi/calendar/event-attendee.ts",
+      "category": "calendar",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "GET:/open-apis/calendar/v4/calendars/:calendar_id/events/:event_id/attendees"
+      ]
+    },
+    {
+      "toolAction": "feishu_calendar_event.create",
+      "tool": "feishu_calendar_event",
+      "operation": "create",
+      "source": "src/tools/oapi/calendar/event.ts",
+      "category": "calendar",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "POST:/open-apis/calendar/v4/calendars/:calendar_id/events",
+        "POST:/open-apis/calendar/v4/calendars/:calendar_id/events/:event_id/attendees"
+      ]
+    },
+    {
+      "toolAction": "feishu_calendar_event.delete",
+      "tool": "feishu_calendar_event",
+      "operation": "delete",
+      "source": "src/tools/oapi/calendar/event.ts",
+      "category": "calendar",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "DELETE:/open-apis/calendar/v4/calendars/:calendar_id/events/:event_id"
+      ]
+    },
+    {
+      "toolAction": "feishu_calendar_event.get",
+      "tool": "feishu_calendar_event",
+      "operation": "get",
+      "source": "src/tools/oapi/calendar/event.ts",
+      "category": "calendar",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "GET:/open-apis/calendar/v4/calendars/:calendar_id/events/:event_id"
+      ]
+    },
+    {
+      "toolAction": "feishu_calendar_event.instance_view",
+      "tool": "feishu_calendar_event",
+      "operation": "instance_view",
+      "source": "src/tools/oapi/calendar/event.ts",
+      "category": "calendar",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "GET:/open-apis/calendar/v4/calendars/:calendar_id/events/instance_view"
+      ]
+    },
+    {
+      "toolAction": "feishu_calendar_event.instances",
+      "tool": "feishu_calendar_event",
+      "operation": "instances",
+      "source": "src/tools/oapi/calendar/event.ts",
+      "category": "calendar",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "GET:/open-apis/calendar/v4/calendars/:calendar_id/events/:event_id/instances"
+      ]
+    },
+    {
+      "toolAction": "feishu_calendar_event.list",
+      "tool": "feishu_calendar_event",
+      "operation": "list",
+      "source": "src/tools/oapi/calendar/event.ts",
+      "category": "calendar",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "GET:/open-apis/calendar/v4/calendars/:calendar_id/events/instance_view"
+      ]
+    },
+    {
+      "toolAction": "feishu_calendar_event.patch",
+      "tool": "feishu_calendar_event",
+      "operation": "patch",
+      "source": "src/tools/oapi/calendar/event.ts",
+      "category": "calendar",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "PATCH:/open-apis/calendar/v4/calendars/:calendar_id/events/:event_id"
+      ]
+    },
+    {
+      "toolAction": "feishu_calendar_event.reply",
+      "tool": "feishu_calendar_event",
+      "operation": "reply",
+      "source": "src/tools/oapi/calendar/event.ts",
+      "category": "calendar",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "POST:/open-apis/calendar/v4/calendars/:calendar_id/events/:event_id/reply"
+      ]
+    },
+    {
+      "toolAction": "feishu_calendar_event.search",
+      "tool": "feishu_calendar_event",
+      "operation": "search",
+      "source": "src/tools/oapi/calendar/event.ts",
+      "category": "calendar",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "POST:/open-apis/calendar/v4/calendars/:calendar_id/events/search"
+      ]
+    },
+    {
+      "toolAction": "feishu_calendar_freebusy.list",
+      "tool": "feishu_calendar_freebusy",
+      "operation": "list",
+      "source": "src/tools/oapi/calendar/freebusy.ts",
+      "category": "calendar",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "POST:/open-apis/calendar/v4/freebusy/batch"
+      ]
+    },
+    {
+      "toolAction": "feishu_chat_members.list_members",
+      "tool": "feishu_chat_members",
+      "operation": "list_members",
+      "source": "src/tools/oapi/chat/members.ts",
+      "category": "chat",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "GET:/open-apis/im/v1/chats/:chat_id/members"
+      ]
+    },
+    {
+      "toolAction": "feishu_chat.get",
+      "tool": "feishu_chat",
+      "operation": "get",
+      "source": "src/tools/oapi/chat/chat.ts",
+      "category": "chat",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "GET:/open-apis/im/v1/chats/:chat_id"
+      ]
+    },
+    {
+      "toolAction": "feishu_chat.search",
+      "tool": "feishu_chat",
+      "operation": "search",
+      "source": "src/tools/oapi/chat/chat.ts",
+      "category": "chat",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "GET:/open-apis/im/v1/chats/search"
+      ]
+    },
+    {
+      "toolAction": "feishu_create_doc.create-doc",
+      "tool": "feishu_create_doc",
+      "operation": "create-doc",
+      "source": "src/tools/mcp/doc/create.ts",
+      "category": "mcp-doc",
+      "transport": "mcp",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "supported-operations-fallback",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared",
+      "authGenerationReason": "no official endpoint auth metadata for this action; keeping declared action auth",
+      "backend": [
+        "MCP:create-doc"
+      ]
+    },
+    {
+      "toolAction": "feishu_doc_comments.create",
+      "tool": "feishu_doc_comments",
+      "operation": "create",
+      "source": "src/tools/oapi/drive/doc-comments.ts",
+      "category": "doc",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "POST:/open-apis/drive/v1/files/:file_token/comments"
+      ]
+    },
+    {
+      "toolAction": "feishu_doc_comments.list",
+      "tool": "feishu_doc_comments",
+      "operation": "list",
+      "source": "src/tools/oapi/drive/doc-comments.ts",
+      "category": "doc",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "GET:/open-apis/drive/v1/files/:file_token/comments",
+        "GET:/open-apis/drive/v1/files/:file_token/comments/:comment_id/replies"
+      ]
+    },
+    {
+      "toolAction": "feishu_doc_comments.patch",
+      "tool": "feishu_doc_comments",
+      "operation": "patch",
+      "source": "src/tools/oapi/drive/doc-comments.ts",
+      "category": "doc",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "PATCH:/open-apis/drive/v1/files/:file_token/comments/:comment_id"
+      ]
+    },
+    {
+      "toolAction": "feishu_doc_media.download",
+      "tool": "feishu_doc_media",
+      "operation": "download",
+      "source": "src/tools/oapi/drive/doc-media.ts",
+      "category": "doc",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "GET:/open-apis/drive/v1/medias/:file_token/download",
+        "GET:/open-apis/board/v1/whiteboards/:whiteboard_id/download_as_image"
+      ]
+    },
+    {
+      "toolAction": "feishu_doc_media.insert",
+      "tool": "feishu_doc_media",
+      "operation": "insert",
+      "source": "src/tools/oapi/drive/doc-media.ts",
+      "category": "doc",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "PATCH:/open-apis/docx/v1/documents/:document_id/blocks/batch_update"
+      ]
+    },
+    {
+      "toolAction": "feishu_drive_file.copy",
+      "tool": "feishu_drive_file",
+      "operation": "copy",
+      "source": "src/tools/oapi/drive/file.ts",
+      "category": "drive",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "POST:/open-apis/drive/v1/files/:file_token/copy"
+      ]
+    },
+    {
+      "toolAction": "feishu_drive_file.delete",
+      "tool": "feishu_drive_file",
+      "operation": "delete",
+      "source": "src/tools/oapi/drive/file.ts",
+      "category": "drive",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "DELETE:/open-apis/drive/v1/files/:file_token"
+      ]
+    },
+    {
+      "toolAction": "feishu_drive_file.download",
+      "tool": "feishu_drive_file",
+      "operation": "download",
+      "source": "src/tools/oapi/drive/file.ts",
+      "category": "drive",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "GET:/open-apis/drive/v1/files/:file_token/download"
+      ]
+    },
+    {
+      "toolAction": "feishu_drive_file.get_meta",
+      "tool": "feishu_drive_file",
+      "operation": "get_meta",
+      "source": "src/tools/oapi/drive/file.ts",
+      "category": "drive",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "POST:/open-apis/drive/v1/metas/batch_query"
+      ]
+    },
+    {
+      "toolAction": "feishu_drive_file.list",
+      "tool": "feishu_drive_file",
+      "operation": "list",
+      "source": "src/tools/oapi/drive/file.ts",
+      "category": "drive",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "GET:/open-apis/drive/v1/files"
+      ]
+    },
+    {
+      "toolAction": "feishu_drive_file.move",
+      "tool": "feishu_drive_file",
+      "operation": "move",
+      "source": "src/tools/oapi/drive/file.ts",
+      "category": "drive",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "POST:/open-apis/drive/v1/files/:file_token/move"
+      ]
+    },
+    {
+      "toolAction": "feishu_drive_file.upload",
+      "tool": "feishu_drive_file",
+      "operation": "upload",
+      "source": "src/tools/oapi/drive/file.ts",
+      "category": "drive",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "POST:/open-apis/drive/v1/files/upload_all",
+        "POST:/open-apis/drive/v1/files/upload_prepare",
+        "POST:/open-apis/drive/v1/files/upload_part",
+        "POST:/open-apis/drive/v1/files/upload_finish"
+      ]
+    },
+    {
+      "toolAction": "feishu_fetch_doc.fetch-doc",
+      "tool": "feishu_fetch_doc",
+      "operation": "fetch-doc",
+      "source": "src/tools/mcp/doc/fetch.ts",
+      "category": "mcp-doc",
+      "transport": "mcp",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "supported-operations-fallback",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared",
+      "authGenerationReason": "no official endpoint auth metadata for this action; keeping declared action auth",
+      "backend": [
+        "MCP:fetch-doc"
+      ]
+    },
+    {
+      "toolAction": "feishu_get_user.get",
+      "tool": "feishu_get_user",
+      "operation": "get",
+      "source": "src/tools/oapi/common/get-user.ts",
+      "category": "common",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "GET:/open-apis/authen/v1/user_info",
+        "GET:/open-apis/contact/v3/users/:user_id"
+      ]
+    },
+    {
+      "toolAction": "feishu_im_bot_image.download_resource",
+      "tool": "feishu_im_bot_image",
+      "operation": "download_resource",
+      "source": "src/tools/tat/im/resource.ts",
+      "category": "im",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "tenant",
+      "implementationAuth": "tenant",
+      "implementationInferenceKind": "supported-operations-fallback",
+      "implementationModes": [
+        "tenant"
+      ],
+      "canonicalAuthModes": [
+        "tenant-only"
+      ],
+      "canonicalExecutionModes": [
+        "tenant"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "GET:/open-apis/im/v1/messages/:message_id/resources/:file_key"
+      ]
+    },
+    {
+      "toolAction": "feishu_im_user_fetch_resource.download_resource",
+      "tool": "feishu_im_user_fetch_resource",
+      "operation": "download_resource",
+      "source": "src/tools/oapi/im/resource.ts",
+      "category": "im",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "tenant",
+      "implementationAuth": "delegated",
+      "implementationInferenceKind": "delegated-tool-client-default",
+      "implementationModes": [
+        "tenant"
+      ],
+      "canonicalAuthModes": [
+        "tenant-only"
+      ],
+      "canonicalExecutionModes": [
+        "tenant"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "GET:/open-apis/im/v1/messages/:message_id/resources/:file_key"
+      ]
+    },
+    {
+      "toolAction": "feishu_im_user_get_messages.list_messages",
+      "tool": "feishu_im_user_get_messages",
+      "operation": "list_messages",
+      "source": "src/tools/oapi/im/message-read.ts",
+      "category": "im",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "GET:/open-apis/im/v1/messages (container_id_type=chat)",
+        "POST:/open-apis/im/v1/chat_p2p/batch_query"
+      ]
+    },
+    {
+      "toolAction": "feishu_im_user_get_thread_messages.list_thread_messages",
+      "tool": "feishu_im_user_get_thread_messages",
+      "operation": "list_thread_messages",
+      "source": "src/tools/oapi/im/message-read.ts",
+      "category": "im",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "GET:/open-apis/im/v1/messages (container_id_type=thread)"
+      ]
+    },
+    {
+      "toolAction": "feishu_im_user_message.reply",
+      "tool": "feishu_im_user_message",
+      "operation": "reply",
+      "source": "src/tools/oapi/im/message.ts",
+      "category": "im",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "delegated",
+      "implementationInferenceKind": "delegated-tool-client-default",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "POST:/open-apis/im/v1/messages/:message_id/reply"
+      ]
+    },
+    {
+      "toolAction": "feishu_im_user_message.send",
+      "tool": "feishu_im_user_message",
+      "operation": "send",
+      "source": "src/tools/oapi/im/message.ts",
+      "category": "im",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "delegated",
+      "implementationInferenceKind": "delegated-tool-client-default",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "POST:/open-apis/im/v1/messages"
+      ]
+    },
+    {
+      "toolAction": "feishu_im_user_search_messages.search_messages",
+      "tool": "feishu_im_user_search_messages",
+      "operation": "search_messages",
+      "source": "src/tools/oapi/im/message-read.ts",
+      "category": "im",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "POST:/open-apis/search/v2/message",
+        "GET:/open-apis/im/v1/messages/mget",
+        "POST:/open-apis/im/v1/chats/batch_query"
+      ]
+    },
+    {
+      "toolAction": "feishu_mail_message.attachment_download_url",
+      "tool": "feishu_mail_message",
+      "operation": "attachment_download_url",
+      "source": "src/tools/oapi/mail/message.ts",
+      "category": "mail",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "delegated",
+      "implementationInferenceKind": "delegated-tool-client-default",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "GET:/open-apis/mail/v1/user_mailboxes/:user_mailbox_id/messages/:message_id/attachments/download_url"
+      ]
+    },
+    {
+      "toolAction": "feishu_mail_message.get",
+      "tool": "feishu_mail_message",
+      "operation": "get",
+      "source": "src/tools/oapi/mail/message.ts",
+      "category": "mail",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "delegated",
+      "implementationInferenceKind": "delegated-tool-client-default",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "GET:/open-apis/mail/v1/user_mailboxes/:user_mailbox_id/messages/:message_id"
+      ]
+    },
+    {
+      "toolAction": "feishu_mail_message.list",
+      "tool": "feishu_mail_message",
+      "operation": "list",
+      "source": "src/tools/oapi/mail/message.ts",
+      "category": "mail",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "delegated",
+      "implementationInferenceKind": "delegated-tool-client-default",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "GET:/open-apis/mail/v1/user_mailboxes/:user_mailbox_id/messages"
+      ]
+    },
+    {
+      "toolAction": "feishu_mail_message.send",
+      "tool": "feishu_mail_message",
+      "operation": "send",
+      "source": "src/tools/oapi/mail/message.ts",
+      "category": "mail",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "delegated",
+      "implementationInferenceKind": "delegated-tool-client-default",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "POST:/open-apis/mail/v1/user_mailboxes/:user_mailbox_id/messages/send"
+      ]
+    },
+    {
+      "toolAction": "feishu_meeting_reserve.apply",
+      "tool": "feishu_meeting_reserve",
+      "operation": "apply",
+      "source": "src/tools/oapi/meeting/reserve.ts",
+      "category": "meeting",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "delegated",
+      "implementationInferenceKind": "delegated-tool-client-default",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "POST:/open-apis/vc/v1/reserves/apply"
+      ]
+    },
+    {
+      "toolAction": "feishu_meeting_reserve.delete",
+      "tool": "feishu_meeting_reserve",
+      "operation": "delete",
+      "source": "src/tools/oapi/meeting/reserve.ts",
+      "category": "meeting",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "delegated",
+      "implementationInferenceKind": "delegated-tool-client-default",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "DELETE:/open-apis/vc/v1/reserves/:reserve_id"
+      ]
+    },
+    {
+      "toolAction": "feishu_meeting_reserve.get",
+      "tool": "feishu_meeting_reserve",
+      "operation": "get",
+      "source": "src/tools/oapi/meeting/reserve.ts",
+      "category": "meeting",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "delegated",
+      "implementationInferenceKind": "delegated-tool-client-default",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "GET:/open-apis/vc/v1/reserves/:reserve_id"
+      ]
+    },
+    {
+      "toolAction": "feishu_meeting_reserve.get_active_meeting",
+      "tool": "feishu_meeting_reserve",
+      "operation": "get_active_meeting",
+      "source": "src/tools/oapi/meeting/reserve.ts",
+      "category": "meeting",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "delegated",
+      "implementationInferenceKind": "delegated-tool-client-default",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "GET:/open-apis/vc/v1/reserves/:reserve_id/get_active_meeting"
+      ]
+    },
+    {
+      "toolAction": "feishu_meeting_reserve.update",
+      "tool": "feishu_meeting_reserve",
+      "operation": "update",
+      "source": "src/tools/oapi/meeting/reserve.ts",
+      "category": "meeting",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "delegated",
+      "implementationInferenceKind": "delegated-tool-client-default",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "PUT:/open-apis/vc/v1/reserves/:reserve_id"
+      ]
+    },
+    {
+      "toolAction": "feishu_meeting.end",
+      "tool": "feishu_meeting",
+      "operation": "end",
+      "source": "src/tools/oapi/meeting/meeting.ts",
+      "category": "meeting",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "delegated",
+      "implementationInferenceKind": "delegated-tool-client-default",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "PATCH:/open-apis/vc/v1/meetings/:meeting_id/end"
+      ]
+    },
+    {
+      "toolAction": "feishu_meeting.get",
+      "tool": "feishu_meeting",
+      "operation": "get",
+      "source": "src/tools/oapi/meeting/meeting.ts",
+      "category": "meeting",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "delegated",
+      "implementationInferenceKind": "delegated-tool-client-default",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "GET:/open-apis/vc/v1/meetings/:meeting_id"
+      ]
+    },
+    {
+      "toolAction": "feishu_meeting.get_note",
+      "tool": "feishu_meeting",
+      "operation": "get_note",
+      "source": "src/tools/oapi/meeting/meeting.ts",
+      "category": "meeting",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "delegated",
+      "implementationInferenceKind": "delegated-tool-client-default",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "GET:/open-apis/vc/v1/notes/:note_id"
+      ]
+    },
+    {
+      "toolAction": "feishu_meeting.search",
+      "tool": "feishu_meeting",
+      "operation": "search",
+      "source": "src/tools/oapi/meeting/meeting.ts",
+      "category": "meeting",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "delegated",
+      "implementationInferenceKind": "delegated-tool-client-default",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "POST:/open-apis/vc/v1/meetings/search"
+      ]
+    },
+    {
+      "toolAction": "feishu_minutes.artifacts",
+      "tool": "feishu_minutes",
+      "operation": "artifacts",
+      "source": "src/tools/oapi/meeting/minutes.ts",
+      "category": "meeting",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "supported-operations-fallback",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "GET:/open-apis/minutes/v1/minutes/${safeToken}/artifacts"
+      ]
+    },
+    {
+      "toolAction": "feishu_minutes.get",
+      "tool": "feishu_minutes",
+      "operation": "get",
+      "source": "src/tools/oapi/meeting/minutes.ts",
+      "category": "meeting",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "supported-operations-fallback",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "GET:/open-apis/minutes/v1/minutes/${safeToken}"
+      ]
+    },
+    {
+      "toolAction": "feishu_minutes.media",
+      "tool": "feishu_minutes",
+      "operation": "media",
+      "source": "src/tools/oapi/meeting/minutes.ts",
+      "category": "meeting",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "delegated",
+      "implementationInferenceKind": "delegated-tool-client-default",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "GET:/open-apis/minutes/v1/minutes/${safeToken}/media"
+      ]
+    },
+    {
+      "toolAction": "feishu_minutes.statistics",
+      "tool": "feishu_minutes",
+      "operation": "statistics",
+      "source": "src/tools/oapi/meeting/minutes.ts",
+      "category": "meeting",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "supported-operations-fallback",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "GET:/open-apis/minutes/v1/minutes/${safeToken}/statistics"
+      ]
+    },
+    {
+      "toolAction": "feishu_minutes.transcript",
+      "tool": "feishu_minutes",
+      "operation": "transcript",
+      "source": "src/tools/oapi/meeting/minutes.ts",
+      "category": "meeting",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "supported-operations-fallback",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "GET:/open-apis/minutes/v1/minutes/${safeToken}/transcript"
+      ]
+    },
+    {
+      "toolAction": "feishu_oauth_batch_auth.authorize_all",
+      "tool": "feishu_oauth_batch_auth",
+      "operation": "authorize_all",
+      "source": "src/tools/oauth-batch-auth.ts",
+      "category": "auth",
+      "transport": "plugin",
+      "officialCoverage": "non-official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "supported-operations-fallback",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared",
+      "authGenerationReason": "no official endpoint auth metadata for this action; keeping declared action auth",
+      "backend": []
+    },
+    {
+      "toolAction": "feishu_oauth.revoke",
+      "tool": "feishu_oauth",
+      "operation": "revoke",
+      "source": "src/tools/oauth.ts",
+      "category": "auth",
+      "transport": "plugin",
+      "officialCoverage": "non-official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "supported-operations-fallback",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared",
+      "authGenerationReason": "no official endpoint auth metadata for this action; keeping declared action auth",
+      "backend": []
+    },
+    {
+      "toolAction": "feishu_search_doc_wiki.search",
+      "tool": "feishu_search_doc_wiki",
+      "operation": "search",
+      "source": "src/tools/oapi/search/doc-search.ts",
+      "category": "search",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "POST:/open-apis/search/v2/doc_wiki/search"
+      ]
+    },
+    {
+      "toolAction": "feishu_search_user.search",
+      "tool": "feishu_search_user",
+      "operation": "search",
+      "source": "src/tools/oapi/common/search-user.ts",
+      "category": "common",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "GET:/open-apis/search/v1/user"
+      ]
+    },
+    {
+      "toolAction": "feishu_sheet.append",
+      "tool": "feishu_sheet",
+      "operation": "append",
+      "source": "src/tools/oapi/sheets/sheet.ts",
+      "category": "sheets",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "POST:/open-apis/sheets/v2/spreadsheets/:token/values_append",
+        "GET:/open-apis/wiki/v2/spaces/get_node",
+        "GET:/open-apis/sheets/v3/spreadsheets/:spreadsheet_token/sheets/query"
+      ]
+    },
+    {
+      "toolAction": "feishu_sheet.create",
+      "tool": "feishu_sheet",
+      "operation": "create",
+      "source": "src/tools/oapi/sheets/sheet.ts",
+      "category": "sheets",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "POST:/open-apis/sheets/v3/spreadsheets",
+        "GET:/open-apis/sheets/v3/spreadsheets/:spreadsheet_token/sheets/query",
+        "PUT:/open-apis/sheets/v2/spreadsheets/:token/values"
+      ]
+    },
+    {
+      "toolAction": "feishu_sheet.export",
+      "tool": "feishu_sheet",
+      "operation": "export",
+      "source": "src/tools/oapi/sheets/sheet.ts",
+      "category": "sheets",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "POST:/open-apis/drive/v1/export_tasks",
+        "GET:/open-apis/drive/v1/export_tasks/:ticket",
+        "GET:/open-apis/drive/v1/export_tasks/file/:file_token/download",
+        "GET:/open-apis/wiki/v2/spaces/get_node"
+      ]
+    },
+    {
+      "toolAction": "feishu_sheet.find",
+      "tool": "feishu_sheet",
+      "operation": "find",
+      "source": "src/tools/oapi/sheets/sheet.ts",
+      "category": "sheets",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "POST:/open-apis/sheets/v3/spreadsheets/:spreadsheet_token/sheets/:sheet_id/find",
+        "GET:/open-apis/wiki/v2/spaces/get_node"
+      ]
+    },
+    {
+      "toolAction": "feishu_sheet.info",
+      "tool": "feishu_sheet",
+      "operation": "info",
+      "source": "src/tools/oapi/sheets/sheet.ts",
+      "category": "sheets",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "GET:/open-apis/sheets/v3/spreadsheets/:spreadsheet_token",
+        "GET:/open-apis/sheets/v3/spreadsheets/:spreadsheet_token/sheets/query",
+        "GET:/open-apis/wiki/v2/spaces/get_node"
+      ]
+    },
+    {
+      "toolAction": "feishu_sheet.read",
+      "tool": "feishu_sheet",
+      "operation": "read",
+      "source": "src/tools/oapi/sheets/sheet.ts",
+      "category": "sheets",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "GET:/open-apis/sheets/v2/spreadsheets/:token/values/:range",
+        "GET:/open-apis/wiki/v2/spaces/get_node",
+        "GET:/open-apis/sheets/v3/spreadsheets/:spreadsheet_token/sheets/query"
+      ]
+    },
+    {
+      "toolAction": "feishu_sheet.write",
+      "tool": "feishu_sheet",
+      "operation": "write",
+      "source": "src/tools/oapi/sheets/sheet.ts",
+      "category": "sheets",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "PUT:/open-apis/sheets/v2/spreadsheets/:token/values",
+        "GET:/open-apis/wiki/v2/spaces/get_node",
+        "GET:/open-apis/sheets/v3/spreadsheets/:spreadsheet_token/sheets/query"
+      ]
+    },
+    {
+      "toolAction": "feishu_task_comment.create",
+      "tool": "feishu_task_comment",
+      "operation": "create",
+      "source": "src/tools/oapi/task/comment.ts",
+      "category": "task",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "POST:/open-apis/task/v2/comments"
+      ]
+    },
+    {
+      "toolAction": "feishu_task_comment.get",
+      "tool": "feishu_task_comment",
+      "operation": "get",
+      "source": "src/tools/oapi/task/comment.ts",
+      "category": "task",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "GET:/open-apis/task/v2/comments/:comment_id"
+      ]
+    },
+    {
+      "toolAction": "feishu_task_comment.list",
+      "tool": "feishu_task_comment",
+      "operation": "list",
+      "source": "src/tools/oapi/task/comment.ts",
+      "category": "task",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "GET:/open-apis/task/v2/comments"
+      ]
+    },
+    {
+      "toolAction": "feishu_task_subtask.create",
+      "tool": "feishu_task_subtask",
+      "operation": "create",
+      "source": "src/tools/oapi/task/subtask.ts",
+      "category": "task",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "POST:/open-apis/task/v2/tasks/:task_guid/subtasks"
+      ]
+    },
+    {
+      "toolAction": "feishu_task_subtask.list",
+      "tool": "feishu_task_subtask",
+      "operation": "list",
+      "source": "src/tools/oapi/task/subtask.ts",
+      "category": "task",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "GET:/open-apis/task/v2/tasks/:task_guid/subtasks"
+      ]
+    },
+    {
+      "toolAction": "feishu_task_task.create",
+      "tool": "feishu_task_task",
+      "operation": "create",
+      "source": "src/tools/oapi/task/task.ts",
+      "category": "task",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "POST:/open-apis/task/v2/tasks"
+      ]
+    },
+    {
+      "toolAction": "feishu_task_task.get",
+      "tool": "feishu_task_task",
+      "operation": "get",
+      "source": "src/tools/oapi/task/task.ts",
+      "category": "task",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "GET:/open-apis/task/v2/tasks/:task_guid"
+      ]
+    },
+    {
+      "toolAction": "feishu_task_task.list",
+      "tool": "feishu_task_task",
+      "operation": "list",
+      "source": "src/tools/oapi/task/task.ts",
+      "category": "task",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "GET:/open-apis/task/v2/tasks"
+      ]
+    },
+    {
+      "toolAction": "feishu_task_task.patch",
+      "tool": "feishu_task_task",
+      "operation": "patch",
+      "source": "src/tools/oapi/task/task.ts",
+      "category": "task",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "PATCH:/open-apis/task/v2/tasks/:task_guid"
+      ]
+    },
+    {
+      "toolAction": "feishu_task_tasklist.add_members",
+      "tool": "feishu_task_tasklist",
+      "operation": "add_members",
+      "source": "src/tools/oapi/task/tasklist.ts",
+      "category": "task",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "POST:/open-apis/task/v2/tasklists/:tasklist_guid/add_members"
+      ]
+    },
+    {
+      "toolAction": "feishu_task_tasklist.create",
+      "tool": "feishu_task_tasklist",
+      "operation": "create",
+      "source": "src/tools/oapi/task/tasklist.ts",
+      "category": "task",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "POST:/open-apis/task/v2/tasklists"
+      ]
+    },
+    {
+      "toolAction": "feishu_task_tasklist.get",
+      "tool": "feishu_task_tasklist",
+      "operation": "get",
+      "source": "src/tools/oapi/task/tasklist.ts",
+      "category": "task",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "GET:/open-apis/task/v2/tasklists/:tasklist_guid"
+      ]
+    },
+    {
+      "toolAction": "feishu_task_tasklist.list",
+      "tool": "feishu_task_tasklist",
+      "operation": "list",
+      "source": "src/tools/oapi/task/tasklist.ts",
+      "category": "task",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "GET:/open-apis/task/v2/tasklists"
+      ]
+    },
+    {
+      "toolAction": "feishu_task_tasklist.patch",
+      "tool": "feishu_task_tasklist",
+      "operation": "patch",
+      "source": "src/tools/oapi/task/tasklist.ts",
+      "category": "task",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "PATCH:/open-apis/task/v2/tasklists/:tasklist_guid"
+      ]
+    },
+    {
+      "toolAction": "feishu_task_tasklist.tasks",
+      "tool": "feishu_task_tasklist",
+      "operation": "tasks",
+      "source": "src/tools/oapi/task/tasklist.ts",
+      "category": "task",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "GET:/open-apis/task/v2/tasklists/:tasklist_guid/tasks"
+      ]
+    },
+    {
+      "toolAction": "feishu_update_doc.update-doc",
+      "tool": "feishu_update_doc",
+      "operation": "update-doc",
+      "source": "src/tools/mcp/doc/update.ts",
+      "category": "mcp-doc",
+      "transport": "mcp",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "supported-operations-fallback",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared",
+      "authGenerationReason": "no official endpoint auth metadata for this action; keeping declared action auth",
+      "backend": [
+        "MCP:update-doc"
+      ]
+    },
+    {
+      "toolAction": "feishu_wiki_space_node.copy",
+      "tool": "feishu_wiki_space_node",
+      "operation": "copy",
+      "source": "src/tools/oapi/wiki/space-node.ts",
+      "category": "wiki",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "POST:/open-apis/wiki/v2/spaces/:space_id/nodes/:node_token/copy"
+      ]
+    },
+    {
+      "toolAction": "feishu_wiki_space_node.create",
+      "tool": "feishu_wiki_space_node",
+      "operation": "create",
+      "source": "src/tools/oapi/wiki/space-node.ts",
+      "category": "wiki",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "POST:/open-apis/wiki/v2/spaces/:space_id/nodes"
+      ]
+    },
+    {
+      "toolAction": "feishu_wiki_space_node.get",
+      "tool": "feishu_wiki_space_node",
+      "operation": "get",
+      "source": "src/tools/oapi/wiki/space-node.ts",
+      "category": "wiki",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "GET:/open-apis/wiki/v2/spaces/get_node"
+      ]
+    },
+    {
+      "toolAction": "feishu_wiki_space_node.list",
+      "tool": "feishu_wiki_space_node",
+      "operation": "list",
+      "source": "src/tools/oapi/wiki/space-node.ts",
+      "category": "wiki",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "GET:/open-apis/wiki/v2/spaces/:space_id/nodes"
+      ]
+    },
+    {
+      "toolAction": "feishu_wiki_space_node.move",
+      "tool": "feishu_wiki_space_node",
+      "operation": "move",
+      "source": "src/tools/oapi/wiki/space-node.ts",
+      "category": "wiki",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "POST:/open-apis/wiki/v2/spaces/:space_id/nodes/:node_token/move"
+      ]
+    },
+    {
+      "toolAction": "feishu_wiki_space.create",
+      "tool": "feishu_wiki_space",
+      "operation": "create",
+      "source": "src/tools/oapi/wiki/space.ts",
+      "category": "wiki",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "POST:/open-apis/wiki/v2/spaces"
+      ]
+    },
+    {
+      "toolAction": "feishu_wiki_space.get",
+      "tool": "feishu_wiki_space",
+      "operation": "get",
+      "source": "src/tools/oapi/wiki/space.ts",
+      "category": "wiki",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "GET:/open-apis/wiki/v2/spaces/:space_id"
+      ]
+    },
+    {
+      "toolAction": "feishu_wiki_space.list",
+      "tool": "feishu_wiki_space",
+      "operation": "list",
+      "source": "src/tools/oapi/wiki/space.ts",
+      "category": "wiki",
+      "transport": "oapi",
+      "officialCoverage": "official",
+      "declaredAuth": "user",
+      "implementationAuth": "user",
+      "implementationInferenceKind": "explicit-user",
+      "implementationModes": [
+        "user"
+      ],
+      "canonicalAuthModes": [
+        "user-only"
+      ],
+      "canonicalExecutionModes": [
+        "user"
+      ],
+      "relation": "aligned",
+      "authGenerationSource": "declared+official",
+      "authGenerationReason": "declared action auth intersected with official endpoint token modes",
+      "backend": [
+        "GET:/open-apis/wiki/v2/spaces"
+      ]
+    }
+  ]
+}

@@ -1,8 +1,12 @@
 {
-  "generatedAt": "2026-04-16T07:50:38.138Z",
+  "generatedAt": "2026-04-17T02:53:28.170Z",
   "scope": {
     "included": "Registered Feishu-facing tools and chat commands exposed by the plugin entrypoint.",
     "excluded": "Internal helper functions and lower-level channel/outbound APIs not directly registered as tools or commands."
+  },
+  "semantics": {
+    "auth": "Code-derived declared execution mode observed from repository source; not the final official auth contract.",
+    "officialCoverage": "Whether the declared backend can be linked to an official Feishu API/MCP reference."
   },
   "references": {
     "serverApiList": "docs/references/feishu-server-api-list.json",
@@ -29,7 +33,7 @@
           "backend": [
             "POST:/open-apis/approval/v4/instances/search_cc"
           ],
-          "auth": "tenant",
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -42,9 +46,9 @@
           "officialCoverage": "official"
         }
       ],
-      "auth": "tenant",
+      "auth": "user",
       "operationAuthModes": [
-        "tenant"
+        "user"
       ],
       "hasMixedOperationAuth": false
     },
@@ -201,7 +205,7 @@
           "backend": [
             "POST:/open-apis/approval/v4/tasks/approve"
           ],
-          "auth": "tenant",
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -219,7 +223,7 @@
           "backend": [
             "POST:/open-apis/approval/v4/tasks/reject"
           ],
-          "auth": "tenant",
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -237,7 +241,7 @@
           "backend": [
             "POST:/open-apis/approval/v4/tasks/transfer"
           ],
-          "auth": "tenant",
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -255,7 +259,7 @@
           "backend": [
             "POST:/open-apis/approval/v4/instances/add_sign"
           ],
-          "auth": "tenant",
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -273,7 +277,7 @@
           "backend": [
             "POST:/open-apis/approval/v4/tasks/resubmit"
           ],
-          "auth": "tenant",
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -291,7 +295,7 @@
           "backend": [
             "POST:/open-apis/approval/v4/instances/specified_rollback"
           ],
-          "auth": "tenant",
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -304,9 +308,9 @@
           "officialCoverage": "official"
         }
       ],
-      "auth": "tenant",
+      "auth": "user",
       "operationAuthModes": [
-        "tenant"
+        "user"
       ],
       "hasMixedOperationAuth": false
     },
@@ -322,7 +326,7 @@
           "backend": [
             "GET:/open-apis/approval/v4/tasks/query"
           ],
-          "auth": "dual",
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -340,7 +344,7 @@
           "backend": [
             "POST:/open-apis/approval/v4/tasks/search"
           ],
-          "auth": "tenant",
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -435,13 +439,11 @@
           "officialCoverage": "official"
         }
       ],
-      "auth": "dual",
+      "auth": "user",
       "operationAuthModes": [
-        "dual",
-        "tenant",
         "user"
       ],
-      "hasMixedOperationAuth": true
+      "hasMixedOperationAuth": false
     },
     {
       "tool": "feishu_ask_user_question",
@@ -476,7 +478,7 @@
           "backend": [
             "GET:/open-apis/attendance/v1/groups/:group_id"
           ],
-          "auth": "tenant",
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -494,7 +496,7 @@
           "backend": [
             "GET:/open-apis/attendance/v1/groups/:group_id/list_user"
           ],
-          "auth": "dual",
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -507,12 +509,11 @@
           "officialCoverage": "official"
         }
       ],
-      "auth": "dual",
+      "auth": "user",
       "operationAuthModes": [
-        "dual",
-        "tenant"
+        "user"
       ],
-      "hasMixedOperationAuth": true
+      "hasMixedOperationAuth": false
     },
     {
       "tool": "feishu_attendance_shift",
@@ -1821,7 +1822,7 @@
             "GET:/open-apis/authen/v1/user_info",
             "GET:/open-apis/contact/v3/users/:user_id"
           ],
-          "auth": "dual",
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -1840,9 +1841,9 @@
           "officialCoverage": "official"
         }
       ],
-      "auth": "dual",
+      "auth": "user",
       "operationAuthModes": [
-        "dual"
+        "user"
       ],
       "hasMixedOperationAuth": false
     },
@@ -1983,7 +1984,7 @@
           "backend": [
             "POST:/open-apis/im/v1/messages"
           ],
-          "auth": "tenant",
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -2001,7 +2002,7 @@
           "backend": [
             "POST:/open-apis/im/v1/messages/:message_id/reply"
           ],
-          "auth": "tenant",
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -2014,9 +2015,9 @@
           "officialCoverage": "official"
         }
       ],
-      "auth": "tenant",
+      "auth": "user",
       "operationAuthModes": [
-        "tenant"
+        "user"
       ],
       "hasMixedOperationAuth": false
     },
@@ -2065,7 +2066,7 @@
           "backend": [
             "GET:/open-apis/mail/v1/user_mailboxes/:user_mailbox_id/messages"
           ],
-          "auth": "dual",
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -2083,7 +2084,7 @@
           "backend": [
             "GET:/open-apis/mail/v1/user_mailboxes/:user_mailbox_id/messages/:message_id"
           ],
-          "auth": "dual",
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -2119,7 +2120,7 @@
           "backend": [
             "GET:/open-apis/mail/v1/user_mailboxes/:user_mailbox_id/messages/:message_id/attachments/download_url"
           ],
-          "auth": "dual",
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -2132,12 +2133,11 @@
           "officialCoverage": "official"
         }
       ],
-      "auth": "dual",
+      "auth": "user",
       "operationAuthModes": [
-        "dual",
         "user"
       ],
-      "hasMixedOperationAuth": true
+      "hasMixedOperationAuth": false
     },
     {
       "tool": "feishu_meeting",
@@ -2169,7 +2169,7 @@
           "backend": [
             "GET:/open-apis/vc/v1/meetings/:meeting_id"
           ],
-          "auth": "dual",
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -2218,12 +2218,11 @@
           "officialCoverage": "official"
         }
       ],
-      "auth": "dual",
+      "auth": "user",
       "operationAuthModes": [
-        "dual",
         "user"
       ],
-      "hasMixedOperationAuth": true
+      "hasMixedOperationAuth": false
     },
     {
       "tool": "feishu_meeting_reserve",
@@ -2237,7 +2236,7 @@
           "backend": [
             "POST:/open-apis/vc/v1/reserves/apply"
           ],
-          "auth": "dual",
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -2255,7 +2254,7 @@
           "backend": [
             "GET:/open-apis/vc/v1/reserves/:reserve_id"
           ],
-          "auth": "dual",
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -2273,7 +2272,7 @@
           "backend": [
             "PUT:/open-apis/vc/v1/reserves/:reserve_id"
           ],
-          "auth": "dual",
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -2291,7 +2290,7 @@
           "backend": [
             "DELETE:/open-apis/vc/v1/reserves/:reserve_id"
           ],
-          "auth": "dual",
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -2309,7 +2308,7 @@
           "backend": [
             "GET:/open-apis/vc/v1/reserves/:reserve_id/get_active_meeting"
           ],
-          "auth": "dual",
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -2322,9 +2321,9 @@
           "officialCoverage": "official"
         }
       ],
-      "auth": "dual",
+      "auth": "user",
       "operationAuthModes": [
-        "dual"
+        "user"
       ],
       "hasMixedOperationAuth": false
     },
@@ -2340,7 +2339,7 @@
           "backend": [
             "GET:/open-apis/minutes/v1/minutes/${safeToken}"
           ],
-          "auth": "dual",
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -2358,7 +2357,7 @@
           "backend": [
             "GET:/open-apis/minutes/v1/minutes/${safeToken}/transcript"
           ],
-          "auth": "dual",
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -2376,7 +2375,7 @@
           "backend": [
             "GET:/open-apis/minutes/v1/minutes/${safeToken}/statistics"
           ],
-          "auth": "dual",
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -2394,7 +2393,7 @@
           "backend": [
             "GET:/open-apis/minutes/v1/minutes/${safeToken}/artifacts"
           ],
-          "auth": "dual",
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -2412,7 +2411,7 @@
           "backend": [
             "GET:/open-apis/minutes/v1/minutes/${safeToken}/media"
           ],
-          "auth": "dual",
+          "auth": "user",
           "officialLinks": [
             {
               "kind": "oapi",
@@ -2425,9 +2424,9 @@
           "officialCoverage": "official"
         }
       ],
-      "auth": "dual",
+      "auth": "user",
       "operationAuthModes": [
-        "dual"
+        "user"
       ],
       "hasMixedOperationAuth": false
     },
@@ -2462,14 +2461,14 @@
           "name": "authorize_all",
           "summary": "Action `authorize_all` exposed by `feishu_oauth_batch_auth`.",
           "backend": [],
-          "auth": "tenant",
+          "auth": "user",
           "backendKind": "plugin",
           "officialCoverage": "non-official"
         }
       ],
-      "auth": "tenant",
+      "auth": "user",
       "operationAuthModes": [
-        "tenant"
+        "user"
       ],
       "hasMixedOperationAuth": false
     },

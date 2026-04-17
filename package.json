@@ -39,6 +39,8 @@
     "feishu:official-security-metadata:check": "node scripts/generate_feishu_official_security_metadata.mjs --check",
     "feishu:skill-coverage": "node scripts/generate_feishu_skill_coverage.mjs",
     "feishu:skill-coverage:check": "node scripts/generate_feishu_skill_coverage.mjs --check",
+    "feishu:implementation-truth-diff": "node scripts/generate_feishu_implementation_truth_diff.mjs",
+    "feishu:implementation-truth-diff:check": "node scripts/generate_feishu_implementation_truth_diff.mjs --check",
     "feishu:scope-list": "python3 scripts/fetch_feishu_scope_list.py",
     "feishu:scope-list:check": "python3 scripts/fetch_feishu_scope_list.py --check",
     "feishu:refresh-metadata": "node scripts/refresh_feishu_runtime_metadata.mjs",

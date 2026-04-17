@@ -14,7 +14,6 @@ const COMMANDS_INDEX = path.join(ROOT, 'src', 'commands', 'index.ts');
 const API_LIST_JSON = path.join(ROOT, 'docs', 'references', 'feishu-server-api-list.json');
 const OUT_JSON = path.join(ROOT, 'docs', 'references', 'feishu-supported-operations.json');
 const OUT_MD = path.join(ROOT, 'docs', 'references', 'feishu-supported-operations.md');
-const TOOL_AUTH_JSON = path.join(ROOT, 'src', 'core', 'generated', 'feishu-tool-auth.json');
 const DOCS_BASE_URL = 'https://open.feishu.cn';
 const MCP_REMOTE_DOC_URL =
   'https://open.feishu.cn/document/mcp_open_tools/developers-call-remote-mcp-server';
@@ -251,14 +250,6 @@ function getTransport(relPath, legacyTool) {
   return 'plugin';
 }
 
-function authModesToLabel(authModes) {
-  const set = new Set(authModes ?? []);
-  if (set.has('dual-mode')) return 'dual';
-  if (set.has('user-only')) return 'user';
-  if (set.has('tenant-only')) return 'tenant';
-  return null;
-}
-
 function inferAuthFromText(text) {
   const hasUser = /\bas:\s*'user'/.test(text);
   const hasTenant = /\bas:\s*'tenant'/.test(text);
@@ -416,7 +407,7 @@ function extractSchemaFallbackBackends(toolName, action, sourceText, executeText
   return [];
 }
 
-function extractOperationsFromRegisterTool(sourceFile, toolName, toolDescription, executeNode, legacyTool, toolAuthMap, functionTextMap) {
+function extractOperationsFromRegisterTool(sourceFile, toolName, toolDescription, executeNode, legacyTool, functionTextMap) {
   const switchNode = findSwitchOnAction(executeNode);
   const sourceText = getNodeText(sourceFile, executeNode);
   const fileText = sourceFile.text;
@@ -427,7 +418,6 @@ function extractOperationsFromRegisterTool(sourceFile, toolName, toolDescription
     const auth =
       inferAuthFromText(text) ??
       inferAuthFromText(fileText) ??
-      authModesToLabel(toolAuthMap?.[`${toolName}.${opName}`]) ??
       legacyTool?.auth ??
       'user';
     let backends = extractBackendsFromText(text);
@@ -491,7 +481,6 @@ function extractOperationsFromRegisterTool(sourceFile, toolName, toolDescription
           backend: extractSchemaFallbackBackends(toolName, action, sourceFile.text, sourceText, functionTextMap),
           auth:
             inferAuthFromText(sourceFile.text) ??
-            authModesToLabel(toolAuthMap?.[`${toolName}.${action}`]) ??
             legacyTool?.auth ??
             'user',
         },
@@ -511,7 +500,7 @@ function extractOperationsFromRegisterTool(sourceFile, toolName, toolDescription
   return operations;
 }
 
-function extractMcpOperation(configNode, sourceFile, toolName, legacyTool, toolAuthMap, constMap) {
+function extractMcpOperation(configNode, sourceFile, toolName, legacyTool, constMap) {
   const toolActionKey = getStringLiteralValue(getObjectProperty(configNode, 'toolActionKey'), constMap);
   const mcpToolName = getStringLiteralValue(getObjectProperty(configNode, 'mcpToolName'), constMap);
   const description = getStringLiteralValue(getObjectProperty(configNode, 'description'), constMap) ?? '';
@@ -526,12 +515,12 @@ function extractMcpOperation(configNode, sourceFile, toolName, legacyTool, toolA
       name: opName,
       summary: extractSummary(toolName, opName, description, null),
       backend: mcpToolName ? [`MCP:${mcpToolName}`] : [],
-      auth: inferAuthFromText(sourceFile.text) ?? authModesToLabel(toolAuthMap?.[`${toolName}.${opName}`]) ?? legacyTool?.auth ?? 'user',
+      auth: inferAuthFromText(sourceFile.text) ?? legacyTool?.auth ?? 'user',
     },
   ];
 }
 
-function extractToolRecord(filePath, sourceFile, constMap, functionTextMap, callNode, legacyTools, toolAuthMap) {
+function extractToolRecord(filePath, sourceFile, constMap, functionTextMap, callNode, legacyTools) {
   const relPath = path.relative(ROOT, filePath).split(path.sep).join('/');
   const args = callNode.arguments;
   const expr = callNode.expression;
@@ -549,7 +538,7 @@ function extractToolRecord(filePath, sourceFile, constMap, functionTextMap, call
       category: getToolCategory(relPath, toolName, legacyTool),
       transport: getTransport(relPath, legacyTool),
       source: relPath,
-      operations: extractMcpOperation(configNode, sourceFile, toolName, legacyTool, toolAuthMap, constMap),
+      operations: extractMcpOperation(configNode, sourceFile, toolName, legacyTool, constMap),
     };
   }
 
@@ -579,7 +568,6 @@ function extractToolRecord(filePath, sourceFile, constMap, functionTextMap, call
       description,
       executeNode,
       legacyTool,
-      toolAuthMap,
       functionTextMap,
     ),
   };
@@ -587,7 +575,6 @@ function extractToolRecord(filePath, sourceFile, constMap, functionTextMap, call
 
 function buildTools() {
   const legacyTools = new Map();
-  const toolAuthMap = readJsonIfExists(TOOL_AUTH_JSON) ?? {};
 
   const tools = [];
   for (const filePath of walkFiles(TOOLS_ROOT)) {
@@ -600,14 +587,11 @@ function buildTools() {
     const constMap = buildStringConstMap(sourceFile);
     const functionTextMap = buildFunctionTextMap(sourceFile);
     for (const callNode of collectRegisterCalls(sourceFile)) {
-      const record = extractToolRecord(filePath, sourceFile, constMap, functionTextMap, callNode, legacyTools, toolAuthMap);
+      const record = extractToolRecord(filePath, sourceFile, constMap, functionTextMap, callNode, legacyTools);
       if (!record) continue;
       if (record.operations.length === 1 && record.operations[0].name === 'default' && DEFAULT_OPERATION_NAME_OVERRIDES[record.tool]) {
         const opName = DEFAULT_OPERATION_NAME_OVERRIDES[record.tool];
         record.operations[0].name = opName;
-        record.operations[0].auth =
-          record.operations[0].auth ??
-          authModesToLabel(toolAuthMap?.[`${record.tool}.${opName}`]);
       }
       const authModes = Array.from(new Set(record.operations.map((op) => op.auth))).sort();
       record.auth = authModes.length === 1 ? authModes[0] : authModes[0] ?? 'user';
@@ -624,14 +608,11 @@ function buildTools() {
     const constMap = buildStringConstMap(sourceFile);
     const functionTextMap = buildFunctionTextMap(sourceFile);
     for (const callNode of collectRegisterCalls(sourceFile)) {
-      const record = extractToolRecord(filePath, sourceFile, constMap, functionTextMap, callNode, legacyTools, toolAuthMap);
+      const record = extractToolRecord(filePath, sourceFile, constMap, functionTextMap, callNode, legacyTools);
       if (record?.tool !== 'feishu_ask_user_question') continue;
       if (record.operations.length === 1 && record.operations[0].name === 'default' && DEFAULT_OPERATION_NAME_OVERRIDES[record.tool]) {
         const opName = DEFAULT_OPERATION_NAME_OVERRIDES[record.tool];
         record.operations[0].name = opName;
-        record.operations[0].auth =
-          record.operations[0].auth ??
-          authModesToLabel(toolAuthMap?.[`${record.tool}.${opName}`]);
       }
       const authModes = Array.from(new Set(record.operations.map((op) => op.auth))).sort();
       record.auth = authModes.length === 1 ? authModes[0] : authModes[0] ?? 'user';
@@ -713,6 +694,10 @@ function buildPayload() {
       if (operation.officialCoverage === 'official') officialOperationCount += 1;
       else nonOfficialOperationCount += 1;
     }
+    const authModes = Array.from(new Set(tool.operations.map((op) => op.auth))).sort();
+    tool.auth = authModes.length === 1 ? authModes[0] : authModes[0] ?? 'user';
+    tool.operationAuthModes = authModes;
+    tool.hasMixedOperationAuth = authModes.length > 1;
   }
 
   const operationCount = tools.reduce((sum, tool) => sum + tool.operations.length, 0);
@@ -723,6 +708,10 @@ function buildPayload() {
     scope: {
       included: 'Registered Feishu-facing tools and chat commands exposed by the plugin entrypoint.',
       excluded: 'Internal helper functions and lower-level channel/outbound APIs not directly registered as tools or commands.',
+    },
+    semantics: {
+      auth: 'Code-derived declared execution mode observed from repository source; not the final official auth contract.',
+      officialCoverage: 'Whether the declared backend can be linked to an official Feishu API/MCP reference.',
     },
     references: {
       serverApiList: 'docs/references/feishu-server-api-list.json',
@@ -747,10 +736,15 @@ function renderMarkdown(payload) {
   lines.push('');
   lines.push('This file enumerates the Feishu-facing tool and command surface currently exposed by this repository.');
   lines.push('');
+  lines.push('Auth values in this file are code-derived declared modes, not the final official auth contract.');
+  lines.push('Use canonical/runtime metadata for official auth and scope decisions.');
+  lines.push('');
   lines.push('## Scope');
   lines.push('');
   lines.push(`- Included: ${payload.scope.included}`);
   lines.push(`- Excluded: ${payload.scope.excluded}`);
+  lines.push(`- Auth semantics: ${payload.semantics.auth}`);
+  lines.push(`- Coverage semantics: ${payload.semantics.officialCoverage}`);
   lines.push('');
   lines.push('## Totals');
   lines.push('');

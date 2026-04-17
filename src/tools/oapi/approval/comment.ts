@@ -218,7 +218,7 @@ export function registerFeishuApprovalCommentTool(api: OpenClawPluginApi): void 
       name: 'feishu_approval_comment',
       label: 'Feishu Approval Comment',
       description:
-        '飞书审批评论工具。Actions: create（创建或回复评论）, list（获取实例评论列表）, delete（删除单条评论）, remove（清空实例评论）。按当前 canonical contract，评论相关端点以用户身份执行。',
+        '飞书审批评论工具。Actions: create（创建或回复评论）, list（获取实例评论列表）, delete（删除单条评论）, remove（清空实例评论）。按当前 canonical contract，评论相关端点以应用身份执行。',
       parameters: FeishuApprovalCommentSchema,
       async execute(_toolCallId: string, params: unknown) {
         const p = params as FeishuApprovalCommentParams;

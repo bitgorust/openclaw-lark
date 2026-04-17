@@ -135,7 +135,7 @@ export function registerFeishuMailMessageTool(api: OpenClawPluginApi): boolean {
       label: 'Feishu Mail Message',
       description:
         '飞书邮箱工具。支持列出邮件、获取邮件详情、发送邮件、获取附件下载链接。' +
-        '\n\n注意：send 是 user-only，其余核心读取动作按 canonical contract 支持 dual-mode。',
+        '\n\n注意：当前 canonical contract 下，这些动作都按用户身份执行。',
       parameters: FeishuMailMessageSchema,
       async execute(_toolCallId: string, params: unknown) {
         const p = params as FeishuMailMessageParams;

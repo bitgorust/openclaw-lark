@@ -125,7 +125,7 @@ describe('approval tool execute path', () => {
           user_id: 'ou_sender',
           user_id_type: 'open_id',
         },
-        as: 'user',
+        as: 'tenant',
       },
     );
 
@@ -139,12 +139,12 @@ describe('approval tool execute path', () => {
           user_id: 'ou_sender',
           user_id_type: 'open_id',
         },
-        as: 'user',
+        as: 'tenant',
       },
     );
 
     expect(parseToolResult(result)).toMatchObject({
-      auth_mode: 'user',
+      auth_mode: 'tenant',
       auth_fallback: false,
       instance_ids: ['inst_1'],
       has_more: false,
@@ -185,13 +185,13 @@ describe('approval tool execute path', () => {
       'feishu_approval_instance.list',
       '/open-apis/approval/v4/instances',
       expect.objectContaining({
-        as: 'user',
+        as: 'tenant',
       }),
     );
     expect(mockHandleInvokeErrorWithAutoAuth).not.toHaveBeenCalled();
 
     expect(parseToolResult(result)).toEqual({
-      auth_mode: 'user',
+      auth_mode: 'tenant',
       auth_fallback: false,
       instance_ids: ['inst_2'],
       instances: [{ instance_id: 'inst_2' }],
@@ -244,12 +244,12 @@ describe('approval tool execute path', () => {
           user_id: 'ou_sender',
           user_id_type: 'open_id',
         },
-        as: 'user',
+        as: 'tenant',
       },
     );
 
     expect(parseToolResult(result)).toMatchObject({
-      auth_mode: 'user',
+      auth_mode: 'tenant',
       auth_fallback: false,
       instance_ids: ['inst_3'],
       instances: [
@@ -905,7 +905,7 @@ describe('approval tool execute path', () => {
           user_id: 'ou_sender',
           user_id_type: 'open_id',
         },
-        as: 'user',
+        as: 'tenant',
       },
     );
 
@@ -1396,13 +1396,13 @@ describe('approval tool execute path', () => {
           user_id: 'ou_sender',
           page_size: '20',
         },
-        as: 'user',
+        as: 'tenant',
       },
     );
 
     expect(parseToolResult(result)).toEqual({
       action: 'list',
-      auth_mode: 'user',
+      auth_mode: 'tenant',
       auth_fallback: false,
       comments: [
         {
@@ -1440,7 +1440,7 @@ describe('approval tool execute path', () => {
     });
   });
 
-  it('lists approval comments directly with user-mode auth', async () => {
+  it('lists approval comments directly with tenant-mode auth', async () => {
     const { api, registeredTools } = createMockApi();
     registerFeishuApprovalCommentTool(api as any);
 
@@ -1460,11 +1460,11 @@ describe('approval tool execute path', () => {
       1,
       'feishu_approval_comment.list',
       '/open-apis/approval/v4/instances/inst_1/comments',
-      expect.objectContaining({ as: 'user' }),
+      expect.objectContaining({ as: 'tenant' }),
     );
     expect(parseToolResult(result)).toEqual({
       action: 'list',
-      auth_mode: 'user',
+      auth_mode: 'tenant',
       auth_fallback: false,
       comments: [],
       raw: {
@@ -1473,7 +1473,7 @@ describe('approval tool execute path', () => {
     });
   });
 
-  it('creates approval comments with user-mode auth', async () => {
+  it('creates approval comments with tenant-mode auth', async () => {
     const { api, registeredTools } = createMockApi();
     registerFeishuApprovalCommentTool(api as any);
 
@@ -1507,7 +1507,7 @@ describe('approval tool execute path', () => {
           disable_bot: undefined,
           extra: undefined,
         },
-        as: 'user',
+        as: 'tenant',
       },
     );
 

@@ -89,6 +89,7 @@ pnpm release:prepare
 这会执行：
 
 - `pnpm feishu:supported-operations:check`
+- `pnpm feishu:official-security-metadata:check`
 - `pnpm feishu:canonical-metadata:check`
 - `pnpm feishu:skill-coverage:check`
 - `pnpm feishu:scope-list:check`
@@ -104,7 +105,8 @@ pnpm release:prepare
 
 - `dist/`、`skills/`、`openclaw.plugin.json` 被正确打包
 - 基于 `docs/references/feishu-server-api-list.json`
-  和 `docs/references/feishu-scope-list.json` 的 truth-source 产物没有漂移
+  、`docs/references/feishu-scope-list.json`
+  和 `docs/references/feishu-official-security.json` 的 truth-source / canonical 产物没有漂移
 - `src/core/generated/feishu-tool-auth.json`
 - `src/core/generated/feishu-tool-scope-specs.json`
 - `src/core/generated/feishu-tool-scopes.json`
@@ -199,8 +201,8 @@ git push origin v2026.4.1-laipic.1
 
 ## 注意事项
 
-- `NODE_SDK_ROOT` 仍然是 canonical metadata 校验的正式输入
 - `docs/references/feishu-server-api-list.json` 和 `docs/references/feishu-scope-list.json` 是仓库内保留的官方 truth-source 快照
+- `docs/references/feishu-official-security.json` 是基于飞书官方文档抓取并固化的 canonical 官方契约快照
 - 当前仓库内的 Feishu runtime metadata 刷新入口是 `pnpm feishu:refresh-metadata`
 - 当前流程以 `src/core/generated/feishu-tool-auth.json` 和 `src/core/generated/feishu-tool-scope-specs.json` 为输入快照，并自动同步其余 generated 包装文件
 - 两层链路的职责和执行顺序见 [docs/feishu-metadata-pipeline.md](/data/Workspace/openclaw-lark/docs/feishu-metadata-pipeline.md)

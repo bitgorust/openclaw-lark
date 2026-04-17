@@ -31,3 +31,9 @@ Do not weaken default permission or policy checks casually. Review Feishu/OpenAP
 
 ## Feishu Metadata
 When modifying Feishu scope/auth/reference metadata, keep the truth-source / canonical layer and the runtime snapshot layer distinct. See [`docs/feishu-metadata-pipeline.md`](/data/Workspace/openclaw-lark/docs/feishu-metadata-pipeline.md) for the maintained scripts, generated files, execution order, and external dependencies such as `NODE_SDK_ROOT`.
+
+## Feishu Truth-Source Principles
+- Treat code as the truth source for what this plugin exposes: tool existence, action names, backend usage, and runtime behavior must be derived from `src/tools` and `src/commands`, then reflected into generated references such as `supported-operations`.
+- Treat official Feishu references as the truth source for external capability contracts: token modes, scopes, and canonical API/docs linkage must come from official snapshots and derived canonical metadata, not from local generated artifacts.
+- Do not reverse the dependency direction: never use `supported-operations` or other generated metadata as the source of truth to review or reshape code behavior.
+- Implement Feishu features from three inputs, in order: product intent, official Feishu capability boundaries, and this repository's internal abstractions. Generated metadata is for consistency checking and runtime consumption, not for defining behavior.

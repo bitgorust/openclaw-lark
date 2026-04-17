@@ -404,10 +404,10 @@ describe('approval error shaping', () => {
 describe('approval auth policy', () => {
   it('tracks target auth mode separately from current execution mode', () => {
     expect(getApprovalAuthPolicy('instance', 'list')).toEqual({
-      targetAuthMode: 'user-required',
-      currentExecutionMode: 'user',
+      targetAuthMode: 'app-only',
+      currentExecutionMode: 'tenant',
       allowTenantFallback: false,
-      rationale: 'canonical contract is user-only',
+      rationale: 'canonical contract is tenant-only',
     });
     expect(getApprovalAuthPolicy('task', 'approve')).toEqual({
       targetAuthMode: 'app-only',
@@ -435,10 +435,10 @@ describe('approval auth policy', () => {
       rationale: 'canonical contract is tenant-only',
     });
     expect(getApprovalAuthPolicy('task-search', 'get_detail')).toEqual({
-      targetAuthMode: 'user-required',
-      currentExecutionMode: 'user',
+      targetAuthMode: 'app-only',
+      currentExecutionMode: 'tenant',
       allowTenantFallback: false,
-      rationale: 'canonical contract is user-only',
+      rationale: 'canonical contract is tenant-only',
     });
     expect(getApprovalAuthPolicy('cc', 'search')).toEqual({
       targetAuthMode: 'app-only',
@@ -447,10 +447,10 @@ describe('approval auth policy', () => {
       rationale: 'canonical contract is tenant-only',
     });
     expect(getApprovalAuthPolicy('comment', 'list')).toEqual({
-      targetAuthMode: 'user-required',
-      currentExecutionMode: 'user',
+      targetAuthMode: 'app-only',
+      currentExecutionMode: 'tenant',
       allowTenantFallback: false,
-      rationale: 'canonical contract is user-only',
+      rationale: 'canonical contract is tenant-only',
     });
   });
 });
