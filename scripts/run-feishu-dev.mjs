@@ -9,10 +9,11 @@ const repoRoot = path.resolve(path.dirname(new URL(import.meta.url).pathname), '
 const defaultConfigSourcePath = path.join(repoRoot, 'docker', 'feishu-dev', 'openclaw.json');
 const envLocalPath = path.join(repoRoot, '.env.local');
 const runtimeHomeDir = path.join(repoRoot, '.artifacts', 'feishu-local-dev', 'home');
-const runtimeConfigTargets = [
-  path.join(runtimeHomeDir, '.openclaw', 'openclaw.json'),
-  path.join(runtimeHomeDir, '.openclaw-dev', 'openclaw.json'),
-];
+const runtimePluginDir = path.join(repoRoot, '.artifacts', 'feishu-local-dev', 'plugin-package');
+const runtimePluginContainerPath = '/workspace/.artifacts/feishu-local-dev/plugin-package';
+const runtimeWorkspaceDir = path.join(repoRoot, '.artifacts', 'feishu-local-dev', 'workspace');
+const runtimeWorkspaceContainerPath = '/workspace/.artifacts/feishu-local-dev/workspace';
+const runtimeConfigPath = path.join(runtimeHomeDir, '.openclaw', 'openclaw.json');
 const composeFilePath = path.join(repoRoot, 'docker', 'feishu-dev', 'docker-compose.yml');
 const workspaceDir = repoRoot;
 const bundledOpenclawVersion = JSON.parse(
@@ -78,9 +79,41 @@ function resolveDefaultModel(env) {
   return 'openai/gpt-5.4';
 }
 
+function ensureWorldWritableDir(dirPath) {
+  fs.mkdirSync(dirPath, { recursive: true, mode: 0o777 });
+  fs.chmodSync(dirPath, 0o777);
+}
+
+function ensureWorldWritableFile(filePath) {
+  if (fs.existsSync(filePath)) {
+    fs.chmodSync(filePath, 0o666);
+  }
+}
+
+function prepareRuntimeFilesystem() {
+  const writableDirs = [
+    runtimeHomeDir,
+    path.join(runtimeHomeDir, '.openclaw'),
+    path.join(runtimeHomeDir, '.openclaw', 'agents'),
+    path.join(runtimeHomeDir, '.openclaw', 'canvas'),
+    path.join(runtimeHomeDir, '.openclaw', 'state'),
+    path.join(runtimeHomeDir, '.openclaw', 'state', 'logs'),
+    path.join(runtimeHomeDir, '.openclaw', 'state', 'tasks'),
+    path.join(runtimeHomeDir, '.openclaw', 'state', 'delivery-queue'),
+    path.join(runtimeHomeDir, '.openclaw', 'credentials'),
+    runtimeWorkspaceDir,
+    runtimePluginDir,
+  ];
+
+  for (const dirPath of writableDirs) {
+    ensureWorldWritableDir(dirPath);
+  }
+}
+
 function prepareRuntimeConfig(configSourcePath, env) {
   const config = JSON.parse(fs.readFileSync(configSourcePath, 'utf8'));
   const localPort = Number(env.OPENCLAW_LOCAL_PORT || config?.gateway?.port || 19001);
+  prepareRuntimeFilesystem();
 
   config.gateway ??= {};
   config.gateway.mode ??= 'local';
@@ -93,15 +126,60 @@ function prepareRuntimeConfig(configSourcePath, env) {
     `http://127.0.0.1:${localPort}`,
     `http://localhost:${localPort}`,
   ];
+  config.plugins ??= {};
+  config.plugins.allow = ['openclaw-lark'];
+  config.plugins.deny = ['feishu'];
+  config.plugins.load = {
+    paths: [runtimePluginContainerPath],
+  };
+  config.plugins.entries = {
+    feishu: { enabled: false },
+    'openclaw-lark': { enabled: true },
+  };
   config.agents ??= {};
   config.agents.defaults ??= {};
+  config.agents.defaults.workspace = runtimeWorkspaceContainerPath;
+  config.agents.defaults.skipBootstrap = true;
   config.agents.defaults.model = {
     primary: resolveDefaultModel(env),
   };
 
-  for (const runtimeConfigPath of runtimeConfigTargets) {
-    fs.mkdirSync(path.dirname(runtimeConfigPath), { recursive: true });
-    fs.writeFileSync(runtimeConfigPath, `${JSON.stringify(config, null, 2)}\n`);
+  fs.mkdirSync(path.dirname(runtimeConfigPath), { recursive: true });
+  fs.writeFileSync(runtimeConfigPath, `${JSON.stringify(config, null, 2)}\n`);
+  ensureWorldWritableFile(runtimeConfigPath);
+}
+
+function prepareRuntimePluginPackage() {
+  fs.rmSync(runtimePluginDir, { recursive: true, force: true });
+  fs.mkdirSync(path.join(runtimePluginDir, 'dist'), { recursive: true });
+
+  for (const fileName of ['openclaw.plugin.json', 'README.md', 'LICENSE']) {
+    fs.copyFileSync(path.join(repoRoot, fileName), path.join(runtimePluginDir, fileName));
+  }
+
+  const packageJson = JSON.parse(fs.readFileSync(path.join(repoRoot, 'package.json'), 'utf8'));
+  const minimalPackageJson = {
+    name: packageJson.name,
+    version: packageJson.version,
+    description: packageJson.description,
+    type: packageJson.type,
+    main: packageJson.main,
+    types: packageJson.types,
+    exports: packageJson.exports,
+    openclaw: packageJson.openclaw,
+  };
+  fs.writeFileSync(
+    path.join(runtimePluginDir, 'package.json'),
+    `${JSON.stringify(minimalPackageJson, null, 2)}\n`,
+  );
+
+  for (const fileName of fs.readdirSync(path.join(repoRoot, 'dist'))) {
+    fs.copyFileSync(path.join(repoRoot, 'dist', fileName), path.join(runtimePluginDir, 'dist', fileName));
+  }
+
+  const skillsSourceDir = path.join(repoRoot, 'skills');
+  if (fs.existsSync(skillsSourceDir)) {
+    fs.cpSync(skillsSourceDir, path.join(runtimePluginDir, 'skills'), { recursive: true });
   }
 }
 
@@ -130,8 +208,21 @@ function resolveOpenclawImage(env) {
   return `ghcr.io/openclaw/openclaw:${version}`;
 }
 
+function hasEnabledSelinux() {
+  try {
+    if (fs.existsSync('/sys/fs/selinux/enforce')) {
+      return fs.readFileSync('/sys/fs/selinux/enforce', 'utf8').trim() === '1';
+    }
+  } catch {
+    // ignore local probe failure
+  }
+  return false;
+}
+
 function getComposeEnv(env) {
   const localPort = String(env.OPENCLAW_LOCAL_PORT || 19001);
+  const volumeLabelSuffix =
+    env.OPENCLAW_VOLUME_LABEL_SUFFIX ?? (hasEnabledSelinux() ? ':z' : '');
   return {
     ...env,
     OPENCLAW_IMAGE: resolveOpenclawImage(env),
@@ -139,17 +230,24 @@ function getComposeEnv(env) {
     OPENCLAW_GID: String(process.getgid?.() ?? 1000),
     OPENCLAW_HOME_DIR: runtimeHomeDir,
     OPENCLAW_WORKSPACE_DIR: workspaceDir,
+    OPENCLAW_PLUGIN_DIR: runtimePluginDir,
     OPENCLAW_LOCAL_PORT: localPort,
+    OPENCLAW_VOLUME_LABEL_SUFFIX: volumeLabelSuffix,
   };
 }
 
-function printSummary(composeCommand, env, configSourcePath) {
+function printSummary(composeCommand, env, configSourcePath, composeEnv) {
   console.log('Starting Feishu dev gateway via container');
   console.log(`- compose: ${composeCommand.cmd} ${[...composeCommand.args, '-f', path.relative(repoRoot, composeFilePath)].join(' ')}`);
   console.log(`- image: ${resolveOpenclawImage(env)}`);
   console.log(`- config source: ${path.relative(repoRoot, configSourcePath)}`);
-  console.log(`- runtime config: ${path.relative(repoRoot, runtimeConfigTargets[0])}`);
+  console.log(`- runtime config: ${path.relative(repoRoot, runtimeConfigPath)}`);
+  console.log(`- plugin package: ${path.relative(repoRoot, runtimePluginDir)}`);
+  console.log(`- workspace: ${path.relative(repoRoot, runtimeWorkspaceDir)}`);
   console.log(`- agent model: ${resolveDefaultModel(env)}`);
+  console.log(
+    `- volume labels: ${composeEnv.OPENCLAW_VOLUME_LABEL_SUFFIX ? composeEnv.OPENCLAW_VOLUME_LABEL_SUFFIX : '(none)'}`,
+  );
   console.log(`- gateway: http://127.0.0.1:${env.OPENCLAW_LOCAL_PORT || 19001}`);
   console.log('- stop: Ctrl+C');
 }
@@ -160,15 +258,21 @@ async function main() {
   const configSourcePath = resolveConfigSourcePath(env);
   ensureConfigSource(configSourcePath);
   prepareRuntimeConfig(configSourcePath, env);
+  prepareRuntimePluginPackage();
 
   if (args.dryRun) {
     console.log('Starting Feishu dev gateway via container');
     console.log('- compose: docker compose | docker-compose | podman compose');
     console.log(`- image: ${resolveOpenclawImage(env)}`);
     console.log(`- config source: ${path.relative(repoRoot, configSourcePath)}`);
-    console.log(`- runtime config: ${path.relative(repoRoot, runtimeConfigTargets[0])}`);
+    console.log(`- runtime config: ${path.relative(repoRoot, runtimeConfigPath)}`);
+    console.log(`- plugin package: ${path.relative(repoRoot, runtimePluginDir)}`);
+    console.log(`- workspace: ${path.relative(repoRoot, runtimeWorkspaceDir)}`);
     console.log(`- compose file: ${path.relative(repoRoot, composeFilePath)}`);
     console.log(`- agent model: ${resolveDefaultModel(env)}`);
+    console.log(
+      `- volume labels: ${(env.OPENCLAW_VOLUME_LABEL_SUFFIX ?? (hasEnabledSelinux() ? ':z' : '')) || '(none)'}`,
+    );
     console.log(`- gateway: http://127.0.0.1:${env.OPENCLAW_LOCAL_PORT || 19001}`);
     return;
   }
@@ -177,7 +281,7 @@ async function main() {
   const composeBaseArgs = [...composeCommand.args, '-f', composeFilePath];
   const composeEnv = getComposeEnv(env);
 
-  printSummary(composeCommand, env, configSourcePath);
+  printSummary(composeCommand, env, configSourcePath, composeEnv);
 
   await execa(composeCommand.cmd, [...composeBaseArgs, 'up', '--build', '--remove-orphans'], {
     cwd: repoRoot,

@@ -5,7 +5,15 @@ services:
     working_dir: /workspace
     environment:
       HOME: /home/node
+      FEISHU_APP_DOMAIN: ${FEISHU_APP_DOMAIN:-}
+      FEISHU_APP_ID: ${FEISHU_APP_ID:-}
+      FEISHU_APP_SECRET: ${FEISHU_APP_SECRET:-}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      GOOGLE_API_KEY: ${GOOGLE_API_KEY:-}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_BASE_URL: ${OPENAI_BASE_URL:-}
+      OPENCLAW_AGENT_MODEL: ${OPENCLAW_AGENT_MODEL:-}
     volumes:
-      - ${OPENCLAW_HOME_DIR}:/home/node
-      - ${OPENCLAW_WORKSPACE_DIR}:/workspace
+      - ${OPENCLAW_HOME_DIR}:/home/node${OPENCLAW_VOLUME_LABEL_SUFFIX}
+      - ${OPENCLAW_WORKSPACE_DIR}:/workspace${OPENCLAW_VOLUME_LABEL_SUFFIX}
     command: ["/bin/sh", "/workspace/docker/feishu-dev/entrypoint.sh"]
