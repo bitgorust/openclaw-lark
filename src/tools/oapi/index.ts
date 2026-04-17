@@ -19,6 +19,7 @@ import {
 import { registerFeishuAttendanceGroupTool, registerFeishuAttendanceShiftTool } from './attendance/index';
 import {
   registerFeishuTaskCommentTool,
+  registerFeishuTaskSectionTool,
   registerFeishuTaskSubtaskTool,
   registerFeishuTaskTaskTool,
   registerFeishuTaskTasklistTool,
@@ -77,6 +78,7 @@ export function registerOapiTools(api: OpenClawPluginApi): void {
   // Task tools
   registerFeishuTaskTaskTool(api);
   registerFeishuTaskTasklistTool(api);
+  registerFeishuTaskSectionTool(api);
   registerFeishuTaskCommentTool(api);
   registerFeishuTaskSubtaskTool(api);
   registerFeishuApprovalInstanceTool(api);

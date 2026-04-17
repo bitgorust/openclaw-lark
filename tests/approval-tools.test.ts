@@ -422,11 +422,10 @@ describe('approval auth policy', () => {
       rationale: 'canonical contract is tenant-only',
     });
     expect(getApprovalAuthPolicy('task-search', 'query')).toEqual({
-      targetAuthMode: 'dual-mode',
+      targetAuthMode: 'user-required',
       currentExecutionMode: 'user',
-      allowTenantFallback: true,
-      rationale:
-        'canonical contract is dual-mode; prefer user context and fall back to tenant when user auth is unavailable',
+      allowTenantFallback: false,
+      rationale: 'canonical contract is user-only',
     });
     expect(getApprovalAuthPolicy('task-search', 'search')).toEqual({
       targetAuthMode: 'app-only',
