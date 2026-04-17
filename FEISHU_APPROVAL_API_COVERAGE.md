@@ -1,6 +1,6 @@
 # Feishu Approval API Coverage Matrix
 
-This document defines the target coverage for the `feishu-approval` skill against approval-related APIs listed in [docs/references/feishu-server-api-list.json](/data/Workspace/openclaw-lark/docs/references/feishu-server-api-list.json).
+This document defines the target coverage for the `feishu-approval` skill against approval-related APIs listed in [docs/snapshots/feishu/feishu-server-api-list.json](/data/Workspace/openclaw-lark/docs/snapshots/feishu/feishu-server-api-list.json).
 
 The goal is not to stop at the current implementation boundary. The goal is to maximize approval support from the perspective of the final product, then work backward to identify what tool families, auth flows, and safety controls are required.
 

@@ -1,0 +1,330 @@
+{
+  "generatedAt": "2026-04-16T07:50:37.621Z",
+  "references": {
+    "supportedOperations": "docs/reports/feishu/feishu-supported-operations.json"
+  },
+  "summary": {
+    "totalToolActions": 148,
+    "boundToolActions": 122,
+    "uncoveredToolActions": 26
+  },
+  "uncoveredToolActions": [
+    {
+      "toolAction": "feishu_approval_instance.list",
+      "category": "approval",
+      "reason": "multiple official OAPI endpoints",
+      "officialOapiEndpoints": [
+        "GET:/open-apis/approval/v4/instances",
+        "GET:/open-apis/approval/v4/instances/:instanceId"
+      ],
+      "backend": [
+        "GET:/open-apis/approval/v4/instances",
+        "GET:/open-apis/approval/v4/instances/:instanceId"
+      ]
+    },
+    {
+      "toolAction": "feishu_approval_task_search.download_attachment",
+      "category": "approval",
+      "reason": "multiple official OAPI endpoints",
+      "officialOapiEndpoints": [
+        "GET:/open-apis/approval/v4/tasks/query",
+        "POST:/open-apis/approval/v4/tasks/search",
+        "GET:/open-apis/approval/v4/instances/:instance_id"
+      ],
+      "backend": [
+        "GET:/open-apis/approval/v4/tasks/query",
+        "POST:/open-apis/approval/v4/tasks/search",
+        "GET:/open-apis/approval/v4/instances/:instance_id"
+      ]
+    },
+    {
+      "toolAction": "feishu_approval_task_search.parse_attachment",
+      "category": "approval",
+      "reason": "multiple official OAPI endpoints",
+      "officialOapiEndpoints": [
+        "GET:/open-apis/approval/v4/tasks/query",
+        "POST:/open-apis/approval/v4/tasks/search",
+        "GET:/open-apis/approval/v4/instances/:instance_id"
+      ],
+      "backend": [
+        "GET:/open-apis/approval/v4/tasks/query",
+        "POST:/open-apis/approval/v4/tasks/search",
+        "GET:/open-apis/approval/v4/instances/:instance_id"
+      ]
+    },
+    {
+      "toolAction": "feishu_ask_user_question.ask",
+      "category": "interaction",
+      "reason": "no official OAPI endpoint link available",
+      "officialOapiEndpoints": [],
+      "backend": []
+    },
+    {
+      "toolAction": "feishu_bitable_app_table_field.update",
+      "category": "bitable",
+      "reason": "multiple official OAPI endpoints",
+      "officialOapiEndpoints": [
+        "GET:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/fields",
+        "PUT:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/fields/:field_id"
+      ],
+      "backend": [
+        "GET:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/fields",
+        "PUT:/open-apis/bitable/v1/apps/:app_token/tables/:table_id/fields/:field_id"
+      ]
+    },
+    {
+      "toolAction": "feishu_calendar_event.create",
+      "category": "calendar",
+      "reason": "multiple official OAPI endpoints",
+      "officialOapiEndpoints": [
+        "POST:/open-apis/calendar/v4/calendars/:calendar_id/events",
+        "POST:/open-apis/calendar/v4/calendars/:calendar_id/events/:event_id/attendees"
+      ],
+      "backend": [
+        "POST:/open-apis/calendar/v4/calendars/:calendar_id/events",
+        "POST:/open-apis/calendar/v4/calendars/:calendar_id/events/:event_id/attendees"
+      ]
+    },
+    {
+      "toolAction": "feishu_create_doc.create-doc",
+      "category": "mcp-doc",
+      "reason": "contains non-OAPI backend flow",
+      "officialOapiEndpoints": [],
+      "backend": [
+        "MCP:create-doc"
+      ]
+    },
+    {
+      "toolAction": "feishu_create_doc.default",
+      "category": "mcp-doc",
+      "reason": "contains non-OAPI backend flow",
+      "officialOapiEndpoints": [],
+      "backend": [
+        "MCP:create-doc"
+      ]
+    },
+    {
+      "toolAction": "feishu_doc_comments.list",
+      "category": "doc",
+      "reason": "multiple official OAPI endpoints",
+      "officialOapiEndpoints": [
+        "GET:/open-apis/drive/v1/files/:file_token/comments",
+        "GET:/open-apis/drive/v1/files/:file_token/comments/:comment_id/replies"
+      ],
+      "backend": [
+        "GET:/open-apis/drive/v1/files/:file_token/comments",
+        "GET:/open-apis/drive/v1/files/:file_token/comments/:comment_id/replies"
+      ]
+    },
+    {
+      "toolAction": "feishu_doc_media.download",
+      "category": "doc",
+      "reason": "multiple official OAPI endpoints",
+      "officialOapiEndpoints": [
+        "GET:/open-apis/drive/v1/medias/:file_token/download",
+        "GET:/open-apis/board/v1/whiteboards/:whiteboard_id/download_as_image"
+      ],
+      "backend": [
+        "GET:/open-apis/drive/v1/medias/:file_token/download",
+        "GET:/open-apis/board/v1/whiteboards/:whiteboard_id/download_as_image"
+      ]
+    },
+    {
+      "toolAction": "feishu_drive_file.upload",
+      "category": "drive",
+      "reason": "multiple official OAPI endpoints",
+      "officialOapiEndpoints": [
+        "POST:/open-apis/drive/v1/files/upload_all",
+        "POST:/open-apis/drive/v1/files/upload_prepare",
+        "POST:/open-apis/drive/v1/files/upload_part",
+        "POST:/open-apis/drive/v1/files/upload_finish"
+      ],
+      "backend": [
+        "POST:/open-apis/drive/v1/files/upload_all",
+        "POST:/open-apis/drive/v1/files/upload_prepare",
+        "POST:/open-apis/drive/v1/files/upload_part",
+        "POST:/open-apis/drive/v1/files/upload_finish"
+      ]
+    },
+    {
+      "toolAction": "feishu_fetch_doc.default",
+      "category": "mcp-doc",
+      "reason": "contains non-OAPI backend flow",
+      "officialOapiEndpoints": [],
+      "backend": [
+        "MCP:fetch-doc"
+      ]
+    },
+    {
+      "toolAction": "feishu_fetch_doc.fetch-doc",
+      "category": "mcp-doc",
+      "reason": "contains non-OAPI backend flow",
+      "officialOapiEndpoints": [],
+      "backend": [
+        "MCP:fetch-doc"
+      ]
+    },
+    {
+      "toolAction": "feishu_get_user.default",
+      "category": "common",
+      "reason": "multiple official OAPI endpoints",
+      "officialOapiEndpoints": [
+        "GET:/open-apis/authen/v1/user_info",
+        "GET:/open-apis/contact/v3/users/:user_id"
+      ],
+      "backend": [
+        "GET:/open-apis/authen/v1/user_info",
+        "GET:/open-apis/contact/v3/users/:user_id"
+      ]
+    },
+    {
+      "toolAction": "feishu_get_user.get",
+      "category": "common",
+      "reason": "multiple official OAPI endpoints",
+      "officialOapiEndpoints": [
+        "GET:/open-apis/authen/v1/user_info",
+        "GET:/open-apis/contact/v3/users/:user_id"
+      ],
+      "backend": [
+        "GET:/open-apis/authen/v1/user_info",
+        "GET:/open-apis/contact/v3/users/:user_id"
+      ]
+    },
+    {
+      "toolAction": "feishu_oauth_batch_auth.authorize_all",
+      "category": "auth",
+      "reason": "no official OAPI endpoint link available",
+      "officialOapiEndpoints": [],
+      "backend": []
+    },
+    {
+      "toolAction": "feishu_oauth.revoke",
+      "category": "auth",
+      "reason": "no official OAPI endpoint link available",
+      "officialOapiEndpoints": [],
+      "backend": []
+    },
+    {
+      "toolAction": "feishu_sheet.append",
+      "category": "sheets",
+      "reason": "multiple official OAPI endpoints",
+      "officialOapiEndpoints": [
+        "POST:/open-apis/sheets/v2/spreadsheets/:token/values_append",
+        "GET:/open-apis/wiki/v2/spaces/get_node",
+        "GET:/open-apis/sheets/v3/spreadsheets/:spreadsheet_token/sheets/query"
+      ],
+      "backend": [
+        "POST:/open-apis/sheets/v2/spreadsheets/:token/values_append",
+        "GET:/open-apis/wiki/v2/spaces/get_node",
+        "GET:/open-apis/sheets/v3/spreadsheets/:spreadsheet_token/sheets/query"
+      ]
+    },
+    {
+      "toolAction": "feishu_sheet.create",
+      "category": "sheets",
+      "reason": "multiple official OAPI endpoints",
+      "officialOapiEndpoints": [
+        "POST:/open-apis/sheets/v3/spreadsheets",
+        "GET:/open-apis/sheets/v3/spreadsheets/:spreadsheet_token/sheets/query",
+        "PUT:/open-apis/sheets/v2/spreadsheets/:token/values"
+      ],
+      "backend": [
+        "POST:/open-apis/sheets/v3/spreadsheets",
+        "GET:/open-apis/sheets/v3/spreadsheets/:spreadsheet_token/sheets/query",
+        "PUT:/open-apis/sheets/v2/spreadsheets/:token/values"
+      ]
+    },
+    {
+      "toolAction": "feishu_sheet.export",
+      "category": "sheets",
+      "reason": "multiple official OAPI endpoints",
+      "officialOapiEndpoints": [
+        "POST:/open-apis/drive/v1/export_tasks",
+        "GET:/open-apis/drive/v1/export_tasks/:ticket",
+        "GET:/open-apis/wiki/v2/spaces/get_node"
+      ],
+      "backend": [
+        "POST:/open-apis/drive/v1/export_tasks",
+        "GET:/open-apis/drive/v1/export_tasks/:ticket",
+        "GET:/open-apis/drive/v1/export_tasks/file/:file_token/download",
+        "GET:/open-apis/wiki/v2/spaces/get_node"
+      ]
+    },
+    {
+      "toolAction": "feishu_sheet.find",
+      "category": "sheets",
+      "reason": "multiple official OAPI endpoints",
+      "officialOapiEndpoints": [
+        "POST:/open-apis/sheets/v3/spreadsheets/:spreadsheet_token/sheets/:sheet_id/find",
+        "GET:/open-apis/wiki/v2/spaces/get_node"
+      ],
+      "backend": [
+        "POST:/open-apis/sheets/v3/spreadsheets/:spreadsheet_token/sheets/:sheet_id/find",
+        "GET:/open-apis/wiki/v2/spaces/get_node"
+      ]
+    },
+    {
+      "toolAction": "feishu_sheet.info",
+      "category": "sheets",
+      "reason": "multiple official OAPI endpoints",
+      "officialOapiEndpoints": [
+        "GET:/open-apis/sheets/v3/spreadsheets/:spreadsheet_token",
+        "GET:/open-apis/sheets/v3/spreadsheets/:spreadsheet_token/sheets/query",
+        "GET:/open-apis/wiki/v2/spaces/get_node"
+      ],
+      "backend": [
+        "GET:/open-apis/sheets/v3/spreadsheets/:spreadsheet_token",
+        "GET:/open-apis/sheets/v3/spreadsheets/:spreadsheet_token/sheets/query",
+        "GET:/open-apis/wiki/v2/spaces/get_node"
+      ]
+    },
+    {
+      "toolAction": "feishu_sheet.read",
+      "category": "sheets",
+      "reason": "multiple official OAPI endpoints",
+      "officialOapiEndpoints": [
+        "GET:/open-apis/sheets/v2/spreadsheets/:token/values/:range",
+        "GET:/open-apis/wiki/v2/spaces/get_node",
+        "GET:/open-apis/sheets/v3/spreadsheets/:spreadsheet_token/sheets/query"
+      ],
+      "backend": [
+        "GET:/open-apis/sheets/v2/spreadsheets/:token/values/:range",
+        "GET:/open-apis/wiki/v2/spaces/get_node",
+        "GET:/open-apis/sheets/v3/spreadsheets/:spreadsheet_token/sheets/query"
+      ]
+    },
+    {
+      "toolAction": "feishu_sheet.write",
+      "category": "sheets",
+      "reason": "multiple official OAPI endpoints",
+      "officialOapiEndpoints": [
+        "PUT:/open-apis/sheets/v2/spreadsheets/:token/values",
+        "GET:/open-apis/wiki/v2/spaces/get_node",
+        "GET:/open-apis/sheets/v3/spreadsheets/:spreadsheet_token/sheets/query"
+      ],
+      "backend": [
+        "PUT:/open-apis/sheets/v2/spreadsheets/:token/values",
+        "GET:/open-apis/wiki/v2/spaces/get_node",
+        "GET:/open-apis/sheets/v3/spreadsheets/:spreadsheet_token/sheets/query"
+      ]
+    },
+    {
+      "toolAction": "feishu_update_doc.default",
+      "category": "mcp-doc",
+      "reason": "contains non-OAPI backend flow",
+      "officialOapiEndpoints": [],
+      "backend": [
+        "MCP:update-doc"
+      ]
+    },
+    {
+      "toolAction": "feishu_update_doc.update-doc",
+      "category": "mcp-doc",
+      "reason": "contains non-OAPI backend flow",
+      "officialOapiEndpoints": [],
+      "backend": [
+        "MCP:update-doc"
+      ]
+    }
+  ]
+}

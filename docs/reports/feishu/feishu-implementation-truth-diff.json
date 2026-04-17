@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-04-17T02:53:51.607Z",
+  "generatedAt": "2026-04-17T03:19:29.705Z",
   "references": {
-    "supportedOperations": "docs/references/feishu-supported-operations.json",
-    "canonicalMetadata": "docs/references/feishu-canonical-metadata.json"
+    "supportedOperations": "docs/reports/feishu/feishu-supported-operations.json",
+    "canonicalMetadata": "docs/reports/feishu/feishu-canonical-metadata.json"
   },
   "semantics": {
     "declaredAuth": "Code-derived auth declaration/observation from src/tools via supported-operations.",

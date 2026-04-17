@@ -8,7 +8,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 SCOPE_URL = 'https://open.feishu.cn/api/tools/scope/list'
-OUT_JSON = ROOT / 'docs' / 'references' / 'feishu-scope-list.json'
+OUT_JSON = ROOT / 'docs' / 'snapshots' / 'feishu' / 'feishu-scope-list.json'
 
 
 def fetch_scope_list() -> dict:

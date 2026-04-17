@@ -5,10 +5,10 @@ import path from 'node:path';
 
 const repoRoot = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
 
-const SUPPORTED_OPS_PATH = path.join(repoRoot, 'docs', 'references', 'feishu-supported-operations.json');
-const CANONICAL_METADATA_PATH = path.join(repoRoot, 'docs', 'references', 'feishu-canonical-metadata.json');
-const OUT_JSON_PATH = path.join(repoRoot, 'docs', 'references', 'feishu-implementation-truth-diff.json');
-const OUT_MD_PATH = path.join(repoRoot, 'docs', 'references', 'feishu-implementation-truth-diff.md');
+const SUPPORTED_OPS_PATH = path.join(repoRoot, 'docs', 'reports', 'feishu', 'feishu-supported-operations.json');
+const CANONICAL_METADATA_PATH = path.join(repoRoot, 'docs', 'reports', 'feishu', 'feishu-canonical-metadata.json');
+const OUT_JSON_PATH = path.join(repoRoot, 'docs', 'reports', 'feishu', 'feishu-implementation-truth-diff.json');
+const OUT_MD_PATH = path.join(repoRoot, 'docs', 'reports', 'feishu', 'feishu-implementation-truth-diff.md');
 
 function parseArgs(argv) {
   return {

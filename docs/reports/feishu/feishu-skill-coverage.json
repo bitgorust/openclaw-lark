@@ -1,0 +1,837 @@
+{
+  "generatedAt": "2026-04-17T03:19:29.939Z",
+  "references": {
+    "supportedOperations": "docs/reports/feishu/feishu-supported-operations.json",
+    "skillsRoot": "skills"
+  },
+  "summary": {
+    "skillCount": 19,
+    "toolCount": 47,
+    "eligibleToolCount": 43,
+    "coveredToolCount": 43,
+    "uncoveredToolCount": 0,
+    "excludedToolCount": 4,
+    "eligibleOperationCount": 135,
+    "coveredOperationCount": 135,
+    "unknownReferencedToolCount": 0,
+    "skillsWithUnknownReferencedTools": 0
+  },
+  "categorySummary": [
+    {
+      "category": "approval",
+      "eligibleToolCount": 5,
+      "coveredToolCount": 5,
+      "uncoveredToolCount": 0,
+      "excludedToolCount": 0,
+      "operationCount": 18
+    },
+    {
+      "category": "attendance",
+      "eligibleToolCount": 2,
+      "coveredToolCount": 2,
+      "uncoveredToolCount": 0,
+      "excludedToolCount": 0,
+      "operationCount": 3
+    },
+    {
+      "category": "auth",
+      "eligibleToolCount": 0,
+      "coveredToolCount": 0,
+      "uncoveredToolCount": 0,
+      "excludedToolCount": 2,
+      "operationCount": 2
+    },
+    {
+      "category": "bitable",
+      "eligibleToolCount": 5,
+      "coveredToolCount": 5,
+      "uncoveredToolCount": 0,
+      "excludedToolCount": 0,
+      "operationCount": 24
+    },
+    {
+      "category": "calendar",
+      "eligibleToolCount": 4,
+      "coveredToolCount": 4,
+      "uncoveredToolCount": 0,
+      "excludedToolCount": 0,
+      "operationCount": 15
+    },
+    {
+      "category": "chat",
+      "eligibleToolCount": 2,
+      "coveredToolCount": 2,
+      "uncoveredToolCount": 0,
+      "excludedToolCount": 0,
+      "operationCount": 3
+    },
+    {
+      "category": "common",
+      "eligibleToolCount": 2,
+      "coveredToolCount": 2,
+      "uncoveredToolCount": 0,
+      "excludedToolCount": 0,
+      "operationCount": 2
+    },
+    {
+      "category": "doc",
+      "eligibleToolCount": 2,
+      "coveredToolCount": 2,
+      "uncoveredToolCount": 0,
+      "excludedToolCount": 0,
+      "operationCount": 5
+    },
+    {
+      "category": "drive",
+      "eligibleToolCount": 1,
+      "coveredToolCount": 1,
+      "uncoveredToolCount": 0,
+      "excludedToolCount": 0,
+      "operationCount": 7
+    },
+    {
+      "category": "im",
+      "eligibleToolCount": 5,
+      "coveredToolCount": 5,
+      "uncoveredToolCount": 0,
+      "excludedToolCount": 1,
+      "operationCount": 7
+    },
+    {
+      "category": "interaction",
+      "eligibleToolCount": 0,
+      "coveredToolCount": 0,
+      "uncoveredToolCount": 0,
+      "excludedToolCount": 1,
+      "operationCount": 1
+    },
+    {
+      "category": "mail",
+      "eligibleToolCount": 1,
+      "coveredToolCount": 1,
+      "uncoveredToolCount": 0,
+      "excludedToolCount": 0,
+      "operationCount": 4
+    },
+    {
+      "category": "mcp-doc",
+      "eligibleToolCount": 3,
+      "coveredToolCount": 3,
+      "uncoveredToolCount": 0,
+      "excludedToolCount": 0,
+      "operationCount": 3
+    },
+    {
+      "category": "meeting",
+      "eligibleToolCount": 3,
+      "coveredToolCount": 3,
+      "uncoveredToolCount": 0,
+      "excludedToolCount": 0,
+      "operationCount": 14
+    },
+    {
+      "category": "search",
+      "eligibleToolCount": 1,
+      "coveredToolCount": 1,
+      "uncoveredToolCount": 0,
+      "excludedToolCount": 0,
+      "operationCount": 1
+    },
+    {
+      "category": "sheets",
+      "eligibleToolCount": 1,
+      "coveredToolCount": 1,
+      "uncoveredToolCount": 0,
+      "excludedToolCount": 0,
+      "operationCount": 7
+    },
+    {
+      "category": "task",
+      "eligibleToolCount": 4,
+      "coveredToolCount": 4,
+      "uncoveredToolCount": 0,
+      "excludedToolCount": 0,
+      "operationCount": 15
+    },
+    {
+      "category": "wiki",
+      "eligibleToolCount": 2,
+      "coveredToolCount": 2,
+      "uncoveredToolCount": 0,
+      "excludedToolCount": 0,
+      "operationCount": 8
+    }
+  ],
+  "items": [
+    {
+      "tool": "feishu_approval_cc",
+      "category": "approval",
+      "transport": "oapi",
+      "auth": "user",
+      "operationCount": 1,
+      "source": "src/tools/oapi/approval/cc-search.ts",
+      "skillEligible": true,
+      "exclusionReason": null,
+      "matchingSkills": [
+        "feishu-approval"
+      ],
+      "coverageStatus": "covered"
+    },
+    {
+      "tool": "feishu_approval_comment",
+      "category": "approval",
+      "transport": "oapi",
+      "auth": "user",
+      "operationCount": 4,
+      "source": "src/tools/oapi/approval/comment.ts",
+      "skillEligible": true,
+      "exclusionReason": null,
+      "matchingSkills": [
+        "feishu-approval"
+      ],
+      "coverageStatus": "covered"
+    },
+    {
+      "tool": "feishu_approval_instance",
+      "category": "approval",
+      "transport": "oapi",
+      "auth": "user",
+      "operationCount": 2,
+      "source": "src/tools/oapi/approval/instance.ts",
+      "skillEligible": true,
+      "exclusionReason": null,
+      "matchingSkills": [
+        "feishu-approval"
+      ],
+      "coverageStatus": "covered"
+    },
+    {
+      "tool": "feishu_approval_task",
+      "category": "approval",
+      "transport": "oapi",
+      "auth": "user",
+      "operationCount": 6,
+      "source": "src/tools/oapi/approval/task.ts",
+      "skillEligible": true,
+      "exclusionReason": null,
+      "matchingSkills": [
+        "feishu-approval"
+      ],
+      "coverageStatus": "covered"
+    },
+    {
+      "tool": "feishu_approval_task_search",
+      "category": "approval",
+      "transport": "oapi",
+      "auth": "user",
+      "operationCount": 5,
+      "source": "src/tools/oapi/approval/task-search.ts",
+      "skillEligible": true,
+      "exclusionReason": null,
+      "matchingSkills": [
+        "feishu-approval"
+      ],
+      "coverageStatus": "covered"
+    },
+    {
+      "tool": "feishu_ask_user_question",
+      "category": "interaction",
+      "transport": "plugin",
+      "auth": "user",
+      "operationCount": 1,
+      "source": "src/tools/ask-user-question.ts",
+      "skillEligible": false,
+      "exclusionReason": "interaction primitive used by workflows, not a standalone Feishu domain skill",
+      "matchingSkills": [],
+      "coverageStatus": "excluded"
+    },
+    {
+      "tool": "feishu_attendance_group",
+      "category": "attendance",
+      "transport": "oapi",
+      "auth": "user",
+      "operationCount": 2,
+      "source": "src/tools/oapi/attendance/group.ts",
+      "skillEligible": true,
+      "exclusionReason": null,
+      "matchingSkills": [
+        "feishu-attendance"
+      ],
+      "coverageStatus": "covered"
+    },
+    {
+      "tool": "feishu_attendance_shift",
+      "category": "attendance",
+      "transport": "oapi",
+      "auth": "tenant",
+      "operationCount": 1,
+      "source": "src/tools/oapi/attendance/shift.ts",
+      "skillEligible": true,
+      "exclusionReason": null,
+      "matchingSkills": [
+        "feishu-attendance"
+      ],
+      "coverageStatus": "covered"
+    },
+    {
+      "tool": "feishu_bitable_app",
+      "category": "bitable",
+      "transport": "oapi",
+      "auth": "user",
+      "operationCount": 5,
+      "source": "src/tools/oapi/bitable/app.ts",
+      "skillEligible": true,
+      "exclusionReason": null,
+      "matchingSkills": [
+        "feishu-bitable",
+        "feishu-fetch-doc"
+      ],
+      "coverageStatus": "covered"
+    },
+    {
+      "tool": "feishu_bitable_app_table",
+      "category": "bitable",
+      "transport": "oapi",
+      "auth": "user",
+      "operationCount": 4,
+      "source": "src/tools/oapi/bitable/app-table.ts",
+      "skillEligible": true,
+      "exclusionReason": null,
+      "matchingSkills": [
+        "feishu-bitable",
+        "feishu-fetch-doc"
+      ],
+      "coverageStatus": "covered"
+    },
+    {
+      "tool": "feishu_bitable_app_table_field",
+      "category": "bitable",
+      "transport": "oapi",
+      "auth": "user",
+      "operationCount": 4,
+      "source": "src/tools/oapi/bitable/app-table-field.ts",
+      "skillEligible": true,
+      "exclusionReason": null,
+      "matchingSkills": [
+        "feishu-bitable",
+        "feishu-fetch-doc"
+      ],
+      "coverageStatus": "covered"
+    },
+    {
+      "tool": "feishu_bitable_app_table_record",
+      "category": "bitable",
+      "transport": "oapi",
+      "auth": "user",
+      "operationCount": 7,
+      "source": "src/tools/oapi/bitable/app-table-record.ts",
+      "skillEligible": true,
+      "exclusionReason": null,
+      "matchingSkills": [
+        "feishu-bitable",
+        "feishu-fetch-doc"
+      ],
+      "coverageStatus": "covered"
+    },
+    {
+      "tool": "feishu_bitable_app_table_view",
+      "category": "bitable",
+      "transport": "oapi",
+      "auth": "user",
+      "operationCount": 4,
+      "source": "src/tools/oapi/bitable/app-table-view.ts",
+      "skillEligible": true,
+      "exclusionReason": null,
+      "matchingSkills": [
+        "feishu-bitable",
+        "feishu-fetch-doc"
+      ],
+      "coverageStatus": "covered"
+    },
+    {
+      "tool": "feishu_calendar_calendar",
+      "category": "calendar",
+      "transport": "oapi",
+      "auth": "user",
+      "operationCount": 3,
+      "source": "src/tools/oapi/calendar/calendar.ts",
+      "skillEligible": true,
+      "exclusionReason": null,
+      "matchingSkills": [
+        "feishu-calendar"
+      ],
+      "coverageStatus": "covered"
+    },
+    {
+      "tool": "feishu_calendar_event",
+      "category": "calendar",
+      "transport": "oapi",
+      "auth": "user",
+      "operationCount": 9,
+      "source": "src/tools/oapi/calendar/event.ts",
+      "skillEligible": true,
+      "exclusionReason": null,
+      "matchingSkills": [
+        "feishu-calendar"
+      ],
+      "coverageStatus": "covered"
+    },
+    {
+      "tool": "feishu_calendar_event_attendee",
+      "category": "calendar",
+      "transport": "oapi",
+      "auth": "user",
+      "operationCount": 2,
+      "source": "src/tools/oapi/calendar/event-attendee.ts",
+      "skillEligible": true,
+      "exclusionReason": null,
+      "matchingSkills": [
+        "feishu-calendar"
+      ],
+      "coverageStatus": "covered"
+    },
+    {
+      "tool": "feishu_calendar_freebusy",
+      "category": "calendar",
+      "transport": "oapi",
+      "auth": "user",
+      "operationCount": 1,
+      "source": "src/tools/oapi/calendar/freebusy.ts",
+      "skillEligible": true,
+      "exclusionReason": null,
+      "matchingSkills": [
+        "feishu-calendar"
+      ],
+      "coverageStatus": "covered"
+    },
+    {
+      "tool": "feishu_chat",
+      "category": "chat",
+      "transport": "oapi",
+      "auth": "user",
+      "operationCount": 2,
+      "source": "src/tools/oapi/chat/chat.ts",
+      "skillEligible": true,
+      "exclusionReason": null,
+      "matchingSkills": [
+        "feishu-search"
+      ],
+      "coverageStatus": "covered"
+    },
+    {
+      "tool": "feishu_chat_members",
+      "category": "chat",
+      "transport": "oapi",
+      "auth": "user",
+      "operationCount": 1,
+      "source": "src/tools/oapi/chat/members.ts",
+      "skillEligible": true,
+      "exclusionReason": null,
+      "matchingSkills": [
+        "feishu-search"
+      ],
+      "coverageStatus": "covered"
+    },
+    {
+      "tool": "feishu_create_doc",
+      "category": "mcp-doc",
+      "transport": "mcp",
+      "auth": "user",
+      "operationCount": 1,
+      "source": "src/tools/mcp/doc/create.ts",
+      "skillEligible": true,
+      "exclusionReason": null,
+      "matchingSkills": [
+        "feishu-create-doc"
+      ],
+      "coverageStatus": "covered"
+    },
+    {
+      "tool": "feishu_doc_comments",
+      "category": "doc",
+      "transport": "oapi",
+      "auth": "user",
+      "operationCount": 3,
+      "source": "src/tools/oapi/drive/doc-comments.ts",
+      "skillEligible": true,
+      "exclusionReason": null,
+      "matchingSkills": [
+        "feishu-doc-collab"
+      ],
+      "coverageStatus": "covered"
+    },
+    {
+      "tool": "feishu_doc_media",
+      "category": "doc",
+      "transport": "oapi",
+      "auth": "user",
+      "operationCount": 2,
+      "source": "src/tools/oapi/drive/doc-media.ts",
+      "skillEligible": true,
+      "exclusionReason": null,
+      "matchingSkills": [
+        "feishu-create-doc",
+        "feishu-doc-collab",
+        "feishu-fetch-doc"
+      ],
+      "coverageStatus": "covered"
+    },
+    {
+      "tool": "feishu_drive_file",
+      "category": "drive",
+      "transport": "oapi",
+      "auth": "user",
+      "operationCount": 7,
+      "source": "src/tools/oapi/drive/file.ts",
+      "skillEligible": true,
+      "exclusionReason": null,
+      "matchingSkills": [
+        "feishu-drive-wiki"
+      ],
+      "coverageStatus": "covered"
+    },
+    {
+      "tool": "feishu_fetch_doc",
+      "category": "mcp-doc",
+      "transport": "mcp",
+      "auth": "user",
+      "operationCount": 1,
+      "source": "src/tools/mcp/doc/fetch.ts",
+      "skillEligible": true,
+      "exclusionReason": null,
+      "matchingSkills": [
+        "feishu-doc-collab",
+        "feishu-fetch-doc"
+      ],
+      "coverageStatus": "covered"
+    },
+    {
+      "tool": "feishu_get_user",
+      "category": "common",
+      "transport": "oapi",
+      "auth": "user",
+      "operationCount": 1,
+      "source": "src/tools/oapi/common/get-user.ts",
+      "skillEligible": true,
+      "exclusionReason": null,
+      "matchingSkills": [
+        "feishu-search"
+      ],
+      "coverageStatus": "covered"
+    },
+    {
+      "tool": "feishu_im_bot_image",
+      "category": "im",
+      "transport": "oapi",
+      "auth": "tenant",
+      "operationCount": 1,
+      "source": "src/tools/tat/im/resource.ts",
+      "skillEligible": false,
+      "exclusionReason": "tenant-side helper for bot-origin resources; not a primary user-invoked skill surface",
+      "matchingSkills": [],
+      "coverageStatus": "excluded"
+    },
+    {
+      "tool": "feishu_im_user_fetch_resource",
+      "category": "im",
+      "transport": "oapi",
+      "auth": "tenant",
+      "operationCount": 1,
+      "source": "src/tools/oapi/im/resource.ts",
+      "skillEligible": true,
+      "exclusionReason": null,
+      "matchingSkills": [
+        "feishu-im-read"
+      ],
+      "coverageStatus": "covered"
+    },
+    {
+      "tool": "feishu_im_user_get_messages",
+      "category": "im",
+      "transport": "oapi",
+      "auth": "user",
+      "operationCount": 1,
+      "source": "src/tools/oapi/im/message-read.ts",
+      "skillEligible": true,
+      "exclusionReason": null,
+      "matchingSkills": [
+        "feishu-im-read"
+      ],
+      "coverageStatus": "covered"
+    },
+    {
+      "tool": "feishu_im_user_get_thread_messages",
+      "category": "im",
+      "transport": "oapi",
+      "auth": "user",
+      "operationCount": 1,
+      "source": "src/tools/oapi/im/message-read.ts",
+      "skillEligible": true,
+      "exclusionReason": null,
+      "matchingSkills": [
+        "feishu-im-read"
+      ],
+      "coverageStatus": "covered"
+    },
+    {
+      "tool": "feishu_im_user_message",
+      "category": "im",
+      "transport": "oapi",
+      "auth": "user",
+      "operationCount": 2,
+      "source": "src/tools/oapi/im/message.ts",
+      "skillEligible": true,
+      "exclusionReason": null,
+      "matchingSkills": [
+        "feishu-im-send"
+      ],
+      "coverageStatus": "covered"
+    },
+    {
+      "tool": "feishu_im_user_search_messages",
+      "category": "im",
+      "transport": "oapi",
+      "auth": "user",
+      "operationCount": 1,
+      "source": "src/tools/oapi/im/message-read.ts",
+      "skillEligible": true,
+      "exclusionReason": null,
+      "matchingSkills": [
+        "feishu-im-read"
+      ],
+      "coverageStatus": "covered"
+    },
+    {
+      "tool": "feishu_mail_message",
+      "category": "mail",
+      "transport": "oapi",
+      "auth": "user",
+      "operationCount": 4,
+      "source": "src/tools/oapi/mail/message.ts",
+      "skillEligible": true,
+      "exclusionReason": null,
+      "matchingSkills": [
+        "feishu-mail"
+      ],
+      "coverageStatus": "covered"
+    },
+    {
+      "tool": "feishu_meeting",
+      "category": "meeting",
+      "transport": "oapi",
+      "auth": "user",
+      "operationCount": 4,
+      "source": "src/tools/oapi/meeting/meeting.ts",
+      "skillEligible": true,
+      "exclusionReason": null,
+      "matchingSkills": [
+        "feishu-meeting"
+      ],
+      "coverageStatus": "covered"
+    },
+    {
+      "tool": "feishu_meeting_reserve",
+      "category": "meeting",
+      "transport": "oapi",
+      "auth": "user",
+      "operationCount": 5,
+      "source": "src/tools/oapi/meeting/reserve.ts",
+      "skillEligible": true,
+      "exclusionReason": null,
+      "matchingSkills": [
+        "feishu-meeting"
+      ],
+      "coverageStatus": "covered"
+    },
+    {
+      "tool": "feishu_minutes",
+      "category": "meeting",
+      "transport": "oapi",
+      "auth": "user",
+      "operationCount": 5,
+      "source": "src/tools/oapi/meeting/minutes.ts",
+      "skillEligible": true,
+      "exclusionReason": null,
+      "matchingSkills": [
+        "feishu-meeting"
+      ],
+      "coverageStatus": "covered"
+    },
+    {
+      "tool": "feishu_oauth",
+      "category": "auth",
+      "transport": "plugin",
+      "auth": "user",
+      "operationCount": 1,
+      "source": "src/tools/oauth.ts",
+      "skillEligible": false,
+      "exclusionReason": "authorization flow helper; normally triggered by runtime remediation rather than explicit skill selection",
+      "matchingSkills": [
+        "feishu-auth",
+        "feishu-troubleshoot"
+      ],
+      "coverageStatus": "excluded"
+    },
+    {
+      "tool": "feishu_oauth_batch_auth",
+      "category": "auth",
+      "transport": "plugin",
+      "auth": "user",
+      "operationCount": 1,
+      "source": "src/tools/oauth-batch-auth.ts",
+      "skillEligible": false,
+      "exclusionReason": "authorization flow helper; normally triggered by remediation or explicit admin intent",
+      "matchingSkills": [
+        "feishu-auth",
+        "feishu-troubleshoot"
+      ],
+      "coverageStatus": "excluded"
+    },
+    {
+      "tool": "feishu_search_doc_wiki",
+      "category": "search",
+      "transport": "oapi",
+      "auth": "user",
+      "operationCount": 1,
+      "source": "src/tools/oapi/search/doc-search.ts",
+      "skillEligible": true,
+      "exclusionReason": null,
+      "matchingSkills": [
+        "feishu-search"
+      ],
+      "coverageStatus": "covered"
+    },
+    {
+      "tool": "feishu_search_user",
+      "category": "common",
+      "transport": "oapi",
+      "auth": "user",
+      "operationCount": 1,
+      "source": "src/tools/oapi/common/search-user.ts",
+      "skillEligible": true,
+      "exclusionReason": null,
+      "matchingSkills": [
+        "feishu-search"
+      ],
+      "coverageStatus": "covered"
+    },
+    {
+      "tool": "feishu_sheet",
+      "category": "sheets",
+      "transport": "oapi",
+      "auth": "user",
+      "operationCount": 7,
+      "source": "src/tools/oapi/sheets/sheet.ts",
+      "skillEligible": true,
+      "exclusionReason": null,
+      "matchingSkills": [
+        "feishu-fetch-doc",
+        "feishu-sheet"
+      ],
+      "coverageStatus": "covered"
+    },
+    {
+      "tool": "feishu_task_comment",
+      "category": "task",
+      "transport": "oapi",
+      "auth": "user",
+      "operationCount": 3,
+      "source": "src/tools/oapi/task/comment.ts",
+      "skillEligible": true,
+      "exclusionReason": null,
+      "matchingSkills": [
+        "feishu-task"
+      ],
+      "coverageStatus": "covered"
+    },
+    {
+      "tool": "feishu_task_subtask",
+      "category": "task",
+      "transport": "oapi",
+      "auth": "user",
+      "operationCount": 2,
+      "source": "src/tools/oapi/task/subtask.ts",
+      "skillEligible": true,
+      "exclusionReason": null,
+      "matchingSkills": [
+        "feishu-task"
+      ],
+      "coverageStatus": "covered"
+    },
+    {
+      "tool": "feishu_task_task",
+      "category": "task",
+      "transport": "oapi",
+      "auth": "user",
+      "operationCount": 4,
+      "source": "src/tools/oapi/task/task.ts",
+      "skillEligible": true,
+      "exclusionReason": null,
+      "matchingSkills": [
+        "feishu-task"
+      ],
+      "coverageStatus": "covered"
+    },
+    {
+      "tool": "feishu_task_tasklist",
+      "category": "task",
+      "transport": "oapi",
+      "auth": "user",
+      "operationCount": 6,
+      "source": "src/tools/oapi/task/tasklist.ts",
+      "skillEligible": true,
+      "exclusionReason": null,
+      "matchingSkills": [
+        "feishu-task"
+      ],
+      "coverageStatus": "covered"
+    },
+    {
+      "tool": "feishu_update_doc",
+      "category": "mcp-doc",
+      "transport": "mcp",
+      "auth": "user",
+      "operationCount": 1,
+      "source": "src/tools/mcp/doc/update.ts",
+      "skillEligible": true,
+      "exclusionReason": null,
+      "matchingSkills": [
+        "feishu-update-doc"
+      ],
+      "coverageStatus": "covered"
+    },
+    {
+      "tool": "feishu_wiki_space",
+      "category": "wiki",
+      "transport": "oapi",
+      "auth": "user",
+      "operationCount": 3,
+      "source": "src/tools/oapi/wiki/space.ts",
+      "skillEligible": true,
+      "exclusionReason": null,
+      "matchingSkills": [
+        "feishu-doc-collab",
+        "feishu-drive-wiki",
+        "feishu-fetch-doc"
+      ],
+      "coverageStatus": "covered"
+    },
+    {
+      "tool": "feishu_wiki_space_node",
+      "category": "wiki",
+      "transport": "oapi",
+      "auth": "user",
+      "operationCount": 5,
+      "source": "src/tools/oapi/wiki/space-node.ts",
+      "skillEligible": true,
+      "exclusionReason": null,
+      "matchingSkills": [
+        "feishu-doc-collab",
+        "feishu-drive-wiki",
+        "feishu-fetch-doc"
+      ],
+      "coverageStatus": "covered"
+    }
+  ],
+  "unknownToolReferences": []
+}

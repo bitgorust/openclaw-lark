@@ -5,7 +5,7 @@ This note identifies Feishu capabilities that are available in the official serv
 ## Current Baseline
 
 - Existing exposed surface: 43 tools, 118 operations, 8 chat commands.
-- Current skill coverage from `docs/references/feishu-skill-coverage.json`: 39/39 eligible tools covered, 114/114 eligible operations covered, 0 unknown tool references.
+- Current skill coverage from `docs/reports/feishu/feishu-skill-coverage.json`: 39/39 eligible tools covered, 114/114 eligible operations covered, 0 unknown tool references.
 - Existing skills cover: approval, attendance, bitable, calendar, search, sheet, task, IM read/send, doc create/fetch/update, doc collaboration, drive/wiki, auth/troubleshooting.
 - Gaps fall into two buckets:
   - Existing tools with no dedicated skill.

@@ -2,9 +2,9 @@
 
 This document prioritizes the next Feishu skills to add to this repository based on:
 
-- the current registered tool and command surface in [docs/references/feishu-supported-operations.md](/data/Workspace/openclaw-lark/docs/references/feishu-supported-operations.md)
-- the official server API inventory in [docs/references/feishu-server-api-list.json](/data/Workspace/openclaw-lark/docs/references/feishu-server-api-list.json)
-- the current gap analysis in [docs/references/feishu-skill-gap-analysis.md](/data/Workspace/openclaw-lark/docs/references/feishu-skill-gap-analysis.md)
+- the current registered tool and command surface in [docs/reports/feishu/feishu-supported-operations.md](/data/Workspace/openclaw-lark/docs/reports/feishu/feishu-supported-operations.md)
+- the official server API inventory in [docs/snapshots/feishu/feishu-server-api-list.json](/data/Workspace/openclaw-lark/docs/snapshots/feishu/feishu-server-api-list.json)
+- the current gap analysis in [docs/reports/feishu/feishu-skill-gap-analysis.md](/data/Workspace/openclaw-lark/docs/reports/feishu/feishu-skill-gap-analysis.md)
 
 ## Goal
 

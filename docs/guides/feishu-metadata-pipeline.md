@@ -21,7 +21,7 @@
 
 - `src/tools/**/*.ts`
 - `src/commands/index.ts`
-- `docs/references/feishu-server-api-list.json`
+- `docs/snapshots/feishu/feishu-server-api-list.json`
 
 主要脚本：
 
@@ -30,10 +30,10 @@
 
 主要输出：
 
-- `docs/references/feishu-supported-operations.json`
-- `docs/references/feishu-supported-operations.md`
-- `docs/references/feishu-implementation-truth-diff.json`
-- `docs/references/feishu-implementation-truth-diff.md`
+- `docs/reports/feishu/feishu-supported-operations.json`
+- `docs/reports/feishu/feishu-supported-operations.md`
+- `docs/reports/feishu/feishu-implementation-truth-diff.json`
+- `docs/reports/feishu/feishu-implementation-truth-diff.md`
 
 说明：
 
@@ -48,10 +48,10 @@
 
 主要输入：
 
-- `docs/references/feishu-supported-operations.json`
-- `docs/references/feishu-server-api-list.json`
-- `docs/references/feishu-scope-list.json`
-- `docs/references/feishu-official-security.json`
+- `docs/reports/feishu/feishu-supported-operations.json`
+- `docs/snapshots/feishu/feishu-server-api-list.json`
+- `docs/snapshots/feishu/feishu-scope-list.json`
+- `docs/snapshots/feishu/feishu-official-security.json`
 
 主要脚本：
 
@@ -63,11 +63,11 @@
 
 主要输出：
 
-- `docs/references/feishu-official-security.json`
-- `docs/references/feishu-canonical-metadata.json`
-- `docs/references/feishu-canonical-metadata.md`
-- `docs/references/feishu-skill-coverage.json`
-- `docs/references/feishu-skill-coverage.md`
+- `docs/snapshots/feishu/feishu-official-security.json`
+- `docs/reports/feishu/feishu-canonical-metadata.json`
+- `docs/reports/feishu/feishu-canonical-metadata.md`
+- `docs/reports/feishu/feishu-skill-coverage.json`
+- `docs/reports/feishu/feishu-skill-coverage.md`
 - `src/core/generated/feishu-tool-auth.json`
 - `src/core/generated/feishu-tool-scope-specs.json`
 
@@ -120,7 +120,7 @@ pnpm feishu:refresh-metadata:check
 ### 需要刷新官方快照时
 
 ```bash
-python3 scripts/fetch_feishu_server_api_list.py > docs/references/feishu-server-api-list.json
+python3 scripts/fetch_feishu_server_api_list.py > docs/snapshots/feishu/feishu-server-api-list.json
 python3 scripts/fetch_feishu_scope_list.py
 pnpm feishu:official-security-metadata
 ```

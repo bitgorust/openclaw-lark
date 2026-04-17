@@ -697,6 +697,6 @@ Use canonical/runtime metadata for official auth and scope decisions.
 
 ## References
 
-- `docs/references/feishu-server-api-list.json`
-- `docs/references/feishu-mcp-remote-server.md`
+- `docs/snapshots/feishu/feishu-server-api-list.json`
+- `docs/snapshots/feishu/feishu-mcp-remote-server.md`
 

@@ -5,10 +5,10 @@ import path from 'node:path';
 
 const repoRoot = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
 
-const SUPPORTED_OPS_PATH = path.join(repoRoot, 'docs', 'references', 'feishu-supported-operations.json');
+const SUPPORTED_OPS_PATH = path.join(repoRoot, 'docs', 'reports', 'feishu', 'feishu-supported-operations.json');
 const SKILLS_ROOT = path.join(repoRoot, 'skills');
-const OUT_JSON_PATH = path.join(repoRoot, 'docs', 'references', 'feishu-skill-coverage.json');
-const OUT_MD_PATH = path.join(repoRoot, 'docs', 'references', 'feishu-skill-coverage.md');
+const OUT_JSON_PATH = path.join(repoRoot, 'docs', 'reports', 'feishu', 'feishu-skill-coverage.json');
+const OUT_MD_PATH = path.join(repoRoot, 'docs', 'reports', 'feishu', 'feishu-skill-coverage.md');
 
 const SKILL_ELIGIBILITY_EXCLUSIONS = new Map([
   ['feishu_im_bot_image', 'tenant-side helper for bot-origin resources; not a primary user-invoked skill surface'],

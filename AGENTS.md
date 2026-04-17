@@ -30,7 +30,7 @@ Treat this repository as an upstream-first fork. Keep `main` close to `upstream/
 Do not weaken default permission or policy checks casually. Review Feishu/OpenAPI scope changes carefully, and avoid committing secrets, app credentials, or tenant-specific configuration.
 
 ## Feishu Metadata
-When modifying Feishu scope/auth/reference metadata, keep the truth-source / canonical layer and the runtime snapshot layer distinct. See [`docs/feishu-metadata-pipeline.md`](/data/Workspace/openclaw-lark/docs/feishu-metadata-pipeline.md) for the maintained scripts, generated files, execution order, and external dependencies such as `NODE_SDK_ROOT`.
+When modifying Feishu scope/auth/reference metadata, keep the truth-source / canonical layer and the runtime snapshot layer distinct. See [`docs/guides/feishu-metadata-pipeline.md`](/data/Workspace/openclaw-lark/docs/guides/feishu-metadata-pipeline.md) for the maintained scripts, generated files, execution order, and external dependencies such as `NODE_SDK_ROOT`.
 
 ## Feishu Truth-Source Principles
 - Treat code as the truth source for what this plugin exposes: tool existence, action names, backend usage, and runtime behavior must be derived from `src/tools` and `src/commands`, then reflected into generated references such as `supported-operations`.

@@ -11,9 +11,9 @@ const feishuSdk = require('@larksuiteoapi/node-sdk');
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
 const TOOLS_ROOT = path.join(ROOT, 'src', 'tools');
 const COMMANDS_INDEX = path.join(ROOT, 'src', 'commands', 'index.ts');
-const API_LIST_JSON = path.join(ROOT, 'docs', 'references', 'feishu-server-api-list.json');
-const OUT_JSON = path.join(ROOT, 'docs', 'references', 'feishu-supported-operations.json');
-const OUT_MD = path.join(ROOT, 'docs', 'references', 'feishu-supported-operations.md');
+const API_LIST_JSON = path.join(ROOT, 'docs', 'snapshots', 'feishu', 'feishu-server-api-list.json');
+const OUT_JSON = path.join(ROOT, 'docs', 'reports', 'feishu', 'feishu-supported-operations.json');
+const OUT_MD = path.join(ROOT, 'docs', 'reports', 'feishu', 'feishu-supported-operations.md');
 const DOCS_BASE_URL = 'https://open.feishu.cn';
 const MCP_REMOTE_DOC_URL =
   'https://open.feishu.cn/document/mcp_open_tools/developers-call-remote-mcp-server';
@@ -714,8 +714,8 @@ function buildPayload() {
       officialCoverage: 'Whether the declared backend can be linked to an official Feishu API/MCP reference.',
     },
     references: {
-      serverApiList: 'docs/references/feishu-server-api-list.json',
-      mcpRemoteDoc: 'docs/references/feishu-mcp-remote-server.md',
+      serverApiList: 'docs/snapshots/feishu/feishu-server-api-list.json',
+      mcpRemoteDoc: 'docs/snapshots/feishu/feishu-mcp-remote-server.md',
       mcpRemoteDocUrl: MCP_REMOTE_DOC_URL,
     },
     totals: {

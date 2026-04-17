@@ -5,10 +5,10 @@ import path from 'node:path';
 
 const repoRoot = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
 
-const SUPPORTED_OPS_PATH = path.join(repoRoot, 'docs', 'references', 'feishu-supported-operations.json');
-const OFFICIAL_SECURITY_PATH = path.join(repoRoot, 'docs', 'references', 'feishu-official-security.json');
-const OUT_JSON_PATH = path.join(repoRoot, 'docs', 'references', 'feishu-canonical-metadata.json');
-const OUT_MD_PATH = path.join(repoRoot, 'docs', 'references', 'feishu-canonical-metadata.md');
+const SUPPORTED_OPS_PATH = path.join(repoRoot, 'docs', 'reports', 'feishu', 'feishu-supported-operations.json');
+const OFFICIAL_SECURITY_PATH = path.join(repoRoot, 'docs', 'snapshots', 'feishu', 'feishu-official-security.json');
+const OUT_JSON_PATH = path.join(repoRoot, 'docs', 'reports', 'feishu', 'feishu-canonical-metadata.json');
+const OUT_MD_PATH = path.join(repoRoot, 'docs', 'reports', 'feishu', 'feishu-canonical-metadata.md');
 const OUT_JSON_SCOPE_SPEC_PATH = path.join(repoRoot, 'src', 'core', 'generated', 'feishu-tool-scope-specs.json');
 const OUT_TS_SCOPE_SPEC_PATH = path.join(repoRoot, 'src', 'core', 'generated', 'feishu-tool-scope-specs.ts');
 const OUT_JSON_SCOPE_PATH = path.join(repoRoot, 'src', 'core', 'generated', 'feishu-tool-scopes.json');
@@ -256,8 +256,8 @@ function buildMetadata({ supportedOpsDoc, officialSecurityDoc }) {
   return {
     generatedAt: new Date().toISOString(),
     sourcePriority: [
-      'docs/references/feishu-supported-operations.json',
-      'docs/references/feishu-official-security.json',
+      'docs/reports/feishu/feishu-supported-operations.json',
+      'docs/snapshots/feishu/feishu-official-security.json',
     ],
     references: {
       supportedOperations: path.relative(repoRoot, SUPPORTED_OPS_PATH),

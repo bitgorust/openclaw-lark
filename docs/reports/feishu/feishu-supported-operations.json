@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-17T02:53:28.170Z",
+  "generatedAt": "2026-04-17T03:19:20.201Z",
   "scope": {
     "included": "Registered Feishu-facing tools and chat commands exposed by the plugin entrypoint.",
     "excluded": "Internal helper functions and lower-level channel/outbound APIs not directly registered as tools or commands."
@@ -9,8 +9,8 @@
     "officialCoverage": "Whether the declared backend can be linked to an official Feishu API/MCP reference."
   },
   "references": {
-    "serverApiList": "docs/references/feishu-server-api-list.json",
-    "mcpRemoteDoc": "docs/references/feishu-mcp-remote-server.md",
+    "serverApiList": "docs/snapshots/feishu/feishu-server-api-list.json",
+    "mcpRemoteDoc": "docs/snapshots/feishu/feishu-mcp-remote-server.md",
     "mcpRemoteDocUrl": "https://open.feishu.cn/document/mcp_open_tools/developers-call-remote-mcp-server"
   },
   "totals": {

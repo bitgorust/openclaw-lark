@@ -18,8 +18,8 @@
 - 私有发布配置集中在：
   - `package.json`
   - `.npmrc`
-  - `docs/fork-release.md`
-  - `docs/feishu-metadata-pipeline.md`
+  - `docs/guides/fork-release.md`
+  - `docs/guides/feishu-metadata-pipeline.md`
 
 ## 分支策略
 
@@ -77,7 +77,7 @@ git merge upstream/main
 
 - `package.json`
 - `.npmrc`
-- `docs/fork-release.md`
+- `docs/guides/fork-release.md`
 
 ### 3. 验证
 
@@ -104,9 +104,9 @@ pnpm release:prepare
 检查点：
 
 - `dist/`、`skills/`、`openclaw.plugin.json` 被正确打包
-- 基于 `docs/references/feishu-server-api-list.json`
-  、`docs/references/feishu-scope-list.json`
-  和 `docs/references/feishu-official-security.json` 的 truth-source / canonical 产物没有漂移
+- 基于 `docs/snapshots/feishu/feishu-server-api-list.json`
+  、`docs/snapshots/feishu/feishu-scope-list.json`
+  和 `docs/snapshots/feishu/feishu-official-security.json` 的 truth-source / canonical 产物没有漂移
 - `src/core/generated/feishu-tool-auth.json`
 - `src/core/generated/feishu-tool-scope-specs.json`
 - `src/core/generated/feishu-tool-scopes.json`
@@ -201,11 +201,11 @@ git push origin v2026.4.1-laipic.1
 
 ## 注意事项
 
-- `docs/references/feishu-server-api-list.json` 和 `docs/references/feishu-scope-list.json` 是仓库内保留的官方 truth-source 快照
-- `docs/references/feishu-official-security.json` 是基于飞书官方文档抓取并固化的 canonical 官方契约快照
+- `docs/snapshots/feishu/feishu-server-api-list.json` 和 `docs/snapshots/feishu/feishu-scope-list.json` 是仓库内保留的官方 truth-source 快照
+- `docs/snapshots/feishu/feishu-official-security.json` 是基于飞书官方文档抓取并固化的 canonical 官方契约快照
 - 当前仓库内的 Feishu runtime metadata 刷新入口是 `pnpm feishu:refresh-metadata`
 - 当前流程以 `src/core/generated/feishu-tool-auth.json` 和 `src/core/generated/feishu-tool-scope-specs.json` 为输入快照，并自动同步其余 generated 包装文件
-- 两层链路的职责和执行顺序见 [docs/feishu-metadata-pipeline.md](/data/Workspace/openclaw-lark/docs/feishu-metadata-pipeline.md)
+- 两层链路的职责和执行顺序见 [docs/guides/feishu-metadata-pipeline.md](/data/Workspace/openclaw-lark/docs/guides/feishu-metadata-pipeline.md)
 - `npm version` 默认会自动创建 commit 和 tag，当前仓库建议使用 `--no-git-tag-version`
 - 版本号变更应只出现在实际发布分支，不应混入发布配置分支
 - 如果发布失败，不要复用同一个版本号重复发布

@@ -4,8 +4,8 @@ This file reports differences between code-derived tool auth declarations and ca
 
 ## Inputs
 
-- `docs/references/feishu-supported-operations.json`
-- `docs/references/feishu-canonical-metadata.json`
+- `docs/reports/feishu/feishu-supported-operations.json`
+- `docs/reports/feishu/feishu-canonical-metadata.json`
 
 ## Semantics
 
@@ -14,7 +14,7 @@ This file reports differences between code-derived tool auth declarations and ca
 
 ## Summary
 
-- Generated at: 2026-04-17T02:53:51.607Z
+- Generated at: 2026-04-17T03:19:29.705Z
 - Total actions: 139
 - Aligned: 139
 - Conflicts: 0

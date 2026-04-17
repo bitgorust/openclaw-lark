@@ -4,8 +4,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const repoRoot = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
-const SUPPORTED_OPS_PATH = path.join(repoRoot, 'docs', 'references', 'feishu-supported-operations.json');
-const OUT_CANONICAL_JSON_PATH = path.join(repoRoot, 'docs', 'references', 'feishu-official-security.json');
+const SUPPORTED_OPS_PATH = path.join(repoRoot, 'docs', 'reports', 'feishu', 'feishu-supported-operations.json');
+const OUT_CANONICAL_JSON_PATH = path.join(repoRoot, 'docs', 'snapshots', 'feishu', 'feishu-official-security.json');
 
 const SERVER_API_LIST_URL = 'https://open.feishu.cn/api/tools/server-side-api/list';
 const SCOPE_LIST_URL = 'https://open.feishu.cn/api/tools/scope/list';
